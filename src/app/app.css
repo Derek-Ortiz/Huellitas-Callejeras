@@ -21,3 +21,10 @@ body{
     cursor: pointer;
     width: 100px;
 }
+
+.main-cont {
+  display: flex;
+  flex-direction: row;
+  
+  gap: 20px;
+}

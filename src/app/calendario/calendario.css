@@ -1,0 +1,27 @@
+.calendar-container {
+  width: 90%;
+  max-width: 900px;
+  margin: 40px auto;
+  background: #f5f0f3;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  color: black;
+}
+
+.fc {
+  background-color: #f5f0f3;
+  color: black;
+  border-radius: 8px;
+}
+
+.fc-daygrid-day-number {
+  color: black;
+}
+
+.fc-event {
+  border: none;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 0.8rem;
+}

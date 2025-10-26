@@ -4,15 +4,23 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { Navegation } from './navegation/navegation';
+import { Citas } from './citas/citas';
+import { CitasEdit } from './citas-edit/citas-edit';
+import { Calendario } from './calendario/calendario';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [
     App,
-    Navegation
+    Navegation,
+    Citas,
+    CitasEdit,
+    Calendario
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FullCalendarModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

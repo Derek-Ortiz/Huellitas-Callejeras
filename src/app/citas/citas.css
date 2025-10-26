@@ -1,0 +1,56 @@
+
+.citas-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  background-color: #f9f9f9;
+  background: #D492BD;
+box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  color: #ffffff;
+  width: 454px;
+height: 574px;
+gap: 20px;
+}  
+
+.info-cita {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #333333;
+  gap: 8px;
+}
+
+.info-cont{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
+}
+
+.citas-cont h2 {
+  color: #FFF;
+font-family: Inter;
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+
+.citas-cont h3 {
+  color: #FFF;
+font-family: Inter;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
