@@ -8,6 +8,7 @@ import { Citas } from './citas/citas';
 import { CitasEdit } from './citas-edit/citas-edit';
 import { Calendario } from './calendario/calendario';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     FullCalendarModule
   ],
   providers: [

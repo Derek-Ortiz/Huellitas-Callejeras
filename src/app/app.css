@@ -1,6 +1,7 @@
 body{
     margin: 0;
     padding: 0;
+    
 }
 
 .nav-bar{
@@ -23,8 +24,15 @@ body{
 }
 
 .main-cont {
-  display: flex;
-  flex-direction: row;
-  
+  display: grid;
   gap: 20px;
+  width: 100%;
+}
+
+.citas{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 125px;
+
 }

@@ -1,6 +1,6 @@
 .calendar-container {
-  width: 90%;
-  max-width: 900px;
+  width: 100%;
+  width: 600px;
   margin: 40px auto;
   background: #f5f0f3;
   border-radius: 12px;

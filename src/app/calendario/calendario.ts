@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { FullCalendarModule } from '@fullcalendar/angular';
+import { Router } from '@angular/router';
+import { CitasService } from '../services/citaService';
 
 @Component({
   selector: 'app-calendario',
@@ -11,10 +12,9 @@ import { FullCalendarModule } from '@fullcalendar/angular';
   styleUrl: './calendario.css',
 })
 export class Calendario {
+  calendarOptions: CalendarOptions;
 
-  calendarOptions: any;
-
-  constructor() {
+  constructor(private router: Router, private citasService: CitasService) {
     this.calendarOptions = {
       initialView: 'dayGridMonth',
       plugins: [dayGridPlugin, interactionPlugin],
@@ -26,21 +26,29 @@ export class Calendario {
         right: ''
       },
       dateClick: this.onDateClick.bind(this),
-      events: [
-        { title: 'Examen de Redes', date: '2025-10-29', color: '#f44336' },
-        { title: 'Entrega de Proyecto', date: '2025-10-30', color: '#4CAF50' },
-      ]
+      eventClick: this.onEventClick.bind(this),
+      events: []
     };
+
+    
+    this.citasService.citas$.subscribe(citas => {
+      this.calendarOptions.events = citas.map(c => ({
+        title: c.titulo,
+        date: c.fecha,
+        color: '#cc75c4ff',
+        extendedProps: { id: c.id }
+      }));
+    });
   }
 
- 
   onDateClick(info: any) {
-    const title = prompt('📅 Escribe el título del recordatorio:');
-    if (title) {
-      this.calendarOptions.events = [
-        ...this.calendarOptions.events,
-        { title, date: info.dateStr, color: '#cc75c4ff' }
-      ];
-    }
+    this.citasService.setFechaSeleccionada(info.dateStr);
+    this.router.navigate(['/citas-edit']);
+  }
+
+   onEventClick(info: any) {
+    const id = info.event.extendedProps.id;
+    this.citasService.setCitaSeleccionada(id);
+    this.router.navigate(['/citas']);
   }
 }

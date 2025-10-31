@@ -7,15 +7,15 @@
     <div class="edit">
         <img src="/public/mdi_pen.png" alt="lapiz">
     </div>
-    <input type="text" placeholder="Titulo">
-    <input type="text" placeholder="Fecha">
-    <input type="text" placeholder="Lugar">
-    <input type="text" placeholder="Motivo">
-    <input type="text" placeholder="Fecha Realizacion">
+    <input type="text" [(ngModel)]="cita.titulo" placeholder="Título">
+    <input type="text" [(ngModel)]="cita.fecha" placeholder="Fecha">
+    <input type="text" [(ngModel)]="cita.lugar" placeholder="Lugar">
+    <input type="text" [(ngModel)]="cita.motivo" placeholder="Motivo">
+    <input type="text" [(ngModel)]="cita.fechaRealizacion" placeholder="Fecha Realización">
 </div>
     <div class="paciente">
         <img src="/public/mdi_dog.png" alt="paciente">
     </div>
 
-    <button>Guardar</button>
+     <button (click)="guardar()">Guardar</button>
 </div>
