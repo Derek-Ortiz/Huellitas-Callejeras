@@ -34,7 +34,7 @@ body{
     justify-content: center;
     align-items: center;
     margin-left: 25px;
-    
+    cursor: pointer;    
 }
 .nav-display-bar{
     font-size: 18px;
