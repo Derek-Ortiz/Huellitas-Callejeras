@@ -5,11 +5,14 @@
     flex-direction: column;
     text-align: center;
     margin: 37px;
-    padding: 5px;
+    margin-bottom: 75px;
+    
+    padding: 15px;
 }
 .info-card-treat{
     background-color: #E9F7E1;
     margin: 37px;
+
 
 }
 .info-top, .info-buttom{
