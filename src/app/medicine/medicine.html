@@ -1,21 +1,28 @@
-<div class="left-side">
-    @for (num of nums; track num){
-    <div class="medicine-card">
-        <div class="card-top">
-            <p id="medicine-name">Nombre del medicamento</p>
-            <p id="medicine-completion-date"> Fecha de Conclusion</p>
-        </div>
 
-        <div class="card-buttom">
-            <p id="medicine-dose">Dosis</p>
-            <p id="medicine-repetition">Repetición</p>
-            <p id="medicine-edit">🖋</p>
-            
-        </div>
+<div class="side">
+    <div class="left-side">
+        <app-tratamiento></app-tratamiento>
     </div>
-    
+    <div class="right-side">
+        <!-- Aqui se va a poner el numero de medicinas que lleve el tratamiento pero por el momento se simula 5 cartas -->
+        @for (num of nums; track num){
+        <div class="medicine-card">
+            <div class="card-top">
+                <p id="medicine-name">Nombre del medicamento</p>
+                <p id="medicine-completion-date"> Fecha de Conclusion</p>
+            </div>
 
-}
+            <div class="card-buttom">
+                <p id="medicine-dose">Dosis</p>
+                <p id="medicine-repetition">Repetición</p>
+                <p id="medicine-edit">🖋</p>
+                
+            </div>
+        </div>   
+        }
+    </div>
+
+    
 
 
 </div>

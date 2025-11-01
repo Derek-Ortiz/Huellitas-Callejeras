@@ -5,12 +5,14 @@ import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { Navegation } from './navegation/navegation';
 import { Medicine } from './medicine/medicine';
+import { Tratamiento } from './tratamiento/tratamiento';
 
 @NgModule({
   declarations: [
     App,
     Navegation,
-    Medicine
+    Medicine,
+    Tratamiento
   ],
   imports: [
     BrowserModule,

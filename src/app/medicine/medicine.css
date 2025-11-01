@@ -14,8 +14,19 @@
     display: flex;
     justify-content: space-evenly;
 }
+.side{
+    display: flex;
+    width: 100%;
+    
+}
 .left-side{
     display: flex;
     width: 50%;
+    flex-direction: column;
+    /* justify-content: center; */
+}
+.right-side{
+    display: flex;
+    justify-content: center;
     flex-direction: column;
 }

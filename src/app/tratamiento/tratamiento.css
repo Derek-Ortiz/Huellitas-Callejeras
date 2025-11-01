@@ -1,0 +1,20 @@
+.treatment-title{
+    background-color: #D693BF;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 37px;
+    padding: 5px;
+}
+.info-card-treat{
+    background-color: #E9F7E1;
+    margin: 37px;
+
+}
+.info-top, .info-buttom{
+    padding: 27px;
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 1.5rem;
+}
