@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MedicineModalSwitch } from '../services/medicine-modal-switch';
 
 @Component({
   selector: 'app-medicine',
@@ -9,4 +10,20 @@ import { Component } from '@angular/core';
 export class Medicine {
   num: number = 0;
   nums: number[] = [1, 2, 3, 4, 5];
+
+  modalMedicineEditOpen: boolean = false;
+
+  constructor(private modalSS: MedicineModalSwitch) { }
+
+
+  ngOnInit() {
+    this.modalSS.$modalMedicine.subscribe((valor) => {
+      this.modalMedicineEditOpen = valor;
+    });
+
+  }
+
+  OpenModalMedicineEdit() {
+    this.modalMedicineEditOpen = !this.modalMedicineEditOpen;
+  }
 }

@@ -20,4 +20,14 @@
     display: flex;
     justify-content: space-evenly;
     font-size: 1.5rem;
+    text-align: center;
+    align-items: center;
+}
+.docs{
+    width: 45px;
+    height: 47px;
+}
+.plus-card{
+    cursor: pointer;
+    /* border: 1px solid #000000; */
 }

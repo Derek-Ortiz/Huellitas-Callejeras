@@ -6,13 +6,15 @@ import { App } from './app';
 import { Navegation } from './navegation/navegation';
 import { Medicine } from './medicine/medicine';
 import { Tratamiento } from './tratamiento/tratamiento';
+import { ModalMedicine } from './modal-medicine/modal-medicine';
 
 @NgModule({
   declarations: [
     App,
     Navegation,
     Medicine,
-    Tratamiento
+    Tratamiento,
+    ModalMedicine
   ],
   imports: [
     BrowserModule,

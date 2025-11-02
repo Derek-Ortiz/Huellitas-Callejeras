@@ -1,5 +1,10 @@
 
+@if (modalMedicineEditOpen == true){
+    <app-modal-medicine></app-modal-medicine>
+}
+<!-- <app-modal-medicine></app-modal-medicine> -->
 <div class="side">
+    
     <div class="left-side">
         <app-tratamiento></app-tratamiento>
     </div>
@@ -15,7 +20,10 @@
             <div class="card-buttom">
                 <p id="medicine-dose">Dosis</p>
                 <p id="medicine-repetition">Repetición</p>
-                <p id="medicine-edit">🖋</p>
+                <div class="medicine-edit-card">
+                    <p id="medicine-edit" (click)="OpenModalMedicineEdit()">🖋</p>
+                </div>
+                
                 
             </div>
         </div>   
