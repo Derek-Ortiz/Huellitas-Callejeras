@@ -4,11 +4,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { Navegation } from './navegation/navegation';
-import { Citas } from './citas/citas';
-import { CitasEdit } from './citas-edit/citas-edit';
-import { Calendario } from './calendario/calendario';
+import { Citas } from './modulos/citas/citas/citas';
+import { CitasEdit } from './modulos/citas/citas-edit/citas-edit';
+import { Calendario } from './modulos/citas/calendario/calendario';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
