@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Navegation } from './navegation/navegation';
-import { Medicine } from './medicine/medicine';
+
 
 const routes: Routes = [
   {
@@ -11,9 +11,10 @@ const routes: Routes = [
   },
   {
     path: 'medicine',
-    component: Medicine,
+    loadChildren: () => import('./modules/module-tratamiento/module-tratamiento-module').then(m => m.ModuleTratamientoModule),
     title: 'Medicine'
-  }
+  },
+
 ];
 
 @NgModule({

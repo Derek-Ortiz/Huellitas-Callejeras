@@ -1,6 +1,20 @@
+
+
 <div class="main-Card">
+    
+    <div class="treatments-cards">
+        @for(num of nums; track num){
+            <div class="treatments-card">
+                <h3>Titulosss {{num}}</h3>
+            </div>
+
+        }
+        <div class="add-treatment" routerLink="/medicine/" >
+            <a >+</a>
+        </div>
+    </div>
     <div class="treatment-title">
-        <h1>Tratamiento</h1>
+        <h1>Tratamientos</h1>
     </div>
     <div class="info-card-treat">
         <div class="info-top">
@@ -16,4 +30,11 @@
 
         </div>
     </div>
+
+    <div class="save-btn">
+        <button class="save">Guardar</button>
+    </div>
 </div>
+
+
+

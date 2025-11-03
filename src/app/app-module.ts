@@ -7,6 +7,7 @@ import { Navegation } from './navegation/navegation';
 import { Medicine } from './medicine/medicine';
 import { Tratamiento } from './tratamiento/tratamiento';
 import { ModalMedicine } from './modal-medicine/modal-medicine';
+import { RouterLink } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -14,11 +15,13 @@ import { ModalMedicine } from './modal-medicine/modal-medicine';
     Navegation,
     Medicine,
     Tratamiento,
-    ModalMedicine
+    ModalMedicine,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AppRoutingModule,
+  
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

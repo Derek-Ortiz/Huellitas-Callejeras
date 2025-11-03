@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MedicineModalSwitch } from '../services/medicine-modal-switch';
+import { MedicineModalSwitch } from '../services/medicine-modal';
 
 @Component({
   selector: 'app-medicine',
@@ -9,7 +9,7 @@ import { MedicineModalSwitch } from '../services/medicine-modal-switch';
 })
 export class Medicine {
   num: number = 0;
-  nums: number[] = [1, 2, 3, 4, 5];
+  nums: number[] = [1, 2, 3, 4];
 
   modalMedicineEditOpen: boolean = false;
 
