@@ -38,11 +38,9 @@ body{
 }
 .nav-display-bar{
     font-size: 18px;
-    line-height: 0.8;
-    
-}
-.home-logo{
-    width: 50px;
+        .nav-bar{
+            display: none;
+        }
     height: 50px;
     margin-right: 25px;
 

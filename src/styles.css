@@ -1,5 +1,343 @@
-/* You can add global styles to this file, and also import other style files */
-*{
+﻿* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
+
+body {
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f9fef9;
+    color: #5c2d5c;
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #642c51;
+    color: white;
+    height: 116px;
+    padding: 15px 30px;
+}
+
+.header-left,
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.header-title {
+    font-size: 30px;
+    color: #e1cfd1;
+    transform: translateX(-60px);
+}
+
+.nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #e8c4dc;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 700px;
+    margin: 20px auto; 
+    padding: 10px 20px;
+}
+
+.nav-title {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.container {
+    background: linear-gradient(180deg, rgba(216, 143, 189, 0) 34%, rgba(113, 12, 201, 0.2) 53.59%), #e7c7d6;
+    max-width: 1200px;
+    margin: 0 auto 40px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    padding: 40px 60px;
+    background: linear-gradient(135deg, #e8bdd8, #f0d4e6);
+}
+
+.avatar-container {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0; 
+}
+
+.avatar-container::before {
+    
+    content: "";
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: #7bb75a;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.avatar-container::after {
+    
+    content: "";
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    top: 20px;
+    left: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    z-index: 2;
+}
+
+.avatar {
+    
+    position: relative;
+    z-index: 3;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: #d88fbd; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+.avatar img {
+    width: 150px;
+    height: 150px;
+    position: relative;
+    z-index: 4; 
+    border-radius: 50%;
+    object-fit: cover;
+    transform: translateX(0) translateY(-6px); 
+}
+
+.profile-title {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.status-row {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.status-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 25px;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.status-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: white;
+    padding: 5px;
+}
+.status-noadoptado { background-color: #7bb75a; }
+.status-adoptado { background-color: #7bb75a; }
+.status-tratamiento { background-color: #7bb75a; }
+
+.btn-tratamientos {
+    background: #7bb75a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 25px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.btn-tratamientos:hover { background: #7b3c63; }
+
+.form-section {
+    padding: 40px 60px;
+}
+
+.section-header {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 25px;
+    padding: 10px 20px;
+    background: #7cb342;
+    color: white;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: 500;
+    right: 0;
+    float: right;
+    margin-right: 310px;
+}
+
+.section-header::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100%; 
+    transform: translateY(-50%);
+    width: 265px;
+    height: 5px;
+    background-color: #7cb342;
+    border-radius: 3px;
+}
+
+.form-grid {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 80px;
+    max-width: 1000px;
+    margin: 0 auto;
+    clear: both;
+}
+
+.izquierda, .derecha {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #4a2d4a;
+}
+
+input {
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 17px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+input:focus {
+    outline: none;
+    border-color: #b464a1;
+    box-shadow: 0 0 5px rgba(180, 100, 161, 0.4);
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0 50px;
+}
+
+.btn-agregar {
+    background: #7bb75a;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 35px;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+.btn-agregar:hover {
+    background: #6da14f;
+    transform: scale(1.03);
+}
+
+.edit-icon {
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    border-radius: 6px;
+}
+
+.edit-icon:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.edit-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.edit-btn img {
+    width: 35px;
+    height: 35px;
+    transition: transform 0.2s ease;
+}
+
+.edit-btn:hover img {
+    transform: scale(1.1);
+}
+
+.edit-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.edit-btn img {
+    width: 35px;
+    height: 35px;
+    transition: transform 0.2s ease;
+}
+
+.edit-btn:hover img {
+    transform: scale(1.1);
+}
+
+.btn-agregar:disabled {
+    background: #a8a8a8;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+@media (max-width: 900px) {
+    .form-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+    .form-section {
+        padding: 30px 20px;
+    }
+    .section-header {
+        float: none;
+        display: block;
+        margin: 0 auto 25px;
+    }
+}
+

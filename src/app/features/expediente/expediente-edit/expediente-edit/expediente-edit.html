@@ -1,0 +1,46 @@
+<app-header></app-header>
+
+<div class="nav-bar">
+  <div class="nav-box">
+    <div class="back-arrow">
+      <img src="/assets/images/Flecha.svg" alt="flecha">
+    </div>
+
+    <div class="nav-title">Expediente del paciente</div>
+
+    <div class="edit-icon">
+      <button id="editButton" class="edit-btn" type="button" (click)="toggleEdit()">
+        <img src="/assets/images/Editor-icon.svg" alt="editar">
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="profile-section">
+    <div class="avatar-container">
+      <div class="avatar">
+        <img src="/assets/images/dog.svg" alt="dog" />
+      </div>
+    </div>
+
+    <div class="profile-info">
+      <h1 class="profile-title">Expediente de paciente</h1>
+      <app-status-buttons
+        [estado]="pacienteEstado"
+        (estadoChange)="onEstadoChange($event)">
+      </app-status-buttons>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="section-header">Datos de rescate</div>
+    <app-expediente-form
+      [disabled]="!isEditing"
+      [initial]="initialPaciente"
+      (save)="onSave($event)">
+    </app-expediente-form>
+  </div>
+</div>
+
+<app-toast></app-toast>

@@ -1,0 +1,130 @@
+﻿<form
+  id="expedienteForm"
+  (ngSubmit)="onSubmit()"
+  #expedienteForm="ngForm"
+  class="form-grid"
+  [ngClass]="{ 'disabled': disabled }"
+>
+  <div class="izquierda">
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input
+        type="text"
+        id="nombre"
+        name="nombre"
+        [(ngModel)]="model.nombre"
+        required
+        [disabled]="disabled"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="especie">Especie</label>
+      <input
+        type="text"
+        id="especie"
+        name="especie"
+        [(ngModel)]="model.especie"
+        required
+        [disabled]="disabled"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="raza">Raza</label>
+      <input
+        type="text"
+        id="raza"
+        name="raza"
+        [(ngModel)]="model.raza"
+        [disabled]="disabled"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="edad">Edad</label>
+      <input
+        type="number"
+        id="edad"
+        name="edad"
+        [(ngModel)]="model.edad"
+        min="0"
+        [disabled]="disabled"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="sexo">Sexo</label>
+      <select id="sexo" name="sexo" [(ngModel)]="model.sexo" [disabled]="disabled">
+        <option value="">Seleccione...</option>
+        <option value="macho">Macho</option>
+        <option value="hembra">Hembra</option>
+        <option value="desconocido">Desconocido</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="peso">Peso</label>
+      <input
+        type="number"
+        id="peso"
+        name="peso"
+        [(ngModel)]="model.peso"
+        step="0.1"
+        [disabled]="disabled"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="fecha-salida">Fecha de salida</label>
+      <input
+        type="date"
+        id="fecha-salida"
+        name="fechaSalida"
+        [(ngModel)]="model.fechaSalida"
+        [disabled]="disabled"
+      />
+    </div>
+  </div>
+
+  <div class="derecha">
+    <div class="form-group">
+      <label for="fecha-ingreso">Fecha de ingreso</label>
+      <input
+        type="date"
+        id="fecha-ingreso"
+        name="fechaIngreso"
+        [(ngModel)]="model.fechaIngreso"
+        [disabled]="disabled"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="lugar">Lugar</label>
+      <input
+        type="text"
+        id="lugar"
+        name="lugar"
+        [(ngModel)]="model.lugar"
+        [disabled]="disabled"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="descripcion">Descripción</label>
+      <textarea
+        id="descripcion"
+        name="descripcion"
+        rows="4"
+        [(ngModel)]="model.descripcion"
+        [disabled]="disabled"
+      ></textarea>
+    </div>
+  </div>
+
+  <div class="actions">
+    
+    <button id="saveButton" class="btn-agregar" type="submit" [disabled]="disabled">Guardar cambios</button>
+  </div>
+</form>
+
