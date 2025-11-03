@@ -5,7 +5,7 @@
 <div class="main-Card">
     <div class="treatments-cards">
         @for(num of nums; track num){
-            <div class="treatments-card">
+            <div class="treatments-card" routerLink="/medicine/">
                 <h3>Titulo {{num}}</h3>
             </div>
 
@@ -24,8 +24,8 @@
         </div>
         <div class="info-buttom">
             <p id="medicines">Medicamentos</p>
-            <div class="plus-card">
-                <p class="plus" (click)="OpenModalTreatmentEdit()">+</p>
+            <div class="plus-card" (click)="OpenModalTreatmentEdit()">
+                <p class="plus" >+</p>
             </div>
             
 
