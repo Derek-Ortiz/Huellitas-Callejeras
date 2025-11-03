@@ -1,0 +1,58 @@
+<div class="galeria-container">
+  <div class="galeria-top-section">
+    <div class="galeria-header">
+      <button class="btn-volver" (click)="onClickVolver()">
+        <svg width="27" height="25" viewBox="0 0 27 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5.74064 13.6335L14.0162 21.4241C14.354 21.7421 14.5161 22.113 14.5026 22.537C14.4891 22.961 14.3129 23.332 13.974 23.6499C13.6362 23.9414 13.2421 24.0941 12.7917 24.1078C12.3414 24.1216 11.9473 23.969 11.6095 23.6499L0.462859 13.1565C0.29397 12.9975 0.174059 12.8253 0.103126 12.6398C0.0321926 12.4543 -0.00214792 12.2556 0.000103932 12.0436C0.00235578 11.8316 0.037822 11.6329 0.106503 11.4474C0.175185 11.2619 0.294534 11.0896 0.464549 10.9306L11.6112 0.437225C11.9208 0.145741 12.3082 0 12.7732 0C13.2382 0 13.639 0.145741 13.9757 0.437225C14.3134 0.755208 14.4823 1.13308 14.4823 1.57083C14.4823 2.00859 14.3134 2.38593 13.9757 2.70285L5.74064 10.4537H24.614C25.0925 10.4537 25.4939 10.6063 25.8181 10.9116C26.1424 11.2168 26.304 11.5942 26.3029 12.0436C26.3017 12.493 26.1396 12.8709 25.8165 13.1772C25.4933 13.4835 25.0925 13.6356 24.614 13.6335H5.74064Z" fill="#5C2D5C"/>
+        </svg>
+        <span class="texto-volver">Galería de expedientes</span>
+      </button>
+      
+      <button class="btn-agregar" (click)="onClickAgregar()">
+        <svg width="52" height="49" viewBox="0 0 52 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="25.9413" cy="24.4211" rx="25.9413" ry="24.4211" fill="#F9FEF9"/>
+          <ellipse cx="25.9413" cy="24.4211" rx="22.6987" ry="21.3684" fill="#7BB75A"/>
+          <path d="M38.7359 26.1279H28.1312V36.7327H24.5962V26.1279H13.9915V22.593H24.5962V11.9882H28.1312V22.593H38.7359V26.1279Z" fill="#F9FEF9"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="search-container">
+        <svg class="search-icon" width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M31.7857 29.4643L25.293 22.9687C27.2397 20.4319 28.1486 17.2495 27.8352 14.0672C27.5219 10.8848 26.0098 7.94085 23.6056 5.8324C21.2015 3.72395 18.0854 2.60893 14.8894 2.71353C11.6933 2.81813 8.65678 4.13451 6.39565 6.39565C4.13451 8.65678 2.81813 11.6933 2.71353 14.8894C2.60893 18.0854 3.72395 21.2015 5.8324 23.6056C7.94085 26.0098 10.8848 27.5219 14.0672 27.8352C17.2495 28.1486 20.4319 27.2397 22.9687 25.293L29.467 31.7926C29.6196 31.9452 29.8008 32.0662 30.0002 32.1488C30.1996 32.2314 30.4133 32.2739 30.6291 32.2739C30.8449 32.2739 31.0586 32.2314 31.258 32.1488C31.4574 32.0662 31.6386 31.9452 31.7912 31.7926C31.9438 31.64 32.0649 31.4588 32.1475 31.2594C32.2301 31.06 32.2726 30.8463 32.2726 30.6305C32.2726 30.4146 32.2301 30.2009 32.1475 30.0015C32.0649 29.8021 31.9438 29.621 31.7912 29.4684L31.7857 29.4643ZM6.01562 15.3125C6.01562 13.4737 6.56087 11.6763 7.58243 10.1474C8.60398 8.61857 10.056 7.42696 11.7547 6.7233C13.4535 6.01964 15.3228 5.83554 17.1262 6.19426C18.9296 6.55298 20.5862 7.43842 21.8864 8.73861C23.1866 10.0388 24.072 11.6953 24.4307 13.4988C24.7895 15.3022 24.6053 17.1715 23.9017 18.8703C23.198 20.569 22.0064 22.021 20.4776 23.0426C18.9487 24.0641 17.1512 24.6094 15.3125 24.6094C12.8476 24.6068 10.4844 23.6265 8.74141 21.8836C6.99846 20.1406 6.01815 17.7774 6.01562 15.3125Z" fill="#5C2D5C"/>
+        </svg>
+
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Buscar paciente por nombre o ID"
+        [(ngModel)]="textoBusqueda"
+        (input)="onBuscar()">
+    </div>
+  </div>
+
+  <div class="galeria-contenido" *ngIf="!cargando">
+    <div class="galeria-grid" *ngIf="expedientesFiltrados.length > 0">
+      <app-tarjeta-expediente 
+        *ngFor="let expediente of expedientesFiltrados; trackBy: trackByExpedienteId" 
+        [expediente]="expediente"
+        (clickTarjeta)="onClickTarjeta($event)">
+      </app-tarjeta-expediente>
+    </div>
+
+    <div class="sin-expedientes" *ngIf="expedientesFiltrados.length === 0 && expedientes.length > 0">
+      <p>No se encontraron expedientes con "{{ textoBusqueda }}"</p>
+    </div>
+
+    <div class="sin-expedientes" *ngIf="expedientes.length === 0">
+      <p>No hay expedientes registrados</p>
+      <button class="btn-agregar-primero" (click)="onClickAgregar()">
+        Agregar primer expediente
+      </button>
+    </div>
+  </div>
+
+  <div class="cargando" *ngIf="cargando">
+    <p>Cargando expedientes...</p>
+  </div>
+</div>

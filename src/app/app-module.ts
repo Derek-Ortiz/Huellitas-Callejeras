@@ -1,23 +1,19 @@
-import { NgModule, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
-import { Navegation } from './navegation/navegation';
+import { HeaderComponent } from './header/header.component';
+import { GaleriaModule } from './galeria/galeria-module';
 
 @NgModule({
   declarations: [
     App,
-    Navegation
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    GaleriaModule
   ],
-  providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideZonelessChangeDetection()
-  ],
+  providers: [],
   bootstrap: [App]
 })
 export class AppModule { }

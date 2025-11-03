@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import { HeaderComponent } from './components/header/header.component';
-import { GaleriaComponent } from './components/galeria/galeria.component';
-import { Expediente } from './interfaces/expediente.interface';
+import { Expediente } from './galeria/interfaces/expediente.interface';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [HeaderComponent, GaleriaComponent],
+  standalone: false,
   template: `
     <app-header
       (clickInicio)="onClickInicio()"
