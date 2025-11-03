@@ -6,7 +6,8 @@
     text-align: center;
     margin: 37px;
     margin-bottom: 75px;
-    
+    justify-content: center;
+    align-items: center;
     padding: 15px;
 }
 .info-card-treat{
@@ -79,4 +80,33 @@
     background-color: #ce6dac;
     color: #000000;
     cursor: pointer;
+}
+.request{
+    border-radius: 15px;
+    border: solid 2px #000000;
+    background: #D492BD;
+    height: 30px;
+    font-size: 1.5rem;
+    width: 320px;
+}
+.request:focus{
+    background: #FFFFFF;
+}
+.requests{
+    border-radius: 15px;
+    border: solid 2px #000000;
+    background: #E9F7E1;
+    height: 30px;
+    font-size: 1.2rem;
+    width: 320px;
+}
+.requests:focus{
+    background: #FFFFFF;
+}
+
+.treatment-request{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
