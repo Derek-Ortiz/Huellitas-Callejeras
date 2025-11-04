@@ -2,20 +2,19 @@ import { NgModule, provideBrowserGlobalErrorListeners, provideZonelessChangeDete
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
-import { App } from './app';
+import { RootComponent } from './root.component';
 
 @NgModule({
-  declarations: [
-    App
-  ],
+  // root component is standalone, import it so it can be bootstrapped
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    RootComponent
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection()
   ],
-  bootstrap: [App]
+  bootstrap: [RootComponent]
 })
 export class AppModule { }

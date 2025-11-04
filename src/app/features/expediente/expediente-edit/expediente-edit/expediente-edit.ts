@@ -28,11 +28,7 @@ export class ExpedienteEdit implements OnInit {
     if (current) {
       this.initialPaciente = { ...current };
       this.pacienteEstado = current.estado || this.pacienteEstado;
-
-      this.isEditing = true;
     } else {
-
-      this.isEditing = true;
       this.initialPaciente = null;
     }
 
