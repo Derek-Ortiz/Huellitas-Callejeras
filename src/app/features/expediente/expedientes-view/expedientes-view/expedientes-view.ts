@@ -9,12 +9,12 @@ import { StatusButtonsComponent } from '../../../../shared/status-buttons/status
 import { ExpedienteForm } from '../../expediente-form/expediente-form/expediente-form';
 import { ToastComponent } from '../../../../shared/toast/toast.component';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
 	selector: 'app-expedientes-view',
 	standalone: true,
-	imports: [CommonModule, HeaderComponent, StatusButtonsComponent, ExpedienteForm, ToastComponent],
+	imports: [CommonModule, RouterModule, HeaderComponent, StatusButtonsComponent, ExpedienteForm, ToastComponent],
 	templateUrl: './expedientes-view.html',
 	styleUrls: ['./expedientes-view.css']
 })

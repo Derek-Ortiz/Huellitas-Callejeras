@@ -1,0 +1,16 @@
+/* Fondo y layout centrado de la vista de sesión */
+.bg {
+  background: linear-gradient(180deg, #E8C5D8 0%, #D4A5C8 50%, #C896BE 100%);
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
