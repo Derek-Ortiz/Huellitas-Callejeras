@@ -1,0 +1,39 @@
+@if(modalTreatmentEditOpen == true){
+    <app-modal-treatment></app-modal-treatment>
+}
+
+<div class="main-Card">
+    <div class="treatments-cards">
+        @for(num of nums; track num){
+            <div class="treatments-card" routerLink="/medicine/">
+                <h3>Titulo {{num}}</h3>
+            </div>
+
+        }
+        <div class="add-treatment" routerLink="/medicine/tratamiento">
+            <a>+</a>
+        </div>
+    </div>
+    <div class="treatment-title">
+        <h1>Tratamiento</h1>
+    </div>
+    <div class="info-card-treat">
+        <div class="info-top">
+            <p id="start-date">Fecha de inicio</p>
+            <img src="/docs.png" alt="Docs icon" class="docs">
+        </div>
+        <div class="info-buttom">
+            <p id="medicines">Medicamentos</p>
+            <div class="plus-card" (click)="OpenModalTreatmentEdit()">
+                <p class="plus" >+</p>
+            </div>
+            
+
+        </div>
+    </div>
+
+    <div class="save-btn">
+        <button class="save">Guardar</button>
+    </div>
+</div>
+<router-outlet></router-outlet>

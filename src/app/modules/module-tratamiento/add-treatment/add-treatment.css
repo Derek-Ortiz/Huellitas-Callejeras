@@ -1,0 +1,112 @@
+.treatment-title{
+    background-color: #D693BF;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 37px;
+    margin-bottom: 75px;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+.info-card-treat{
+    background-color: #E9F7E1;
+    margin: 37px;
+
+
+}
+.info-top, .info-buttom{
+    padding: 27px;
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 1.5rem;
+    text-align: center;
+    align-items: center;
+}
+.docs{
+    width: 45px;
+    height: 47px;
+}
+.plus-card{
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.plus-card:hover{
+    cursor: pointer;
+    background: #5B8346;
+    color: #FFFFFF;
+    
+}
+.treatments-cards{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    
+
+}
+.treatments-card, .add-treatment{
+    background: #D693BF;
+    border-radius: 15px;
+    /* border: 1px solid #000000; */
+    margin: 5px;
+    padding: 10px;
+    color: #FFFFFF;
+}
+
+.treatments-card:hover, .add-treatment:hover{
+    background-color: #ce6dac;
+    cursor: pointer;
+    color: #000000;
+}
+
+.save-btn{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center; 
+}
+.save{
+    background: #D693BF;
+    font-size: 1.5rem;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 200px;
+    color: #FFFFFF;
+    border: none;
+}
+.save:hover{
+    background-color: #ce6dac;
+    color: #000000;
+    cursor: pointer;
+}
+.request{
+    border-radius: 15px;
+    border: solid 2px #000000;
+    background: #D492BD;
+    height: 30px;
+    font-size: 1.5rem;
+    width: 320px;
+}
+.request:focus{
+    background: #FFFFFF;
+}
+.requests{
+    border-radius: 15px;
+    border: solid 2px #000000;
+    background: #E9F7E1;
+    height: 30px;
+    font-size: 1.2rem;
+    width: 320px;
+}
+.requests:focus{
+    background: #FFFFFF;
+}
+
+.treatment-request{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

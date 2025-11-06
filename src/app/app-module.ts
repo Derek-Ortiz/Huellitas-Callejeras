@@ -5,14 +5,17 @@ import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { Navegation } from './navegation/navegation';
 
+
 @NgModule({
   declarations: [
     App,
-    Navegation
+    Navegation,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AppRoutingModule,
+  
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
