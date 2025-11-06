@@ -48,19 +48,6 @@ export class Citas implements OnInit, OnDestroy {
     }
   }
 
-  getFechaFormateada(fecha: string): string {
-    if (!fecha) return '';
-    
-    const fechaObj = new Date(fecha + 'T00:00:00');
-    const opciones: Intl.DateTimeFormatOptions = { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    };
-    
-    return fechaObj.toLocaleDateString('es-ES', opciones);
-  }
-
   getFechaRealizacionFormateada(fechaRealizacion: string): string {
     if (!fechaRealizacion) return '';
   

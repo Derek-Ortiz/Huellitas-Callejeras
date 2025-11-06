@@ -73,9 +73,10 @@ export class Calendario implements OnInit, OnDestroy {
   }
 
   onDateClick(info: any): void {
-   
-    if (this.mostrarCalendario) {
+       if (this.mostrarCalendario) {
       this.citasService.setFechaSeleccionada(info.dateStr);
+      const fecha = info.dateStr.replace('T', ' ');
+      this.citasService.setFechaSeleccionada(fecha + 'T00:00'); 
       this.router.navigate(['citas/citas-edit']);
     }
   }
