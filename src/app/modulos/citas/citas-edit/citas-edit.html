@@ -1,0 +1,35 @@
+<div class="contenedor-principal">
+  <app-calendario></app-calendario>
+  
+  <div class="citas-cont">
+    <h1>{{ esEdicion ? 'EDITAR CITA MÉDICA' : 'NUEVA CITA MÉDICA' }}</h1>
+
+    <div class="info-cont">
+      <div class="edit">
+      
+      <label for="titulo">Título</label>
+      <input type="text" [(ngModel)]="cita.titulo" placeholder="Título" >
+       <label for="fecha">Fecha y hora</label>
+        <input
+        type="datetime-local"
+        [(ngModel)]="cita.fecha"
+        id="fecha"
+        name="fecha"
+        placeholder="Selecciona fecha y hora"
+        />
+      <label for="lugar">Lugar</label>
+      <input type="text" [(ngModel)]="cita.lugar" placeholder="Lugar">
+      <label for="motivo">Motivo</label>
+      <input type="text" [(ngModel)]="cita.motivo" placeholder="Motivo">
+        </div>
+    
+    <div class="paciente">
+      <h3>Paciente:</h3>
+      <img src="/mdi_dog.png" alt="paciente">
+    </div>
+  </div>
+   <div class="botones">
+      <button (click)="guardar()">{{ esEdicion ? 'Actualizar' : 'Guardar' }}</button>
+      <button (click)="cancelar()">Cancelar</button>
+    </div>
+</div>

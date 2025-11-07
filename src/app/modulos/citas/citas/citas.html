@@ -1,0 +1,38 @@
+<div class="contenedor-principal">
+  <app-calendario></app-calendario>
+
+  <div class="citas-cont" *ngIf="citaSeleccionada">
+    <h1>CITA MÉDICA</h1>
+
+    <div class="info-cont">
+      <div class="datos-cita">
+        <h2>{{ citaSeleccionada.titulo }}</h2>
+        <h3>Fecha: {{ citaSeleccionada.fecha }}</h3>
+        <h3>Lugar: {{ citaSeleccionada.lugar }}</h3>
+        <h3>Motivo: {{ citaSeleccionada.motivo }}</h3>
+        <h3><strong>Registrada el:</strong> {{ getFechaRealizacionFormateada(citaSeleccionada.fechaRealizacion) }}</h3>
+      </div>
+
+      <div class="fun-icons">
+        <div class="edit" (click)="editarCita()">
+          <img src="/mdi_pen.png" alt="lapiz" style="cursor: pointer;">
+        </div>
+
+        <div class="paciente">
+          <h3>Paciente:</h3>
+          <img src="/mdi_dog.png" alt="paciente">
+        </div>
+      </div>
+    </div>
+
+    <div class="botones">
+      <button (click)="eliminarCita()">Eliminar Cita</button>
+      <button (click)="volverAlCalendario()">Cerrar</button>
+    </div>
+  </div>
+
+  <div class="citas-cont" *ngIf="!citaSeleccionada">
+    <h2>Cita no encontrada</h2>
+    <button (click)="volverAlCalendario()">Cerrar</button>
+  </div>
+</div>

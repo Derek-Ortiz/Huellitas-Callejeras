@@ -1,0 +1,110 @@
+.contenedor-principal {
+  display: flex;
+  flex-direction: row-reverse; 
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.citas-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: flex-start;
+  padding: 40px;
+  background: #D492BD;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  color: #ffffff;
+  width: 454px;
+  height: 544px;
+  gap: 20px;
+}  
+
+.info-cont {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 85px;
+}
+
+.datos-cita {
+  display: flex;
+  flex-direction: column;
+  gap: 45px;
+  width: 100%;
+}
+
+.datos-cita h2 {
+  font-family: Inter;
+  font-size: 26px;
+  font-weight: 400;
+  color: #FFF;
+}
+
+.datos-cita h3 {
+  font-family: Inter;
+  font-size: 20px;
+  font-weight: 400;
+  color: #FFF;
+}
+
+.fun-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 225px;
+}
+
+.paciente {
+  text-align: center;
+}
+
+.paciente img {
+  width: 80px;
+  height: 80px;
+}
+
+button {
+  flex: 1;
+  padding: 12px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.botones {
+  display: flex;
+  gap: 60px;
+  margin: 50px 0;
+  width: 100%;
+}
+
+.botones button:first-child {
+  background-color: #cc75c4ff;
+  color: white;
+}
+
+.botones button:first-child:hover {
+  background-color: #b55fa8;
+}
+
+.botones button:last-child {
+  background-color: #ddd;
+  color: #333;
+}
+
+.botones button:last-child:hover {
+  background-color: #ccc;
+}
+
+img {
+  max-width: 60px;
+  max-height: 60px;
+  height: auto;
+}

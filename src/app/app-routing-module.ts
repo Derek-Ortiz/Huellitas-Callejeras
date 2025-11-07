@@ -11,10 +11,15 @@ const routes: Routes = [
   },
   {
     path: 'medicine',
-    loadChildren: () => import('./modules/module-tratamiento/module-tratamiento-module').then(m => m.ModuleTratamientoModule),
+    loadChildren: () => import('./modulos/module-tratamiento/module-tratamiento-module').then(m => m.ModuleTratamientoModule),
     title: 'Medicine'
   },
-
+   {
+    path: 'citas',
+    loadChildren: () => import('./modulos/citas/citas-module').then(m => m.CitasModule)
+  },
+  { path: '', redirectTo: '/citas', pathMatch: 'full' },
+  { path: '**', redirectTo: '/citas' }
 ];
 
 @NgModule({
