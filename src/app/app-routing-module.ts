@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { Navegation } from './navegation/navegation';
 
+<<<<<<< HEAD
 
 const routes: Routes = [
   {
@@ -21,6 +21,9 @@ const routes: Routes = [
   { path: '', redirectTo: '/citas', pathMatch: 'full' },
   { path: '**', redirectTo: '/citas' }
 ];
+=======
+const routes: Routes = [];
+>>>>>>> parent of db97356 (Merge branch 'Tratamiento' of https://github.com/Derek-Ortiz/Huellitas-Callejeras into Tratamientos)
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
