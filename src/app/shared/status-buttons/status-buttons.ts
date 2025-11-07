@@ -1,10 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-status-buttons',
-  standalone: true,
-  imports: [CommonModule],
+  standalone: false,
   templateUrl: './status-buttons.html',
   styleUrls: ['./status-buttons.css']
 })

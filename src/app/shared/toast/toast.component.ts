@@ -1,12 +1,10 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { Subscription, timer } from 'rxjs';
 import { ToastService } from '../toast.service';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-toast',
-  standalone: true,
-  imports: [CommonModule],
+  standalone: false,
   templateUrl: './toast.component.html',
   styleUrls: ['./toast.component.css']
 })

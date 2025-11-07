@@ -5,6 +5,8 @@ import { SesionContainer } from './sesion-container/sesion-container/sesion-cont
 import { SesionContent } from './sesion-content/sesion-content/sesion-content';
 
 @NgModule({
-  imports: [CommonModule, SesionRoutingModule, SesionContainer, SesionContent]
+  imports: [CommonModule, SesionRoutingModule],
+  declarations: [SesionContainer, SesionContent],
+  exports: [SesionContainer, SesionContent]
 })
 export class SesionModule {}

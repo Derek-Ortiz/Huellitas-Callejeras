@@ -5,11 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { RootComponent } from './root.component';
 
 @NgModule({
-  // root component is standalone, import it so it can be bootstrapped
+  declarations: [RootComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    RootComponent
+    AppRoutingModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

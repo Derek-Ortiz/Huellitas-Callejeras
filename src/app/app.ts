@@ -1,11 +1,10 @@
+// Deprecated/duplicate root component kept for reference during migration.
+// Selector changed to avoid conflicts with RootComponent. This file can be
+// safely removed once migration is complete.
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrls: ['./styles.css']
+  selector: 'app-root-deprecated',
+  template: '<!-- deprecated root component -->'
 })
 export class App {}

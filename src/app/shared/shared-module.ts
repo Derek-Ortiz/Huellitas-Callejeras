@@ -6,7 +6,8 @@ import { StatusButtonsComponent } from './status-buttons/status-buttons';
 import { ToastComponent } from './toast/toast.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, HeaderComponent, StatusButtonsComponent, ToastComponent],
+  imports: [CommonModule, FormsModule],
+  declarations: [HeaderComponent, StatusButtonsComponent, ToastComponent],
   exports: [CommonModule, FormsModule, HeaderComponent, StatusButtonsComponent, ToastComponent]
 })
 export class SharedModule { }

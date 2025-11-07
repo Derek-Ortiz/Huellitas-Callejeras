@@ -2,17 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { PacienteService } from '../../../../core/services/paciente.service';
 import { ToastService } from '../../../../shared/toast.service';
 import { Paciente } from '../../../../core/interfaces/paciente.interface';
-import { HeaderComponent } from '../../../../shared/header/header';
-import { StatusButtonsComponent } from '../../../../shared/status-buttons/status-buttons';
 import { ExpedienteForm } from '../../expediente-form/expediente-form/expediente-form';
-import { ToastComponent } from '../../../../shared/toast/toast.component';
-import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-expediente-edit',
-  standalone: true,
-  imports: [CommonModule, RouterModule, HeaderComponent, StatusButtonsComponent, ExpedienteForm, ToastComponent],
+  standalone: false,
   templateUrl: './expediente-edit.html',
   styleUrls: ['./expediente-edit.css']
 })

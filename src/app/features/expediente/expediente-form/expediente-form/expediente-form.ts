@@ -1,13 +1,10 @@
 
 import { Component, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Paciente } from '../../../../core/interfaces/paciente.interface';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-expediente-form',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
+  standalone: false,
   templateUrl: './expediente-form.html',
   styleUrls: ['./expediente-form.css']
 })
