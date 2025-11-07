@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 export class StatusButtonsComponent {
   @Input() estado: 'No adoptado' | 'Adoptado' | 'En tratamiento' = 'No adoptado';
   @Output() estadoChange = new EventEmitter<'No adoptado' | 'Adoptado' | 'En tratamiento'>();
+  @Output() tratamientos = new EventEmitter<void>();
 
   estados = [
     { texto: 'No adoptado', clase: 'status-noadoptado' },
@@ -28,5 +29,10 @@ export class StatusButtonsComponent {
     const nuevo = this.estados[idx].texto as 'No adoptado' | 'Adoptado' | 'En tratamiento';
     this.estado = nuevo;
     this.estadoChange.emit(nuevo);
+  }
+
+  triggerTratamientos() {
+    
+    this.tratamientos.emit();
   }
 }

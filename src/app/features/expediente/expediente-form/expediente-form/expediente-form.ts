@@ -13,7 +13,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class ExpedienteForm implements OnChanges {
   @Output() save = new EventEmitter<any>();
-  @Input() disabled = true; // controlado desde ExpedienteEdit
+  @Output() cancel = new EventEmitter<void>();
+  @Input() disabled = true; 
   @Input() initial: Paciente | null = null;
 
   model: any = {};
@@ -26,5 +27,11 @@ export class ExpedienteForm implements OnChanges {
 
   onSubmit() {
     this.save.emit(this.model);
+  }
+
+  onCancel() {
+  
+    this.model = this.initial ? { ...this.initial } : {};
+    this.cancel.emit();
   }
 }

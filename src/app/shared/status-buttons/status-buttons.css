@@ -36,6 +36,8 @@
 	border-radius: 8px;
 	padding: 10px 25px;
 	font-size: 18px;
+	width: 203px;
+	height: 53px;
 	cursor: pointer;
 	transition: background 0.3s ease;
 }

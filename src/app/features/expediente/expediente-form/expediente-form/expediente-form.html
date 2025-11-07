@@ -123,8 +123,8 @@
   </div>
 
   <div class="actions">
-    
     <button id="saveButton" class="btn-agregar" type="submit" [disabled]="disabled">Guardar cambios</button>
+    <button id="cancelButton" class="btn-cancel" type="button" [disabled]="disabled" (click)="onCancel()">Cancelar</button>
   </div>
 </form>
 

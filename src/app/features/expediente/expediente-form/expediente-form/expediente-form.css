@@ -268,10 +268,13 @@ select:disabled {
 
 .actions {
   display: flex;
-  width: 100%; 
-  justify-content: center; 
-  padding: 20px 0 40px; 
-  margin-top: 10px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; 
+  gap: 20px; 
+  padding: 8px 0 6px;
+  margin-top: 6px;
 }
 
 .btn-agregar {
@@ -282,6 +285,8 @@ select:disabled {
   padding: 14px 35px;
   font-size: 20px;
   font-weight: 600;
+  width: 500px; 
+  max-width: 100%;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
 }
@@ -293,6 +298,36 @@ select:disabled {
 
 .btn-agregar:disabled {
   background: #a8a8a8;
+  color: #eaeaea;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+
+.btn-cancel {
+  background: #949494;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 35px;
+  font-size: 20px;
+  font-weight: 600;
+  width: 500px; 
+  max-width: 100%;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+
+
+.btn-cancel:hover {
+  background: #7f7f7f;
+  transform: scale(1.03);
+}
+
+.btn-cancel:disabled {
+  background: #bfbfbf;
   color: #eaeaea;
   cursor: not-allowed;
   transform: none;

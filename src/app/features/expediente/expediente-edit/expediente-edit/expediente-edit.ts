@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { PacienteService } from '../../../../core/services/paciente.service';
 import { ToastService } from '../../../../shared/toast.service';
 import { Paciente } from '../../../../core/interfaces/paciente.interface';
@@ -17,6 +17,7 @@ import { Router, RouterModule } from '@angular/router';
   styleUrls: ['./expediente-edit.css']
 })
 export class ExpedienteEdit implements OnInit {
+  @ViewChild('expForm') expForm?: ExpedienteForm;
   isEditing = false;
   pacienteEstado: 'No adoptado' | 'Adoptado' | 'En tratamiento' = 'No adoptado';
   initialPaciente: Paciente | null = null;
@@ -52,6 +53,20 @@ export class ExpedienteEdit implements OnInit {
   onEstadoChange(nuevo: 'No adoptado' | 'Adoptado' | 'En tratamiento') {
     this.pacienteEstado = nuevo;
     this.toast.show('Estado actualizado: ' + nuevo);
+  }
+
+  onTratamientos() {
+    // Ejecutar la misma interacción que el botón Guardar: disparar submit del formulario
+    if (this.expForm) {
+      // si el formulario está deshabilitado, avisar
+      if ((this.expForm as any).disabled) {
+        this.toast.show('Edición bloqueada. Activa editar para poder guardar.');
+        return;
+      }
+      this.expForm.onSubmit();
+    } else {
+      this.toast.show('Formulario no disponible.');
+    }
   }
 
   onSave(data: any) {

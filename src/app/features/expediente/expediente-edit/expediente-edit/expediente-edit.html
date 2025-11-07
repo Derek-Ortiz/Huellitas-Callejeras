@@ -30,7 +30,8 @@
       <h1 class="profile-title">Expediente de paciente</h1>
       <app-status-buttons
         [estado]="pacienteEstado"
-        (estadoChange)="onEstadoChange($event)">
+        (estadoChange)="onEstadoChange($event)"
+        (tratamientos)="onTratamientos()">
       </app-status-buttons>
     </div>
   </div>
@@ -38,6 +39,7 @@
   <div class="form-section">
     <div class="section-header">Datos de rescate</div>
     <app-expediente-form
+      #expForm
       [disabled]="!isEditing"
       [initial]="initialPaciente"
       (save)="onSave($event)">
