@@ -14,7 +14,6 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     App,
-<<<<<<< HEAD
     Navegation,
     Citas,
     CitasEdit,
@@ -25,13 +24,6 @@ import { FormsModule } from '@angular/forms';
     AppRoutingModule,
     FormsModule,
     FullCalendarModule
-=======
-    Navegation
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
->>>>>>> parent of db97356 (Merge branch 'Tratamiento' of https://github.com/Derek-Ortiz/Huellitas-Callejeras into Tratamientos)
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
