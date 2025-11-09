@@ -32,13 +32,16 @@
 
     <div class="form-group">
       <label for="raza">Raza</label>
-      <input
-        type="text"
+      <select
         id="raza"
         name="raza"
         [(ngModel)]="model.raza"
         [disabled]="disabled"
-      />
+      >
+        <option value="">Seleccione...</option>
+        <option value="Perro">Perro</option>
+        <option value="Gato">Gato</option>
+      </select>
     </div>
 
     <div class="form-group">
