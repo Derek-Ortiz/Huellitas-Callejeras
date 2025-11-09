@@ -13,9 +13,7 @@ import { Navegation } from './navegation/navegation';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    AppRoutingModule,
-  
+    AppRoutingModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

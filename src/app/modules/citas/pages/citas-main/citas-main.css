@@ -1,0 +1,23 @@
+body{
+    margin: 0;
+    padding: 0;
+    
+}
+
+
+.main-cont {
+  display: grid;
+  gap: 20px;
+  width: 100%;
+  justify-content: center;
+  margin-top: 40px;
+
+}
+
+.citas{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    
+
+}
