@@ -1,0 +1,11 @@
+<div class="tarjeta" (click)="onClickTarjeta()">
+  <div class="tarjeta-imagen-wrapper">
+    <img [src]="expediente.imagenUrl" 
+         [alt]="expediente.nombre" 
+         class="tarjeta-imagen">
+  </div>
+  <div class="tarjeta-info">
+    <h3 class="tarjeta-nombre">{{ expediente.nombre }}</h3>
+    <p class="tarjeta-raza">{{ expediente.raza }}</p>
+  </div>
+</div>
