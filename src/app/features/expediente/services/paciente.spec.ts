@@ -4,7 +4,7 @@ import { Paciente } from '../interfaces/paciente.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class PacienteService {
+export class PacienteServiceMock {
   private paciente: Paciente = {
     nombre: '',
     especie: '',

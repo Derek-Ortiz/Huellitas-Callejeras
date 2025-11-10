@@ -1,6 +1,6 @@
 
 import { Component, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Paciente } from '../../../../core/interfaces/paciente.interface';
+import { Paciente } from '../../interfaces/paciente.interface';
 
 @Component({
   selector: 'app-expediente-form',

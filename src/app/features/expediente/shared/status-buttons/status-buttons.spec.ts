@@ -1,16 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { StatusButtonsComponent } from './status-buttons';
 
-describe('StatusButtons', () => {
+describe('StatusButtonsComponent', () => {
   let component: StatusButtonsComponent;
   let fixture: ComponentFixture<StatusButtonsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [StatusButtonsComponent]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(StatusButtonsComponent);
     component = fixture.componentInstance;

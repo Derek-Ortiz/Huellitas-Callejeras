@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { PacienteService } from '../../../../core/services/paciente.service';
-import { ToastService } from '../../../../shared/toast.service';
-import { Paciente } from '../../../../core/interfaces/paciente.interface';
+import { PacienteService } from '../../services/paciente.service';
+import { Paciente } from '../../interfaces/paciente.interface';
 import { ExpedienteForm } from '../../expediente-form/expediente-form/expediente-form';
 import { Router } from '@angular/router';
 
@@ -17,7 +16,7 @@ export class ExpedienteEdit implements OnInit {
   pacienteEstado: 'No adoptado' | 'Adoptado' | 'En tratamiento' = 'No adoptado';
   initialPaciente: Paciente | null = null;
 
-  constructor(private pacienteService: PacienteService, private toast: ToastService, private router: Router) {}
+  constructor(private pacienteService: PacienteService, private router: Router) {}
 
   ngOnInit(): void {
     const current = this.pacienteService.getCurrent();
@@ -42,12 +41,12 @@ export class ExpedienteEdit implements OnInit {
 
   toggleEdit() {
     this.isEditing = !this.isEditing;
-    this.toast.show(this.isEditing ? 'Modo edición activado' : 'Modo edición desactivado');
+  // toast message removed
   }
 
   onEstadoChange(nuevo: 'No adoptado' | 'Adoptado' | 'En tratamiento') {
     this.pacienteEstado = nuevo;
-    this.toast.show('Estado actualizado: ' + nuevo);
+  // toast message removed
   }
 
   onTratamientos() {
@@ -55,12 +54,12 @@ export class ExpedienteEdit implements OnInit {
     if (this.expForm) {
       // si el formulario está deshabilitado, avisar
       if ((this.expForm as any).disabled) {
-        this.toast.show('Edición bloqueada. Activa editar para poder guardar.');
+  // toast message removed
         return;
       }
       this.expForm.onSubmit();
     } else {
-      this.toast.show('Formulario no disponible.');
+  // toast message removed
     }
   }
 
@@ -68,12 +67,12 @@ export class ExpedienteEdit implements OnInit {
 
     const paciente: Paciente = { ...data, estado: this.pacienteEstado } as Paciente;
     this.pacienteService.save(paciente).subscribe((saved: Paciente) => {
-      this.toast.show('Cambios guardados correctamente.');
+  // toast message removed
       this.isEditing = false;
 
-      this.toast.show('Paciente guardado correctamente.');
+  // toast message removed
     }, (err: unknown) => {
-      this.toast.show('Error al guardar.');
+  // toast message removed
     });
   }
 }
