@@ -2,12 +2,12 @@ import { NgModule, provideBrowserGlobalErrorListeners, provideZonelessChangeDete
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
-import { NavegationComponent} from './navegation/navegation.component';
+
 
 @NgModule({
   declarations: [
     App,
-    NavegationComponent
+    
   ],
   imports: [
     BrowserModule,
