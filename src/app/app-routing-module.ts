@@ -4,11 +4,13 @@ import { Navegation } from './navegation/navegation';
 
 
 const routes: Routes = [
-  {
-    path: '',
-    component: Navegation,
-    title: 'Huellitas Callejeras'
+  { path: '',
+    loadChildren: () => import('./modules/sesion/sesion.module').then(m => m.SesionModule),
+    title: 'Home'
   },
+  {
+    path: 'expediente', loadChildren: () => import('./modules/expediente/expediente.module').then(m => m.ExpedienteModule) 
+   },
   {
     path: 'medicine',
     loadChildren: () => import('./modules/module-tratamiento/module-tratamiento-module').then(m => m.ModuleTratamientoModule),

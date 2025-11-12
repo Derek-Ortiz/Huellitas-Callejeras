@@ -1,0 +1,9 @@
+/* Archivo de estilos local para el componente raíz (creado para evitar NG2008). */
+:root {
+  --app-accent: #642C51;
+}
+
+/* Estilos mínimos para evitar errores de importación desde la plantilla */
+.app-global-placeholder {
+  box-sizing: border-box;
+}
