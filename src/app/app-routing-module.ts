@@ -17,6 +17,10 @@ const routes: Routes = [
   {
      path: 'citas',
     loadChildren: () => import('./modules/citas/citas-module').then(m => m.CitasModule)
+  },
+  {
+    path: 'galeria',
+    loadChildren: () => import('./modules/galeria/galeria-module').then(m => m.GaleriaModule)
   }
 
 ];
