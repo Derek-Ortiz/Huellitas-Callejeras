@@ -73,12 +73,10 @@ export class ExpedienteForm implements OnChanges {
     return missing;
   }
 
-  // Método público para que componentes padres puedan saber si faltan campos obligatorios
   public hasMissingRequired(): boolean {
     return this.getMissingFieldKeys().length > 0;
   }
 
-  // Llamado por ngModelChange para limpiar el marcado cuando el usuario corrige el campo
   onFieldChange(key: string, value: any) {
     if (this.missingFields.has(key)) {
       const empty = value === null || value === undefined || (typeof value === 'string' && value.trim() === '');
@@ -91,7 +89,6 @@ export class ExpedienteForm implements OnChanges {
   onSubmit() {
     const missingKeys = this.getMissingFieldKeys();
     if (missingKeys.length > 0) {
-      // marcar campos faltantes para mostrar contorno rojo
       this.missingFields = new Set(missingKeys);
       return;
     }
@@ -100,8 +97,6 @@ export class ExpedienteForm implements OnChanges {
   }
 
   onCancel() {
-    // No modificar los campos en el formulario; solo emitir el evento cancel
-    // (el padre decide cómo manejar el modo edición)
     this.cancel.emit();
   }
 }

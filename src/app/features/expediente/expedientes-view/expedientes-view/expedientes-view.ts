@@ -13,10 +13,9 @@ import { Router } from '@angular/router';
 })
 export class ExpedientesView implements OnInit, OnDestroy {
 	@ViewChild('avatarInput') avatarInput?: ElementRef<HTMLInputElement>;
-	isEditing = true; // start unlocked per request
+	isEditing = true; 
 	pacienteEstado: 'No adoptado' | 'Adoptado' | 'En tratamiento' = 'No adoptado';
 	initialPaciente: Paciente | null = null;
-	// archivos seleccionados y previews
 	selectedFiles: File[] = [];
 	imagePreviews: string[] = [];
 
@@ -39,12 +38,10 @@ export class ExpedientesView implements OnInit, OnDestroy {
 
 	toggleEdit() {
 		this.isEditing = !this.isEditing;
-	// toast message removed
 	}
 
 	onEstadoChange(nuevo: 'No adoptado' | 'Adoptado' | 'En tratamiento') {
 		this.pacienteEstado = nuevo;
-		// toast message removed
 	}
 
 		onFilesSelected(event: Event) {
@@ -64,7 +61,6 @@ export class ExpedientesView implements OnInit, OnDestroy {
 		}
 
 		onAvatarClick(event: Event) {
-			// en view la edición está activa por defecto, pero igual comprobamos
 			if (!this.isEditing) { event.preventDefault(); return; }
 			const input = this.avatarInput ? this.avatarInput.nativeElement : null;
 			if (!input) return;
@@ -83,11 +79,8 @@ export class ExpedientesView implements OnInit, OnDestroy {
 	onSave(data: any) {
 		const paciente: Paciente = { ...data, estado: this.pacienteEstado } as Paciente;
 		this.pacienteService.save(paciente).subscribe((saved: Paciente) => {
-			// toast message removed
 			this.isEditing = false;
-			// toast message removed
 		}, (err: unknown) => {
-			// toast message removed
 		});
 	}
 }

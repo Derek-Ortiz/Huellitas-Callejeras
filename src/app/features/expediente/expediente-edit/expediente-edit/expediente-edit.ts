@@ -16,7 +16,6 @@ export class ExpedienteEdit implements OnInit {
   isEditing = false;
   pacienteEstado: 'No adoptado' | 'Adoptado' | 'En tratamiento' = 'No adoptado';
   initialPaciente: Paciente | null = null;
-  // Archivos seleccionados y sus vistas previas (object URLs)
   selectedFiles: File[] = [];
   imagePreviews: string[] = [];
 
@@ -77,30 +76,23 @@ export class ExpedienteEdit implements OnInit {
   }
 
   onFormCancel() {
-    // Al cancelar desde el formulario, quitar la funcionalidad de editar
-    // (no se borran campos ni previews; solo se desactiva la edición)
     this.isEditing = false;
   }
 
   goToView() {
-    // Limpiar campos del formulario (dejarlos vacíos) y marcas de error
     if (this.expForm) {
       try {
         this.expForm.model = {};
         this.expForm.missingFields = new Set();
       } catch (e) {
-        // no bloquear si falla
       }
     }
 
-    // Limpiar previews de imagen en memoria
     this.clearImagePreviews();
 
-    // Navegar a la vista
     try {
       this.router.navigateByUrl('/expediente/view');
     } catch (e) {
-      // ignore
     }
   }
 
