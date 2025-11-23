@@ -15,6 +15,30 @@ export class ExpedienteForm implements OnChanges {
   @Input() initial: Paciente | null = null;
 
   model: any = {};
+  missingFields: Set<string> = new Set();
+
+  get computedDisabled(): boolean {
+    if (this.disabled) return true;
+    const required = [
+      'nombre',
+      'especie',
+      'raza',
+      'edad',
+      'sexo',
+      'peso',
+      'fechaIngreso',
+      'lugar',
+      'descripcion'
+    ];
+
+    for (const key of required) {
+      const val = this.model ? this.model[key] : null;
+      if (val === null || val === undefined) return true;
+      if (typeof val === 'string' && val.trim() === '') return true;
+    }
+
+    return false;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['initial']) {
@@ -22,13 +46,62 @@ export class ExpedienteForm implements OnChanges {
     }
   }
 
+  private getMissingFieldKeys(): string[] {
+    const requiredKeys = [
+      'nombre',
+      'especie',
+      'raza',
+      'edad',
+      'sexo',
+      'peso',
+      'fechaIngreso',
+      'lugar',
+      'descripcion'
+    ];
+
+    const missing: string[] = [];
+    for (const key of requiredKeys) {
+      const val = this.model ? this.model[key] : null;
+      if (val === null || val === undefined) {
+        missing.push(key);
+        continue;
+      }
+      if (typeof val === 'string' && val.trim() === '') {
+        missing.push(key);
+      }
+    }
+    return missing;
+  }
+
+  // Método público para que componentes padres puedan saber si faltan campos obligatorios
+  public hasMissingRequired(): boolean {
+    return this.getMissingFieldKeys().length > 0;
+  }
+
+  // Llamado por ngModelChange para limpiar el marcado cuando el usuario corrige el campo
+  onFieldChange(key: string, value: any) {
+    if (this.missingFields.has(key)) {
+      const empty = value === null || value === undefined || (typeof value === 'string' && value.trim() === '');
+      if (!empty) {
+        this.missingFields.delete(key);
+      }
+    }
+  }
+
   onSubmit() {
+    const missingKeys = this.getMissingFieldKeys();
+    if (missingKeys.length > 0) {
+      // marcar campos faltantes para mostrar contorno rojo
+      this.missingFields = new Set(missingKeys);
+      return;
+    }
+
     this.save.emit(this.model);
   }
 
   onCancel() {
-  
-    this.model = this.initial ? { ...this.initial } : {};
+    // No modificar los campos en el formulario; solo emitir el evento cancel
+    // (el padre decide cómo manejar el modo edición)
     this.cancel.emit();
   }
 }

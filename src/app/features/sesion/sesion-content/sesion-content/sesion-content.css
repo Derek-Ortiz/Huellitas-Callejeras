@@ -40,7 +40,7 @@ h1 {
 }
 
 .subtitle {
-  color: #7B5A72;
+  color: #404040;
   font-size: 18px;
   font-weight: 400;
   margin-top: -15px;
@@ -53,7 +53,7 @@ h1 {
   border: none;
   padding: 12px 40px;
   font-size: 16px;
-  border-radius: 6px;
+  border-radius: 28px;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
 }

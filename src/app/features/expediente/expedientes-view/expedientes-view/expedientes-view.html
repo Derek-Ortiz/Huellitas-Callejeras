@@ -8,11 +8,11 @@
 			</a>
 		</div>
 
-		<div class="nav-title">Expediente del paciente</div>
+			<div class="nav-title">Expediente del paciente</div>
 
 		<div class="edit-icon">
 			<button id="editButton" class="edit-btn" type="button" (click)="toggleEdit()">
-				<img src="/assets/images/Editor-icon.svg" alt="editar">
+					<img [src]="isEditing ? '/assets/images/edit-amarillo.svg' : '/assets/images/Editor-icon.svg'" [alt]="isEditing ? 'editar (activo)' : 'editar'">
 			</button>
 		</div>
 	</div>
@@ -22,7 +22,15 @@
 	<div class="profile-section">
 		<div class="avatar-container">
 			<div class="avatar">
-				<img src="/assets/images/dog.svg" alt="dog" />
+				<label (click)="onAvatarClick($event)" style="display:block; width:100%; height:100%;">
+					<img
+						[src]="imagePreviews.length ? imagePreviews[0] : '/assets/images/Agregar.svg'"
+						alt="dog"
+						[class.placeholder]="!imagePreviews.length"
+						[class.uploaded]="imagePreviews.length > 0"
+					/>
+				</label>
+				<input #avatarInput id="avatarInputView" type="file" accept="image/*" (change)="onFilesSelected($event)" style="display:none" />
 			</div>
 		</div>
 
