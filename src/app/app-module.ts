@@ -9,6 +9,7 @@ import { CitasEdit } from './modulos/citas/citas-edit/citas-edit';
 import { Calendario } from './modulos/citas/calendario/calendario';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { FormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    FullCalendarModule
+    FullCalendarModule,
+    HttpClientModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

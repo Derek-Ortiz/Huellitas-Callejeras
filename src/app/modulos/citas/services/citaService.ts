@@ -1,33 +1,105 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Cita } from '../../../modulos/citas/interfaces/citaI';
+import { Cita, CitaRequest } from '../../../modulos/citas/interfaces/citaI';
+import { ConexionApiCitas } from './conexion-api-citas';
 
 @Injectable({ providedIn: 'root' })
 export class CitasService {
-  private citasSource = new BehaviorSubject<Cita[]>([]);
+    private citasSource = new BehaviorSubject<Cita[]>([]);
   citas$ = this.citasSource.asObservable();
 
   private fechaSeleccionadaSource = new BehaviorSubject<string | null>(null);
   fechaSeleccionada$ = this.fechaSeleccionadaSource.asObservable();
 
-  agregarCita(cita: Cita): void {
-    const citasActuales = this.citasSource.value;
-    this.citasSource.next([...citasActuales, cita]);
+  private loadingSource = new BehaviorSubject<boolean>(false);
+  loading$ = this.loadingSource.asObservable();
+
+  private errorSource = new BehaviorSubject<string | null>(null);
+  error$ = this.errorSource.asObservable();
+
+  constructor(private conexionApiCitas: ConexionApiCitas) {
+    
   }
 
-  actualizarCita(citaActualizada: Cita): void {
-    const citasActuales = this.citasSource.value;
-    const index = citasActuales.findIndex(c => c.id === citaActualizada.id);
+  cargarCitas(): void {
+   
+    this.loadingSource.next(true);
+    this.errorSource.next(null);
+
+    this.conexionApiCitas.obtenerCitas().subscribe({
+      next: (citas) => {
+       
+        this.citasSource.next(citas);
+        this.loadingSource.next(false);
+      },
+      error: (err) => {
+        this.errorSource.next('Error al cargar las citas: ' + err.message);
+        this.loadingSource.next(false);
+      }
+    });
+  }
+  
+  agregarCita(citaRequest: CitaRequest): void {
+    this.loadingSource.next(true);
+    this.errorSource.next(null);
+
+    this.conexionApiCitas.crearCita(citaRequest).subscribe({
+      next: (nuevaCita) => {
+        const citasActuales = this.citasSource.value;
+        this.citasSource.next([...citasActuales, nuevaCita]);
+        this.loadingSource.next(false);
+      },
+      error: (err) => {
+        this.errorSource.next('Error al agregar la cita: ' + err.message);
+        this.loadingSource.next(false);
+      }
+    });
+  }
+  actualizarCita(cita: Cita): void {
+    if(!cita.id) {
+      return;
+    }
+    this.loadingSource.next(true);
+    this.errorSource.next(null);
+
+    this.conexionApiCitas.actualizarCita(cita.id!, cita).subscribe({
+      next: citaActualizada => {
+        const actual = this.citasSource.value;
+        const index = actual.findIndex(c => c.id === citaActualizada.id);
     
     if (index !== -1) {
-      citasActuales[index] = citaActualizada;
-      this.citasSource.next([...citasActuales]);
+      actual[index] = citaActualizada;
+      this.citasSource.next([...actual]);
     }
-  }
+    this.loadingSource.next(false);
 
-  eliminarCita(id: number): void {
-    const citasActuales = this.citasSource.value.filter(c => c.id !== id);
-    this.citasSource.next(citasActuales);
+  },
+  error: (err) => {
+
+    this.errorSource.next('Error al actualizar la cita');
+    this.loadingSource.next(false);
+  }
+  });
+}
+
+  eliminarCita(id: string): void {
+
+    this.loadingSource.next(true);
+    this.errorSource.next(null);
+
+    this.conexionApiCitas.eliminarCita(id).subscribe({
+      next: () => {
+        const actual = this.citasSource.value.filter(c => c.id !== id);
+        this.citasSource.next(actual);
+        this.loadingSource.next(false);
+    
+    },
+      error: (err) => {
+       
+        this.errorSource.next('Error al eliminar la cita');
+        this.loadingSource.next(false);
+      }
+    });
   }
 
   setFechaSeleccionada(fecha: string): void {
@@ -38,7 +110,11 @@ export class CitasService {
     this.fechaSeleccionadaSource.next(null);
   }
 
-  getCitaPorId(id: number): Cita | undefined {
+  getCitaPorId(id: string): Cita | undefined {
     return this.citasSource.value.find(c => c.id === id);
+  }
+
+  limpiarError(): void {
+    this.errorSource.next(null);
   }
 }

@@ -7,32 +7,79 @@
     <div class="info-cont">
       <div class="datos-cita">
         <h2>{{ citaSeleccionada.titulo }}</h2>
-        <h3>Fecha: {{ citaSeleccionada.fecha }}</h3>
-        <h3>Lugar: {{ citaSeleccionada.lugar }}</h3>
-        <h3>Motivo: {{ citaSeleccionada.motivo }}</h3>
-        <h3><strong>Registrada el:</strong> {{ getFechaRealizacionFormateada(citaSeleccionada.fechaRealizacion) }}</h3>
+        <div class="detalle-cita">
+          <div class="campo">
+            <strong>Fecha y hora:</strong>
+            <span>{{ formatearFecha(citaSeleccionada.fechaCita) }}</span>
+          </div>
+          <div class="campo">
+            <strong>Lugar:</strong>
+            <span>{{ citaSeleccionada.lugar }}</span>
+          </div>
+          <div class="campo">
+            <strong>Motivo:</strong>
+            <span>{{ citaSeleccionada.motivo }}</span>
+          </div>
+          <div class="campo">
+            <strong>Registrada el:</strong>
+            <span>{{ getFechaRealizacionFormateada(citaSeleccionada.fechaRealizacion) }}</span>
+          </div>
+        </div>
       </div>
 
       <div class="fun-icons">
-        <div class="edit" (click)="editarCita()">
+        <div class="edit" (click)="editarCita()" title="Editar cita">
           <img src="/mdi_pen.png" alt="lapiz" style="cursor: pointer;">
+          <span>Editar</span>
         </div>
 
-        <div class="paciente">
-          <h3>Paciente:</h3>
-          <img src="/mdi_dog.png" alt="paciente">
+        <div class="animal-info">
+          <h3>Animal:</h3>
+          
+         
+          <div *ngIf="cargandoAnimal" class="cargando-animal">
+            <div class="spinner"></div>
+            <p>Cargando información del animal...</p>
+          </div>
+
+        
+          <div *ngIf="animal && !cargandoAnimal" class="animal-detalle" (click)="irAExpediente()">
+            <div class="animal-header">
+              <img 
+                [src]="animal.urlImage" 
+                [alt]="animal.nombre" 
+                class="foto-animal"
+                (error)="usarImagenPorDefecto($event)"
+              >
+              <div class="animal-datos">
+                <h4>{{ animal.nombre }}</h4>
+                <p class="especie-raza">{{ animal.especie }} - {{ animal.raza }}</p>
+              </div>
+            </div>
+            <div class="link-expediente">
+              <span> Ver expediente completo</span>
+            </div>
+          </div>
+
+          <div *ngIf="!animal && !cargandoAnimal" class="animal-no-encontrado">
+            <img src="" alt="animal no encontrado" class="foto-animal">
+            <div class="animal-datos">
+              <h4>Animal no encontrado</h4>
+              <p>La información del animal no está disponible</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="botones">
-      <button (click)="eliminarCita()">Eliminar Cita</button>
-      <button (click)="volverAlCalendario()">Cerrar</button>
+      <button class="btn-eliminar" (click)="eliminarCita()">Eliminar Cita</button>
+      <button class="btn-cerrar" (click)="volverAlCalendario()">Cerrar</button>
     </div>
   </div>
 
   <div class="citas-cont" *ngIf="!citaSeleccionada">
     <h2>Cita no encontrada</h2>
-    <button (click)="volverAlCalendario()">Cerrar</button>
+    <button (click)="volverAlCalendario()">Volver al calendario</button>
   </div>
 </div>
