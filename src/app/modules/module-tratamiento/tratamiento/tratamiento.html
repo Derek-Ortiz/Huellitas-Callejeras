@@ -1,39 +1,71 @@
 @if(modalTreatmentEditOpen == true){
     <app-modal-treatment></app-modal-treatment>
 }
+@if(modalMedicineOpen == true){
+    <app-modal-medicine (saved)="onMedicineSaved($event)"></app-modal-medicine>
+}
 
 <div class="main-Card">
     <div class="treatments-cards">
-        @for(num of nums; track num){
-            <div class="treatments-card" routerLink="/medicine/">
-                <h3>Titulo {{num}}</h3>
-            </div>
-
+                <app-back-button (clickBack)="navigateHome()"></app-back-button>
+                @for(num of nums; track num){
+                    <app-treatment-chip [label]="'Tratamiento ' + num" (click)="onChipClick(num)" (delete)="onChipDelete(num)"></app-treatment-chip>
         }
-        <div class="add-treatment" routerLink="/medicine/tratamiento">
-            <a>+</a>
+                <div class="add-treatment" (click)="goToAddTreatment()">
+          <a>+</a>
         </div>
     </div>
-    <div class="treatment-title">
-        <h1>Tratamiento</h1>
-    </div>
-    <div class="info-card-treat">
-        <div class="info-top">
-            <p id="start-date">Fecha de inicio</p>
-            <img src="/docs.png" alt="Docs icon" class="docs">
-        </div>
-        <div class="info-buttom">
-            <p id="medicines">Medicamentos</p>
-            <div class="plus-card" (click)="OpenModalTreatmentEdit()">
-                <p class="plus" >+</p>
+        <div class="side">
+            <!-- Left: treatment info card with plus -->
+            <div class="left-side">
+                <div class="treatment-title">
+                        <h1>Tratamiento {{ selectedTreatment || '' }}</h1>
+                </div>
+                <div class="info-card-treat">
+                    <div class="info-top">
+                        <p id="start-date">Fecha de inicio {{ startDate }}</p>
+                        <img src="/docs.png" alt="Docs icon" class="docs">
+                    </div>
+                    <div class="info-buttom">
+                        <p id="medicines">Medicamentos</p>
+                        <div class="plus-card" (click)="openAddMedicineModal()">
+                            <p class="plus" >+</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-
+            <!-- Right: medicine cards aligned with others -->
+            <div class="right-side">
+                @for (m of medicines; track $index; let i = $index) {
+                    <div class="medicine-list-item">
+                        <app-medicine-card
+                            [name]="m.name"
+                            [completionDate]="m.date"
+                            [dose]="m.dose"
+                            [repetition]="m.repetition"
+                            (delete)="removeMedicine(i)">
+                        </app-medicine-card>
+                    </div>
+                }
+            </div>
         </div>
-    </div>
-
-    <div class="save-btn">
-        <button class="save">Guardar</button>
-    </div>
 </div>
 <router-outlet></router-outlet>
+
+@if(showDeleteConfirm){
+    <app-confirm-dialog 
+        (cancel)="cancelDelete()" 
+        (accept)="confirmDelete()"
+        message="¿Deseas eliminar este tratamiento?">
+    </app-confirm-dialog>
+}
+@if(showDeleteMedicineConfirm){
+    <app-confirm-dialog 
+        (cancel)="cancelDeleteMedicine()" 
+        (accept)="confirmDeleteMedicine()"
+        message="¿Deseas eliminar este medicamento?">
+    </app-confirm-dialog>
+}
+@if(loading){
+    <div class="overlay loading"><div class="spinner"></div></div>
+}

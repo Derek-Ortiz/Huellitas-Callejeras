@@ -1,0 +1,15 @@
+.edit-btn{
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: #D492BD; /* base */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+.icon-path{ fill: #000000; }
+.edit-btn:hover{ background: #5C2D5C; }
+.edit-btn:hover .icon-path{ fill: #FFFFFF; }

@@ -40,23 +40,18 @@
 }
 .treatments-cards{
     display: flex;
-    justify-content: space-around;
+    gap: 16px;
     align-items: center;
-    
+    padding-top: 8px;
 
 }
-.treatments-card, .add-treatment{
+.add-treatment{
     background: #D693BF;
-    border-radius: 15px;
-    /* border: 1px solid #000000; */
-    margin: 5px;
-    padding: 10px;
+    border-radius: 12px;
+    padding: 8px 12px;
     color: #FFFFFF;
-    text-decoration: none;
-    text-emphasis: none;
 }
-
-.treatments-card:hover, .add-treatment:hover{
+.add-treatment:hover{
     background-color: #ce6dac;
     cursor: pointer;
     color: #000000;
@@ -69,16 +64,21 @@
     align-items: center; 
 }
 .save{
-    background: #D693BF;
+    background: #7BB75A;
     font-size: 1.5rem;
     padding: 15px;
-    border-radius: 10px;
+    border-radius: 20px;
     margin-top: 200px;
     color: #FFFFFF;
     border: none;
+    width: 134.3px;
 }
 .save:hover{
-    background-color: #ce6dac;
+    background-color: #375527;
     color: #000000;
     cursor: pointer;
 }
+
+.overlay.loading{ position: fixed; inset:0; background: rgba(0,0,0,0.2); display:flex; align-items:center; justify-content:center; z-index: 1000; }
+.spinner{ width: 48px; height: 48px; border-radius:50%; border: 4px solid #ccc; border-top-color: #7BB75A; animation: spin 0.9s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg);} to { transform: rotate(360deg);} }

@@ -41,7 +41,7 @@
 }
 .treatments-cards{
     display: flex;
-    justify-content: space-around;
+    gap: 16px;
     align-items: center;
     
 
@@ -68,16 +68,17 @@
     align-items: center; 
 }
 .save{
-    background: #D693BF;
+    background: #7BB75A;
     font-size: 1.5rem;
     padding: 15px;
-    border-radius: 10px;
+    border-radius: 20px;
     margin-top: 200px;
     color: #FFFFFF;
     border: none;
+    width: 134.3px;
 }
 .save:hover{
-    background-color: #ce6dac;
+    background-color: #375527;
     color: #000000;
     cursor: pointer;
 }
@@ -89,6 +90,7 @@
     font-size: 1.5rem;
     width: 320px;
 }
+.request.invalid{ border-color: #ff4d4d; }
 .request:focus{
     background: #FFFFFF;
 }
@@ -100,6 +102,7 @@
     font-size: 1.2rem;
     width: 320px;
 }
+.requests.invalid{ border-color: #ff4d4d; }
 .requests:focus{
     background: #FFFFFF;
 }
@@ -110,3 +113,10 @@
     justify-content: center;
     align-items: center;
 }
+
+.side{ display:flex; justify-content: space-evenly; }
+.right-side{ display:flex; flex-direction: column; justify-content: center; }
+.medicine-card{ background: linear-gradient(to right,#D492BD , #E1BAD3); margin: 27px; padding: 16px; border-radius: 6px; }
+.card-top, .card-bottom{ display:flex; gap: 14px; align-items:center; justify-content:center; }
+.remove{ background:#d46a6a; color:#fff; border:none; border-radius:8px; padding:6px 10px; cursor:pointer; }
+.remove:hover{ background:#b35454; }

@@ -9,24 +9,15 @@
         <app-tratamiento></app-tratamiento>
     </div>
     <div class="right-side">
-        <!-- Aqui se va a poner el numero de medicinas que lleve el tratamiento pero por el momento se simula 5 cartas -->
+        <!-- Lista de tarjetas de medicamentos -->
         @for (num of nums; track num){
-        <div class="medicine-card">
-            <div class="card-top">
-                <p id="medicine-name">Nombre del medicamento</p>
-                <p id="medicine-completion-date"> Fecha de Conclusion</p>
-            </div>
-
-            <div class="card-buttom">
-                <p id="medicine-dose">Dosis</p>
-                <p id="medicine-repetition">Repetición</p>
-                <div class="medicine-edit-card">
-                    <p id="medicine-edit" (click)="OpenModalMedicineEdit()">🖋</p>
-                </div>
-                
-                
-            </div>
-        </div>   
+          <app-medicine-card
+            [name]="'Paracetamol'"
+            [completionDate]="'Fecha de Conclusión'"
+            [dose]="'Dosis'"
+            [repetition]="'Repetición'"
+            (edit)="OpenModalMedicineEdit()">
+          </app-medicine-card>
         }
     </div>
 
