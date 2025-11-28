@@ -5,8 +5,6 @@ import { CitasService } from '../services/citaService';
 import { ConexionApiAnimales } from '../services/conexionApiAnimales';
 import { Cita } from '../interfaces/citaI';
 import { Animal } from '../interfaces/animalI';
-import { ConexionApiCitas } from '../services/conexion-api-citas';
-import { AuthService } from '../services/auth';
 
 @Component({
   selector: 'app-citas',
@@ -14,6 +12,7 @@ import { AuthService } from '../services/auth';
   templateUrl: './citas.html',
   styleUrl: './citas.css',
 })
+
 export class Citas implements OnInit, OnDestroy {
   citaSeleccionada: Cita | null = null;
   animal: Animal | null = null;
@@ -22,16 +21,12 @@ export class Citas implements OnInit, OnDestroy {
 
   constructor(
     private citasService: CitasService, 
+    private animalService: ConexionApiAnimales,
     private router: Router,
-    private route: ActivatedRoute,
-     private authService: AuthService,
-    private conexionAnimales: ConexionApiAnimales,
-    private conexionCitas: ConexionApiCitas
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    console.log('🚀 Componente de citas inicializado');
-    this.verificarEstadoAutenticacion();
     this.subscription = this.route.params.subscribe(params => {
       if (params['id']) {
         const id = String(params['id']);
@@ -56,7 +51,7 @@ export class Citas implements OnInit, OnDestroy {
     
     this.cargandoAnimal = true;
  
-    this.conexionAnimales.getAnimalPorId(animalId).subscribe({
+    this.animalService.getAnimalPorId(animalId).subscribe({
       next: (animal) => {
         this.animal = animal;
         this.cargandoAnimal = false;
@@ -153,139 +148,4 @@ export class Citas implements OnInit, OnDestroy {
       this.router.navigate(['/citas']);
     }
   }
-
-
-   // Método para verificar el estado actual de la autenticación
-  verificarEstadoAutenticacion() {
-    console.log('🔍 === ESTADO ACTUAL DE AUTENTICACIÓN ===');
-    const token = localStorage.getItem('token');
-    console.log('📋 Token en localStorage:', token);
-    console.log('🔐 isLogged():', this.authService.isLogged());
-    console.log('========================================');
-  }
-
-  // 🧪 MÉTODO DE PRUEBA - EJECUTA ESTE PRIMERO
-  testAuthCompleto() {
-    console.clear();
-    console.log('🧪 === INICIANDO PRUEBA COMPLETA DE AUTENTICACIÓN ===');
-    
-    // 1. Limpiar token existente
-    console.log('1️⃣  LIMPIANDO TOKEN ANTERIOR...');
-    localStorage.removeItem('token');
-    console.log('✅ Token anterior eliminado');
-    
-    // 2. Verificar que no hay token
-    this.verificarEstadoAutenticacion();
-    
-    // 3. Intentar obtener animales SIN token (debería fallar)
-    console.log('2️⃣  PROBANDO PETICIÓN SIN TOKEN...');
-    this.conexionAnimales.obtenerAnimales().subscribe({
-      next: (animales) => {
-        console.log('❌ INESPERADO: Animales obtenidos sin token?', animales);
-      },
-      error: (err) => {
-        console.log('✅ ESPERADO: Error sin token:', err.status, err.message);
-      }
-    });
-
-    // 4. Hacer login
-    console.log('3️⃣  INICIANDO LOGIN...');
-    this.authService.login().subscribe({
-      next: (res) => {
-        console.log('✅ Login exitoso en subscribe');
-        console.log('📥 Respuesta completa en subscribe:', res);
-        
-        // 5. Verificar estado después del login
-        setTimeout(() => {
-          console.log('4️⃣  ESTADO DESPUÉS DEL LOGIN...');
-          this.verificarEstadoAutenticacion();
-          
-          // 6. Probar obtener animales CON token
-          console.log('5️⃣  PROBANDO PETICIÓN CON TOKEN...');
-          this.conexionAnimales.obtenerAnimales().subscribe({
-            next: (animales) => {
-              console.log('🎉 ÉXITO: Animales obtenidos correctamente');
-              console.log('📊 Cantidad de animales:', animales.length);
-              console.log('🐶 Primer animal:', animales[0]);
-            },
-            error: (err) => {
-              console.error('❌ ERROR obteniendo animales con token:', err);
-              console.error('   Status:', err.status);
-              console.error('   Message:', err.message);
-              
-              // Si falla, probar también con citas
-              this.probarCitas();
-            }
-          });
-        }, 500);
-      },
-      error: (err) => {
-        console.error('💥 ERROR en login:', err);
-        console.error('   Detalles:', err.message);
-      },
-      complete: () => {
-        console.log('✅ Flujo de login completado');
-      }
-    });
-  }
-
-  // Método para probar las citas específicamente
-  probarCitas() {
-    console.log('6️⃣  PROBANDO OBTENER CITAS...');
-    this.conexionCitas.obtenerCitas().subscribe({
-      next: (citas) => {
-        console.log('🎉 ÉXITO: Citas obtenidas correctamente');
-        console.log('📊 Cantidad de citas:', citas.length);
-        console.log('📅 Primera cita:', citas[0]);
-      },
-      error: (err) => {
-        console.error('❌ ERROR obteniendo citas:', err);
-        console.error('   Status:', err.status);
-        console.error('   Message:', err.message);
-      }
-    });
-  }
-
-  // Método rápido solo para probar el login
-  soloLogin() {
-    console.clear();
-    console.log('🔐 === SOLO LOGIN ===');
-    
-    this.authService.login().subscribe({
-      next: (res) => {
-        console.log('✅ Login exitoso');
-        console.log('📥 Respuesta:', res);
-        this.verificarEstadoAutenticacion();
-      },
-      error: (err) => {
-        console.error('❌ Error en login:', err);
-      }
-    });
-  }
-
-  // Método para probar solo la obtención de animales (después de login)
-  probarSoloAnimales() {
-    console.log('🐾 === PROBANDO OBTENER ANIMALES ===');
-    this.verificarEstadoAutenticacion();
-    
-    this.conexionAnimales.obtenerAnimales().subscribe({
-      next: (animales) => {
-        console.log('✅ Animales obtenidos:', animales.length);
-      },
-      error: (err) => {
-        console.error('❌ Error:', err);
-      }
-    });
-  }
-
-  // Método para limpiar todo
-  limpiarTodo() {
-    console.clear();
-    localStorage.removeItem('token');
-    console.log('🧹 Todo limpiado - Token eliminado');
-    this.verificarEstadoAutenticacion();
-  }
-
 }
-
-

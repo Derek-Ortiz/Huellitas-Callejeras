@@ -11,7 +11,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, withInterceptors } from '@angular/common/http';
 import { provideHttpClient } from '@angular/common/http';
-import { authInterceptor } from './modulos/citas/services/tokenInterceptor';
+
 
 
 @NgModule({
@@ -32,9 +32,7 @@ import { authInterceptor } from './modulos/citas/services/tokenInterceptor';
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
-    provideHttpClient(withInterceptors([
-    authInterceptor
-  ]))
+    
   ],
   bootstrap: [App]
 })
