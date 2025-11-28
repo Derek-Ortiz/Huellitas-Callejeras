@@ -18,11 +18,12 @@ export class ExpedienteEdit implements OnInit {
   initialPaciente: Paciente | null = null;
   selectedFiles: File[] = [];
   imagePreviews: string[] = [];
+  showCancelModal = false;
+  cancelMessage = '';
 
   constructor(private pacienteService: PacienteService, private router: Router) {}
 
   ngOnDestroy(): void {
-    // Liberar object URLs
     this.clearImagePreviews();
   }
 
@@ -76,7 +77,24 @@ export class ExpedienteEdit implements OnInit {
   }
 
   onFormCancel() {
+    this.cancelMessage = '¿Deseas deshacer estos cambios?';
+    this.showCancelModal = true;
+  }
+
+  onModalConfirm() {
+    this.showCancelModal = false;
     this.isEditing = false;
+    if (this.expForm) {
+      try {
+        this.expForm.model = this.initialPaciente ? { ...this.initialPaciente } : {};
+        this.expForm.missingFields = new Set();
+      } catch (e) {}
+    }
+    this.clearImagePreviews();
+  }
+
+  onModalCancel() {
+    this.showCancelModal = false;
   }
 
   goToView() {

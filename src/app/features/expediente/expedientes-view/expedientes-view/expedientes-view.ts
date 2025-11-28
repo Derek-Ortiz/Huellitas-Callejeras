@@ -18,6 +18,8 @@ export class ExpedientesView implements OnInit, OnDestroy {
 	initialPaciente: Paciente | null = null;
 	selectedFiles: File[] = [];
 	imagePreviews: string[] = [];
+	showCancelModal = false;
+	cancelMessage = '';
 
 	constructor(private pacienteService: PacienteService, private router: Router) {}
 
@@ -82,6 +84,22 @@ export class ExpedientesView implements OnInit, OnDestroy {
 			this.isEditing = false;
 		}, (err: unknown) => {
 		});
+	}
+
+
+	onFormCancel() {
+		this.cancelMessage = '¿Deseas cancelar la creación de este expediente?';
+		this.showCancelModal = true;
+	}
+
+	onModalConfirm() {
+		this.showCancelModal = false;
+		this.isEditing = false;
+		this.clearImagePreviews();
+	}
+
+	onModalCancel() {
+		this.showCancelModal = false;
 	}
 }
 

@@ -48,9 +48,12 @@
 		<app-expediente-form
 			[disabled]="!isEditing"
 			[initial]="initialPaciente"
-			(save)="onSave($event)">
+			(save)="onSave($event)"
+			(cancel)="onFormCancel()">
 		</app-expediente-form>
 	</div>
 </div>
+
+<app-modal-desicion *ngIf="showCancelModal" [message]="cancelMessage" (confirmed)="onModalConfirm()" (cancelled)="onModalCancel()"></app-modal-desicion>
 
 

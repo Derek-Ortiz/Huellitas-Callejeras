@@ -22,7 +22,6 @@
   <div class="profile-section">
     <div class="avatar-container">
       <div class="avatar">
-        <!-- Mantener el icono como antes; al hacer click (sólo en edición) se abre el selector -->
         <label (click)="onAvatarClick($event)" style="display:block; width:100%; height:100%;">
           <img
             [src]="imagePreviews.length ? imagePreviews[0] : '/assets/images/Agregar.svg'"
@@ -56,4 +55,6 @@
     </app-expediente-form>
   </div>
 </div>
+
+  <app-modal-desicion *ngIf="showCancelModal" [message]="cancelMessage" (confirmed)="onModalConfirm()" (cancelled)="onModalCancel()"></app-modal-desicion>
 
