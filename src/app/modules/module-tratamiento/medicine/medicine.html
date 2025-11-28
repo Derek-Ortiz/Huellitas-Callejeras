@@ -3,26 +3,7 @@
     <app-modal-medicine></app-modal-medicine>
 }
 <!-- <app-modal-medicine></app-modal-medicine> -->
-<div class="side">
-    
-    <div class="left-side">
+<div class="side">    
         <app-tratamiento></app-tratamiento>
-    </div>
-    <div class="right-side">
-        <!-- Lista de tarjetas de medicamentos -->
-        @for (num of nums; track num){
-          <app-medicine-card
-            [name]="'Paracetamol'"
-            [completionDate]="'Fecha de Conclusión'"
-            [dose]="'Dosis'"
-            [repetition]="'Repetición'"
-            (edit)="OpenModalMedicineEdit()">
-          </app-medicine-card>
-        }
-    </div>
-
-    
-
-
 </div>
 

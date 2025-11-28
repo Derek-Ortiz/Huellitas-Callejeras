@@ -2,7 +2,7 @@
     <app-modal-treatment></app-modal-treatment>
 }
 @if(modalMedicineOpen == true){
-    <app-modal-medicine (saved)="onMedicineSaved($event)"></app-modal-medicine>
+    <app-modal-medicine [initial]="currentInitial" (saved)="onMedicineSaved($event)"></app-modal-medicine>
 }
 
 <div class="main-Card">
@@ -43,6 +43,7 @@
                             [completionDate]="m.date"
                             [dose]="m.dose"
                             [repetition]="m.repetition"
+                            (edit)="openEditMedicineModal(i)"
                             (delete)="removeMedicine(i)">
                         </app-medicine-card>
                     </div>

@@ -22,6 +22,8 @@ export class Tratamiento {
   // medicines shown in this view
   medicines: Array<{ name: string; date: string; dose: string; repetition: string }> = [];
   deletingMedicineIndex: number | null = null;
+  editingMedicineIndex: number | null = null;
+  currentInitial?: { medicamento?: string; fecha?: string; dosis?: string; repeticion?: string };
 
   constructor(
     private modalSS: TreatmentModal,
@@ -87,13 +89,36 @@ export class Tratamiento {
   }
   // Handle modal save
   onMedicineSaved(payload: { medicamento: string; fecha: string; dosis: string; repeticion: string }) {
-    this.medicines.push({
-      name: payload.medicamento,
-      date: payload.fecha,
-      dose: payload.dosis,
-      repetition: payload.repeticion,
-    });
+    if(this.editingMedicineIndex !== null){
+      this.medicines[this.editingMedicineIndex] = {
+        name: payload.medicamento,
+        date: payload.fecha,
+        dose: payload.dosis,
+        repetition: payload.repeticion,
+      };
+    } else {
+      this.medicines.push({
+        name: payload.medicamento,
+        date: payload.fecha,
+        dose: payload.dosis,
+        repetition: payload.repeticion,
+      });
+    }
+    this.editingMedicineIndex = null;
+    this.currentInitial = undefined;
     this.modalMedicineOpen = false;
+  }
+
+  openEditMedicineModal(i: number){
+    const m = this.medicines[i];
+    this.editingMedicineIndex = i;
+    this.currentInitial = {
+      medicamento: m.name,
+      fecha: m.date,
+      dosis: m.dose,
+      repeticion: m.repetition,
+    };
+    this.modalMedicineOpen = true;
   }
 
   navigateHome(){
