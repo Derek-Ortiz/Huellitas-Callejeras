@@ -25,86 +25,354 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  justify-content: center;
-  gap: 85px;
+  justify-content: space-between;
+  gap: 30px;
+  width: 100%;
+  height: 100%;
 }
 
 .datos-cita {
   display: flex;
   flex-direction: column;
-  gap: 45px;
-  width: 100%;
+  gap: 25px;
+  width: 60%;
 }
 
-.datos-cita h2 {
+.seccion-titulo {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.seccion-titulo h2 {
   font-family: Inter;
-  font-size: 26px;
-  font-weight: 400;
+  font-size: 22px;
+  font-weight: 500;
   color: #FFF;
-}
-
-.datos-cita h3 {
-  font-family: Inter;
-  font-size: 20px;
-  font-weight: 400;
-  color: #FFF;
-}
-
-.fun-icons {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 225px;
-}
-
-.paciente {
+  margin: 0;
   text-align: center;
 }
 
-.paciente img {
+.seccion-datos {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.campo {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.campo strong {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFF;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.campo span {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 400;
+  color: #FFF;
+}
+
+.lado-derecho {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 35%;
+  height: 100%;
+}
+
+.seccion-paciente {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.seccion-paciente h3 {
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 500;
+  color: #FFF;
+  margin: 0;
+  text-align: center;
+}
+
+.tarjeta-paciente {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tarjeta-paciente:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.paciente-header {
+  display: flex;
+  justify-content: center;
+}
+
+.foto-paciente {
   width: 80px;
   height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.3);
 }
 
-button {
-  flex: 1;
-  padding: 12px 20px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
+.paciente-info {
+  text-align: center;
+}
+
+.paciente-info h4 {
+  font-family: Inter;
   font-size: 16px;
-  font-weight: bold;
-  transition: background-color 0.3s;
+  font-weight: 600;
+  color: #FFF;
+  margin: 0 0 5px 0;
 }
 
-.botones {
+.especie-raza {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.link-expediente {
+  font-family: Inter;
+  font-size: 12px;
+  font-weight: 500;
+  color: #FFF;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.link-expediente:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.paciente-no-encontrado {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
-  gap: 60px;
-  margin: 50px 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.icono-paciente {
+  font-size: 24px;
+}
+
+.paciente-no-encontrado h4 {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFF;
+  margin: 0;
+}
+
+.paciente-no-encontrado p {
+  font-family: Inter;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.botones-accion {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  margin-top: 0;
+}
+
+.btn-editar, .btn-eliminar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
   width: 100%;
 }
 
-.botones button:first-child {
-  background-color: #cc75c4ff;
+.btn-editar {
+  background: #dea8ca;
   color: white;
 }
 
-.botones button:first-child:hover {
-  background-color: #b55fa8;
+.btn-editar:hover {
+  background: #eacfe0;
+  transform: translateY(-1px);
 }
 
-.botones button:last-child {
-  background-color: #ddd;
+.btn-eliminar {
+  background: #dea8ca;
+  color: white;
+}
+
+.btn-eliminar:hover {
+  background: #eacfe0;
+  transform: translateY(-1px);
+}
+
+.btn-editar img, .btn-eliminar img {
+  width: 30px;
+  height: 30px;
+  filter: invert(1);
+}
+
+.botones-inferiores {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: auto;
+}
+
+.btn-cerrar {
+  background: #ddd;
+  color: #333;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 6px;
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-cerrar:hover {
+  background: #ccc;
+}
+
+.cargando-animal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cargando-animal p {
+  font-family: Inter;
+  font-size: 14px;
+  color: #FFF;
+  margin: 0;
+}
+
+.spinner {
+  width: 25px;
+  height: 25px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid #FFF;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal {
+  background: #fff;
+  padding: 40px;
+  width: 480px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+  font-family: Inter, sans-serif;
+}
+
+.modal p {
+  font-size: 22px;
+  margin-bottom: 35px;
   color: #333;
 }
 
-.botones button:last-child:hover {
-  background-color: #ccc;
+.modal-botones {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
 }
 
-img {
-  max-width: 60px;
-  max-height: 60px;
-  height: auto;
+.btn-cancelar {
+  background: #d77a7a;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 10px;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-cancelar:hover {
+  background: #c06060;
+}
+
+.btn-aceptar {
+  background: #7ccd7c;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 10px;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-aceptar:hover {
+  background: #6bbf6b;
 }

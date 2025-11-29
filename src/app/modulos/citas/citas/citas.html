@@ -6,74 +6,81 @@
 
     <div class="info-cont">
       <div class="datos-cita">
-        <h2>{{ citaSeleccionada.titulo }}</h2>
-        <div class="detalle-cita">
+        <div class="seccion-titulo">
+          <h2>{{ citaSeleccionada.titulo }}</h2>
+        </div>
+        
+        <div class="seccion-datos">
           <div class="campo">
-            <strong>Fecha y hora:</strong>
+            <strong>Fecha Cita</strong>
             <span>{{ formatearFecha(citaSeleccionada.fechaCita) }}</span>
           </div>
           <div class="campo">
-            <strong>Lugar:</strong>
+            <strong>Lugar</strong>
             <span>{{ citaSeleccionada.lugar }}</span>
           </div>
           <div class="campo">
-            <strong>Motivo:</strong>
+            <strong>Motivo</strong>
             <span>{{ citaSeleccionada.motivo }}</span>
           </div>
           <div class="campo">
-            <strong>Registrada el:</strong>
+            <strong>Fecha Realización</strong>
             <span>{{ getFechaRealizacionFormateada(citaSeleccionada.fechaRealizacion) }}</span>
           </div>
         </div>
       </div>
 
-      <div class="fun-icons">
-        <div class="edit" (click)="editarCita()" title="Editar cita">
-          <img src="/mdi_pen.png" alt="lapiz" style="cursor: pointer;">
-          <span>Editar</span>
+      <div class="lado-derecho">
+        <div class="botones-accion">
+          <button class="btn-editar" (click)="editarCita()">
+            <img src="/mdi_pen.png" alt="Editar">
+            
+          </button>
+          <button class="btn-eliminar" (click)="eliminarCita()">
+            <img src="/mdi_trash.png" alt="Eliminar">
+            
+          </button>
         </div>
-
-        <div class="animal-info">
-          <h3>Animal:</h3>
+       
+        <div class="seccion-paciente">
+          <h3>Paciente</h3>
           
-         
           <div *ngIf="cargandoAnimal" class="cargando-animal">
             <div class="spinner"></div>
             <p>Cargando información del animal...</p>
           </div>
 
-        
-          <div *ngIf="animal && !cargandoAnimal" class="animal-detalle" (click)="irAExpediente()">
-            <div class="animal-header">
+          <div *ngIf="animal && !cargandoAnimal" class="tarjeta-paciente">
+            <div class="paciente-header">
               <img 
                 [src]="animal.urlImage" 
                 [alt]="animal.nombre" 
-                class="foto-animal"
+                class="foto-paciente"
                 (error)="usarImagenPorDefecto($event)"
               >
-              <div class="animal-datos">
-                <h4>{{ animal.nombre }}</h4>
-                <p class="especie-raza">{{ animal.especie }} - {{ animal.raza }}</p>
-              </div>
             </div>
-            <div class="link-expediente">
-              <span> Ver expediente completo</span>
+            <div class="paciente-info">
+              <h4>{{ animal.nombre }}</h4>
+              <p class="especie-raza">{{ animal.especie }} - {{ animal.raza }}</p>
+            </div>
+            <div class="link-expediente" (click)="irAExpediente()">
+             
             </div>
           </div>
 
-          <div *ngIf="!animal && !cargandoAnimal" class="animal-no-encontrado">
-            <img src="" alt="animal no encontrado" class="foto-animal">
-            <div class="animal-datos">
+          <div *ngIf="!animal && !cargandoAnimal" class="paciente-no-encontrado">
+            <div class="icono-paciente">🐾</div>
+            <div class="paciente-info">
               <h4>Animal no encontrado</h4>
               <p>La información del animal no está disponible</p>
             </div>
           </div>
         </div>
+
       </div>
     </div>
 
-    <div class="botones">
-      <button class="btn-eliminar" (click)="eliminarCita()">Eliminar Cita</button>
+    <div class="botones-inferiores">
       <button class="btn-cerrar" (click)="volverAlCalendario()">Cerrar</button>
     </div>
   </div>
@@ -81,5 +88,15 @@
   <div class="citas-cont" *ngIf="!citaSeleccionada">
     <h2>Cita no encontrada</h2>
     <button (click)="volverAlCalendario()">Volver al calendario</button>
+  </div>
+
+  <div class="overlay" *ngIf="mostrarModalEliminar">
+    <div class="modal">
+      <p>¿Deseas eliminar esta cita?</p>
+      <div class="modal-botones">
+        <button class="btn-cancelar" (click)="cancelarEliminar()">cancelar</button>
+        <button class="btn-aceptar" (click)="confirmarEliminar()">aceptar</button>
+      </div>
+    </div>
   </div>
 </div>

@@ -17,6 +17,7 @@
           name="fecha"
           placeholder="Selecciona fecha y hora"
           required
+           [value]="cita.fechaCita" 
         />
         
         <label for="lugar">Lugar *</label>
@@ -26,7 +27,7 @@
         <input type="text" [(ngModel)]="cita.motivo" placeholder="Motivo" required>
       </div>
     
-      <div class="animal">
+     <div class="animal">
         <h3>Animal: *</h3>
         
         <div class="busqueda-animal">
@@ -73,7 +74,12 @@
           </div>
         </div>
 
-        <div *ngIf="animalSeleccionado" class="animal-seleccionado">
+        <div *ngIf="estaCargandoAnimalInicial()" class="loading">
+          <h3>Cargando animal asociado...</h3>
+          <div class="spinner"></div>
+        </div>
+
+        <div *ngIf="animalSeleccionado && !estaCargandoAnimalInicial()" class="animal-seleccionado">
           <div class="animal-info-clickeable" (click)="irAExpediente(animalSeleccionado!.id)">
             <img 
               [src]="animalSeleccionado.urlImage || ''" 
@@ -84,20 +90,19 @@
             <div class="detalles-animal">
               <h4>{{ animalSeleccionado.nombre }}</h4>
               <p>{{ animalSeleccionado.especie }} - {{ animalSeleccionado.raza }}</p>
-             
               <p class="link-expediente">Ver expediente completo</p>
             </div>
             <button type="button" class="btn-cambiar" (click)="deseleccionarPaciente($event)">✕</button>
           </div>
         </div>
 
-        <div *ngIf="!animalSeleccionado && !terminoBusqueda && !cargandoPacientes" class="estado-inicial">
+        <div *ngIf="!animalSeleccionado && !terminoBusqueda && !cargandoPacientes && !esEdicion" class="estado-inicial">
           <img src="mdi_dog.png" alt="animal" class="icono-animal">
           <p>Busca un animal para asociarlo a la cita</p>
         </div>
 
-        <div *ngIf="!animalSeleccionado && terminoBusqueda && !cargandoPacientes" class="mensaje-error">
-           Debes seleccionar un animal de la lista
+        <div *ngIf="!animalSeleccionado && terminoBusqueda && !cargandoPacientes && !estaCargandoAnimalInicial()" class="mensaje-error">
+          Debes seleccionar un animal de la lista
         </div>
       </div>
     </div>

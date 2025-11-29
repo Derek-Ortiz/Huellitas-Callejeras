@@ -42,7 +42,7 @@ export class CitasService {
   agregarCita(citaRequest: CitaRequest): void {
     this.loadingSource.next(true);
     this.errorSource.next(null);
-
+    console.log('Agregando cita:', citaRequest);
     this.conexionApiCitas.crearCita(citaRequest).subscribe({
       next: (nuevaCita) => {
         const citasActuales = this.citasSource.value;

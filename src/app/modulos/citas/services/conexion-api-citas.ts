@@ -13,10 +13,7 @@ export class ConexionApiCitas {
   constructor(private http: HttpClient) { 
   }
 
-
-
   obtenerCitas(): Observable<Cita[]> {
-
    
     return this.http.get<any>(this.apiUrl,{
       headers: {
@@ -29,9 +26,6 @@ export class ConexionApiCitas {
       
     );
   }
-
-
-
 
 crearCita(cita: CitaRequest): Observable<any> {
 
@@ -67,6 +61,7 @@ crearCita(cita: CitaRequest): Observable<any> {
   }
 
   actualizarCita(id: string, cita: Cita): Observable<Cita> {
+    console.log("Actualizando cita con ID:", id, "Datos:", cita);
     const url = `${this.apiUrl}/${id}`;
     return this.http.put<any>(url, cita, {
       headers: {

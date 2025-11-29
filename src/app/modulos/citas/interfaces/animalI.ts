@@ -8,5 +8,6 @@ export interface Animal {
     especie: string,
     estado: string,
     fechaSalida?: Date | null,
-    urlImage: string
+    urlImage: string,
+    rescatistaId: string
 }

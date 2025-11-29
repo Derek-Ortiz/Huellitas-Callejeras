@@ -5,7 +5,7 @@ export interface Cita {
   lugar: string;
   motivo: string;
   fechaRealizacion: string;
-  animalitoId: string;
+  animalId: string;
 }
 
 export interface CitaRequest {
@@ -14,7 +14,7 @@ export interface CitaRequest {
   titulo: string;
   motivo: string;
   lugar: string;
-  animalitoId: string;
+  animalId: string;
 }
 
 export interface ApiResponse<T> {

@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CitasService } from '../services/citaService';
 import { ConexionApiAnimales } from '../services/conexionApiAnimales';
 import { Cita, CitaRequest } from '../interfaces/citaI';
 import { Animal } from '../interfaces/animalI';
+import { FechaService } from '../services/fechasService';
 
 @Component({
   selector: 'app-citas-edit',
@@ -20,7 +21,7 @@ export class CitasEdit implements OnInit, OnDestroy {
     lugar: '',
     motivo: '',
     fechaRealizacion: '',
-    animalitoId: ''
+    animalId: ''
   };
 
   citaRequest: CitaRequest = {
@@ -29,7 +30,7 @@ export class CitasEdit implements OnInit, OnDestroy {
     lugar: '',
     motivo: '',
     fechaRealizacion: '',
-    animalitoId: ''
+    animalId: ''
   }
 
   terminoBusqueda = '';
@@ -38,6 +39,7 @@ export class CitasEdit implements OnInit, OnDestroy {
   animalSeleccionado: Animal | null = null;
   mostrarLista = false;
   cargandoPacientes = false;
+  cargandoAnimalInicial = false; 
 
   esEdicion = false;
   private subscriptions: Subscription[] = [];
@@ -46,12 +48,12 @@ export class CitasEdit implements OnInit, OnDestroy {
     private citasService: CitasService, 
     private animalService: ConexionApiAnimales,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private fechaService: FechaService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.cargarTodosLosPacientes();
-    
     const routeSub = this.route.params.subscribe(params => {
       if (params['id']) {
         const id = String(params['id']);
@@ -59,17 +61,18 @@ export class CitasEdit implements OnInit, OnDestroy {
         if (cita) {
           this.cita = { ...cita };
           this.esEdicion = true;
+      
+          this.cita.fechaCita = this.fechaService.fechaBDaInputLocal(cita.fechaCita);
           
-          if (this.cita.animalitoId) {
-            this.cargarPacientePorId(this.cita.animalitoId);
-          }
+          this.cargarTodosLosPacientes(cita.animalId);
         }
       }
     });
 
     const fechaSub = this.citasService.fechaSeleccionada$.subscribe(fecha => {
       if (fecha && !this.esEdicion) {
-        this.cita.fechaCita = this.formatearFechaParaInput(fecha);
+        this.cita.fechaCita = this.fechaService.fechaBDaInputLocal(fecha);
+        this.cargarTodosLosPacientes();
       }
     });
 
@@ -80,24 +83,56 @@ export class CitasEdit implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  cargarTodosLosPacientes(): void {
+  cargarTodosLosPacientes(animalId?: string): void {
     this.cargandoPacientes = true;
     this.animalService.obtenerAnimales().subscribe({
       next: (pacientes) => {
         this.todosLosPacientes = pacientes;
         this.cargandoPacientes = false;
+        console.log('animales cargados:', pacientes.length);
+        
+        if (animalId && this.esEdicion) {
+          this.cargarAnimalSeleccionado(animalId);
+        }
       },
       error: (error) => {
+        console.error('Error cargando animales:', error);
         this.cargandoPacientes = false;
       }
     });
   }
 
-  cargarPacientePorId(animalId: string): void {
+  cargarAnimalSeleccionado(animalId: string): void {
     const animal = this.todosLosPacientes.find(p => p.id === animalId);
+    
     if (animal) {
       this.animalSeleccionado = animal;
+      this.terminoBusqueda = animal.nombre;
+      this.cdr.detectChanges();
+    } else {
+      this.cargandoAnimalInicial = true;
+      this.cdr.detectChanges();
+      
+      this.animalService.getAnimalPorId(animalId).subscribe({
+        next: (animalIndividual) => {
+          this.animalSeleccionado = animalIndividual;
+          this.terminoBusqueda = animalIndividual.nombre;
+          this.cargandoAnimalInicial = false;
+          
+          this.todosLosPacientes.push(animalIndividual);
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('❌ Error cargando animal individual:', error);
+          this.cargandoAnimalInicial = false;
+          this.cdr.detectChanges();
+        }
+      });
     }
+  }
+
+  estaCargandoAnimalInicial(): boolean {
+    return this.cargandoAnimalInicial;
   }
 
   filtrarPacientes(): void {
@@ -116,7 +151,7 @@ export class CitasEdit implements OnInit, OnDestroy {
 
   seleccionarAnimal(animal: Animal): void {
     this.animalSeleccionado = animal;
-    this.cita.animalitoId = animal.id;
+    this.cita.animalId = animal.id;
     this.terminoBusqueda = animal.nombre;
     this.animalesFiltrados = [];
     this.mostrarLista = false;
@@ -127,7 +162,7 @@ export class CitasEdit implements OnInit, OnDestroy {
       event.stopPropagation();
     }
     this.animalSeleccionado = null;
-    this.cita.animalitoId = '';
+    this.cita.animalId = '';
     this.terminoBusqueda = '';
   }
 
@@ -145,27 +180,6 @@ export class CitasEdit implements OnInit, OnDestroy {
     event.target.src = '';
   }
 
-  private formatearFechaParaInput(fecha: string): string {
-    if (!fecha) return '';
-    
-    try {
-      const fechaObj = new Date(fecha);
-      if (isNaN(fechaObj.getTime())) {
-        return '';
-      }
-      const año = fechaObj.getFullYear();
-      const mes = String(fechaObj.getMonth() + 1).padStart(2, '0');
-      const dia = String(fechaObj.getDate()).padStart(2, '0');
-      const horas = String(fechaObj.getHours()).padStart(2, '0');
-      const minutos = String(fechaObj.getMinutes()).padStart(2, '0');
-      const segundos = String(fechaObj.getSeconds()).padStart(2, '0');
-      
-      return `${año}-${mes}-${dia}T${horas}:${minutos}:${segundos}`;
-    } catch (error) {
-      return fecha;
-    }
-  }
-
   guardar(): void {
     if (!this.validarCita()) {
       alert('Por favor completa todos los campos obligatorios');
@@ -181,14 +195,16 @@ export class CitasEdit implements OnInit, OnDestroy {
 
     const citaParaEnviar: CitaRequest = {
       titulo: this.cita.titulo,
-      fechaCita: this.formatearFechaCita(this.cita.fechaCita),
+      fechaCita: this.fechaService.inputLocalAFechaBD(this.cita.fechaCita),
       lugar: this.cita.lugar,
       motivo: this.cita.motivo,
       fechaRealizacion: this.cita.fechaRealizacion,
-      animalitoId: this.cita.animalitoId
+      animalId: this.cita.animalId
     };
 
+
     if (this.esEdicion && this.cita.id) {
+      this.cita.fechaCita = this.fechaService.inputLocalAFechaBD(this.cita.fechaCita);
       this.citasService.actualizarCita(this.cita);
     } else {
       this.citasService.agregarCita(citaParaEnviar);
@@ -209,7 +225,7 @@ export class CitasEdit implements OnInit, OnDestroy {
       this.cita.fechaCita && 
       this.cita.lugar.trim() && 
       this.cita.motivo.trim() &&
-      this.cita.animalitoId
+      this.cita.animalId
     );
   }
 
@@ -218,43 +234,4 @@ export class CitasEdit implements OnInit, OnDestroy {
     this.cita.fechaRealizacion = ahora.toISOString();
   }
 
-  private formatearFechaCita(fechaInput: string): string {
-    if (!fechaInput) return '';
-    
-    try {
-      const fecha = new Date(fechaInput);
-      
-      if (isNaN(fecha.getTime())) {
-        return fechaInput;
-      }
-      
-      const fechaISO = fecha.toISOString();
-      return fechaISO;
-    } catch (error) {
-      return fechaInput;
-    }
-  }
-
-  getFechaRealizacionFormateada(): string {
-    if (!this.cita.fechaRealizacion) return '';
-    
-    const partes = this.cita.fechaRealizacion.split(' ');
-    const fechaParte = partes[0];
-    const horaParte = partes[1] || '';
-    
-    const fecha = new Date(fechaParte + 'T00:00:00Z');
-    const opciones: Intl.DateTimeFormatOptions = { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    };
-    
-    const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
-    
-    if (horaParte) {
-      return `${fechaFormateada} a las ${horaParte}`;
-    }
-    
-    return fechaFormateada;
-  }
 }
