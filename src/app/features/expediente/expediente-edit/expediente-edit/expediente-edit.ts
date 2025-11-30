@@ -98,7 +98,7 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
         };
 
         const sexoRaw = toStr((animal as any)['sexo']).toLowerCase();
-        const sexoNorm = sexoRaw.includes('m') ? 'macho' : (sexoRaw.includes('h') ? 'hembra' : '');
+        const sexoNorm = sexoRaw.includes('m') ? 'Macho' : (sexoRaw.includes('h') ? 'Hembra' : '');
 
         const merged = { ...animal, ...rescate };
 

@@ -8,9 +8,9 @@ export interface Animal {
 	nombre: string;
 	especie: string;
 	raza: string;
-	edad: string;
+	edad: number;
 	sexo: string;
-	peso: string;
+	peso: number;
 	fechaSalida?: string;
 	estado: 'En adopción' | 'Adoptado' | 'En recuperación';
 	urlImage: string;
@@ -40,12 +40,12 @@ export interface Animal {
 
 export interface AnimalRequest {
 	nombre: string;
-	peso: string;
+	peso: number;
 	especie: string;
 	estado: string;
 	raza: string;
 	fechaSalida?: string;
-	edad: string;
+	edad: number;
 	sexo: string;
 	rescatistaId: string;
 }
@@ -53,6 +53,7 @@ export interface AnimalRequest {
 export interface AnimalRescateRequest {
 	animal: AnimalRequest;
 	rescate: RescateRequest;
+	imagenFile?: File;
 }
 
 export interface RescateResponse {
@@ -102,7 +103,7 @@ export class ConexionApiAnimales {
 		return this.http.get<ApiResponse<any>>(url).pipe(
 			map(response => {
 				console.log('✅ Animal encontrado (raw):', response.data);
-				// Si la API devuelve { data: { animal, rescate } } unimos ambos objetos
+				
 				const data = response.data;
 				if (!data) return null;
 				if (data.animal) {
@@ -112,17 +113,14 @@ export class ConexionApiAnimales {
 					console.log('🔎 getAnimalPorId merged animal:', merged);
 					return merged;
 				}
-				// Si data ya es el animal plano
+			
 				return data as Animal;
 			}),
 			catchError(this.handleError('getAnimalPorId'))
 		);
 	}
 
-	/**
-	 * Sube una imagen asociada a un animal (asume endpoint POST {apiUrl}/{id}/upload)
-	 * El backend debe aceptar multipart/form-data con campo `file`.
-	 */
+
 	uploadImage(id: string, file: File): Observable<boolean> {
 		const url = `${this.apiUrl}/${encodeURIComponent(id)}/upload`;
 		const fd = new FormData();
@@ -196,25 +194,45 @@ export class ConexionApiAnimales {
 		);
 	}
 
-	/** Enviar multipart/form-data para crear con rescate y archivo de imagen */
+	private normalizarSexoPorContenido(sexo: string): string {
+    if (!sexo) return 'Macho'; 
+    
+    
+    const sexoLower = sexo.toLowerCase();
+  
+    if (sexoLower.includes('m')) {
+        return 'Macho';
+    }
+   
+    return 'Hembra';
+}
+
 	crearConRescateFormData(payload: AnimalRescateRequest, file?: File): Observable<any | null> {
     const url = `${this.apiUrl}/crear-con-rescate`;
     const fd = new FormData();
 
-    // 1. Obtener y loguear el ID del rescatista
+
     const localIdRescatista = localStorage.getItem('id_rescatista');
+	const sexoNormalizado = this.normalizarSexoPorContenido(payload.animal.sexo);
     
-    // Asignación de rescatistaId (prioridad: payload > localStorage > undefined)
-    payload.animal.rescatistaId = payload.animal.rescatistaId ?? localIdRescatista ?? undefined;
+   
+    payload.animal.rescatistaId = localIdRescatista || 'no encontrado';
     
     console.group('🛠️ Debugging: crearConRescateFormData');
     console.log('🔗 URL de la solicitud:', url);
     console.log('ℹ️ rescatistaId obtenido (localStorage):', localIdRescatista);
     console.log('✅ rescatistaId FINAL asignado a payload.animal:', payload.animal.rescatistaId);
+
+	 const animalData = {
+        ...payload.animal,
+        peso: Number(payload.animal.peso),    
+        edad: Number(payload.animal.edad),
+		sexo: sexoNormalizado    
+    };
     
-    // 2. Adjuntar los datos al FormData y loguear los JSON
-    const animalJson = JSON.stringify(payload.animal, null, 2); // Formato JSON legible
-    const rescateJson = JSON.stringify(payload.rescate, null, 2); // Formato JSON legible
+    
+    const animalJson = JSON.stringify(animalData, null, 2); 
+    const rescateJson = JSON.stringify(payload.rescate, null, 2); 
 
     fd.append('animal', animalJson);
     fd.append('rescate', rescateJson);
@@ -229,7 +247,7 @@ export class ConexionApiAnimales {
         console.log('❌ No se adjuntó archivo de imagen (file es null o undefined).');
     }
 
-    // 3. LOG FINAL: Listar todas las entradas de FormData para verificación
+   
     console.groupCollapsed('📦 Entradas completas de FormData');
     try {
         for (const entry of fd.entries()) {
@@ -237,24 +255,23 @@ export class ConexionApiAnimales {
             if (value instanceof File) {
                 console.log(`FormData entry -> **${key}**: File(name=${value.name}, type=${value.type}, size=${value.size})`);
             } else {
-                // Para las entradas 'animal' y 'rescate', mostrar la clave y el contenido JSON como texto
+               
                 console.log(`FormData entry -> **${key}**:`, value); 
             }
         }
     } catch (e) {
         console.warn('⚠️ No se pudo listar FormData entries (Error del navegador o polyfill faltante):', e);
     }
-    console.groupEnd(); // Cierra 'Entradas completas de FormData'
-    console.groupEnd(); // Cierra 'Debugging: crearConRescateFormData'
+    console.groupEnd(); 
+    console.groupEnd(); 
 
-    // 4. Ejecutar la solicitud HTTP
+    
     return this.http.post<ApiResponse<any>>(url, fd).pipe(
         map(res => res.data ?? {}),
         catchError(this.handleError('crearConRescateFormData'))
     );
 }
 
-	/** Enviar multipart/form-data para actualizar con rescate y archivo de imagen */
 	actualizarConRescateFormData(id: string, payload: AnimalRescateRequest, file?: File): Observable<any | null> {
 		const url = `${this.apiUrl}/${encodeURIComponent(id)}/actualizar-con-rescate`;
 		const fd = new FormData();

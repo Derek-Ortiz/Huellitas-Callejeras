@@ -24,21 +24,27 @@ export class SesionContent implements OnInit {
 
 login() {
     console.log('[SesionContent] login invoked, nombre=', this.nombre);
-    // El AuthService.login ahora devuelve Observable<{ id: number, token: string } | null>
+    console.log('[SesionContent] password=', this.password);
+    
     this.auth.login(this.nombre, this.password).subscribe({
-
       next: result => {
-        // 🎯 MODIFICACIÓN CLAVE:
-        // Navegará SOLO si result no es null (es decir, si contiene el ID Y el Token).
-        if (result) { // result es { id: number, token: string }
-          this.router.navigate(['/expediente/editar']);
-        } else { // result es null (token o id no se encontraron/fueron incorrectos)
+        console.log('[SesionContent] Resultado del login:', result);
+        
+        if (result) {
+          console.log('[SesionContent] Navegando a /expediente/editar');
+          this.router.navigate(['/expediente/view']).then(success => {
+            console.log('[SesionContent] Navegación exitosa:', success);
+          }).catch(error => {
+            console.error('[SesionContent] Error en navegación:', error);
+          });
+        } else {
+          console.log('[SesionContent] Login fallido - resultado null');
           this.invalid = true;
         }
       },
       error: err => {
-        console.warn('Error en login:', err);
-        this.invalid = true; // Manejo de error de la API (ej: error 401, 500, etc.)
+        console.error('[SesionContent] Error en login:', err);
+        this.invalid = true;
       }
     });
 }

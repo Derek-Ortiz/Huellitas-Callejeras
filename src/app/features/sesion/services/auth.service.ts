@@ -36,14 +36,19 @@ export class AuthService {
    * localStorage bajo la clave `auth_token`.
    * Devuelve un Observable<string|null> con el token (o null si no viene).
    */
-login(nombre: string, contrasena: string): Observable<{ id: number, token: string } | null> {
+login(nombre: string, contrasena: string): Observable<{ id: string, token: string } | null> {
     console.log("nombre: ", nombre);
     console.log("password: ", contrasena);
     const payload: RescatistaLogin = { nombre, contrasena };
 
     return this.api.login(payload).pipe(
       map((res: any) => {
-        if (!res) return null;
+        console.log('Respuesta completa del servidor:', res);
+        
+        if (!res) {
+          console.log('Respuesta vacía o null');
+          return null;
+        }
 
         // 1. Intentar extraer el token
         const token =
@@ -54,17 +59,19 @@ login(nombre: string, contrasena: string): Observable<{ id: number, token: strin
           res.access_token ??
           null;
         
-        // 2. Intentar extraer el ID del rescatista desde la ubicación deseada
-        // NOTA: Es importante que esta ruta (res.data?.rescatista?.id) sea correcta
-        const rescatistaId = res.data?.rescatista?.id;
+        console.log('Token extraído:', token);
+        
+        // 2. Intentar extraer el ID del rescatista
+        const rescatistaId = res.rescatista?.id;
+        console.log('ID rescatista extraído:', rescatistaId);
 
-        // 🎯 MODIFICACIÓN CLAVE EN LA LÓGICA DE RETORNO:
-        // Retornamos el objeto { id, token } SOLO si ambos existen.
+        // Verificar si ambos existen
         if (token && rescatistaId !== undefined) {
+          console.log('Login exitoso - token e ID encontrados');
           return { id: rescatistaId, token: token };
         }
 
-        // Si no se encuentra el token o el ID, retornamos null, indicando fallo en la autenticación/datos.
+        console.log('Faltan token o ID en la respuesta');
         return null;
       }),
       tap(result => {
