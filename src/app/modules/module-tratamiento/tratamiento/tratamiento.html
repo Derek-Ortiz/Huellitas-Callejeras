@@ -8,9 +8,9 @@
 <div class="main-Card">
     <div class="treatments-cards">
                 <app-back-button (clickBack)="navigateHome()"></app-back-button>
-                @for(num of nums; track num){
-                    <app-treatment-chip [label]="'Tratamiento ' + num" (click)="onChipClick(num)" (delete)="onChipDelete(num)"></app-treatment-chip>
-        }
+                @for(t of tratamientos; track t.id; let i = $index){
+                    <app-treatment-chip [label]="'Tratamiento (' + (i + 1) + ')'" (click)="onChipClick(t.id)" (delete)="onChipDelete(t.id)"></app-treatment-chip>
+                }
                 <div class="add-treatment" (click)="goToAddTreatment()">
           <a>+</a>
         </div>
@@ -19,11 +19,14 @@
             <!-- Left: treatment info card with plus -->
             <div class="left-side">
                 <div class="treatment-title">
-                        <h1>Tratamiento {{ selectedTreatment || '' }}</h1>
+                        <h1 *ngIf="selectedTreatmentId === undefined || selectedTreatmentId === null">Tratamiento</h1>
+                        <ng-container *ngIf="selectedTratamiento">
+                            <h1>Tratamiento ({{ getSelectedIndex() }})</h1>
+                        </ng-container>
                 </div>
                 <div class="info-card-treat">
                     <div class="info-top">
-                        <p id="start-date">Fecha de inicio {{ startDate }}</p>
+                        <p id="start-date">Fecha de inicio {{ selectedTratamiento?.fechaInicio }}</p>
                         <img src="/docs.png" alt="Docs icon" class="docs">
                     </div>
                     <div class="info-buttom">
@@ -36,13 +39,13 @@
             </div>
             <!-- Right: medicine cards aligned with others -->
             <div class="right-side">
-                @for (m of medicines; track $index; let i = $index) {
+                @for (m of selectedMedicamentos; track $index; let i = $index) {
                     <div class="medicine-list-item">
                         <app-medicine-card
-                            [name]="m.name"
-                            [completionDate]="m.date"
-                            [dose]="m.dose"
-                            [repetition]="m.repetition"
+                            [name]="m.nombre + ' (' + m.idShort + ')'"
+                            [completionDate]="m.fechaConclusion || ''"
+                            [dose]="m.dosis || ''"
+                            [repetition]="m.repeticion || ''"
                             (edit)="openEditMedicineModal(i)"
                             (delete)="removeMedicine(i)">
                         </app-medicine-card>
@@ -67,6 +70,4 @@
         message="¿Deseas eliminar este medicamento?">
     </app-confirm-dialog>
 }
-@if(loading){
-    <div class="overlay loading"><div class="spinner"></div></div>
-}
+

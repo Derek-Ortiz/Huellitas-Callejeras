@@ -18,13 +18,11 @@ const routes: Routes = [
   },
   {
     path: 'tratamiento',
-    component: AddTreatment,  // Ruta /medicine/tratamiento
-    children: [
-      {
-        path: 'add-treatment',
-        component: AddTreatment  // Ruta /medicine/tratamiento/add-treatment
-      }
-    ]
+    component: Tratamiento, 
+  },
+  {
+    path: 'tratamiento/add-treatment',
+    component: AddTreatment  
   }
 ];
 

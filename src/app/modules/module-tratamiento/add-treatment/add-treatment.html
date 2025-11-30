@@ -18,7 +18,6 @@
             <div class="left-side">
                 <div class="treatment-title">
                     <h1>Tratamiento</h1>
-                    <input type="text" class="request" placeholder="Nombre del tratamiento" [ngClass]="{invalid: submitted && form.controls['name'].invalid}" formControlName="name">
                 </div>
                 <div class="info-card-treat">
                     <div class="info-top">
@@ -28,7 +27,7 @@
                         </div>
                         <div class="treatment-request">
                             <img src="/docs.png" alt="Docs icon" class="docs">
-                            <input type="file" class="requests" formControlName="prescriptionFile">
+                            <input type="file" class="requests" (change)="onFileSelected($event)">
                         </div>
                     </div>
                     <div class="info-buttom">

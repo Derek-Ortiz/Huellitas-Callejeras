@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { TreatmentModal } from '../services/treatment-modal';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { TreatmentStore } from '../services/treatment-store';
+import { ConexionApiTratamientos } from '../services/comexion-api-tratamiento';
+import { CurrentAnimalStub } from '../services/current-animal.stub';
 import { Router } from '@angular/router';
 import { MedicineModalSwitch } from '../services/medicine-modal';
 
@@ -12,52 +14,50 @@ import { MedicineModalSwitch } from '../services/medicine-modal';
   styleUrl: './add-treatment.css',
 })
 export class AddTreatment {
-  modalTreatmentEditOpen: boolean = false;
-  modalMedicineOpen: boolean = false;
+  modalTreatmentEditOpen = false;
+  modalMedicineOpen = false;
   showDeleteConfirm = false;
-  nums: number[] = [1, 2, 3, 4, 5];
+  nums: number[] = [];
   form: FormGroup;
   submitted = false;
   get medicines(): FormArray { return this.form.get('medicines') as FormArray; }
-  // track edit state
   editingIndex: number | null = null;
   currentInitial?: { medicamento?: string; fecha?: string; dosis?: string; repeticion?: string };
   deletingIndex: number | null = null;
+  selectedFile: File | null = null;
 
   constructor(
     private modalSS: TreatmentModal,
     private fb: FormBuilder,
     private store: TreatmentStore,
     private router: Router,
+    private api: ConexionApiTratamientos,
+    private currentAnimal: CurrentAnimalStub,
     private medicineSwitch: MedicineModalSwitch,
   ) {
     this.form = this.fb.group({
-      name: ['', Validators.required],
       startDate: ['', Validators.required],
-      prescriptionFile: [''], // optional
+      prescriptionFile: [''],
       medicines: this.fb.array([]),
     });
   }
+
   ngOnInit() {
-    this.modalSS.$modalTreatment.subscribe((valor) => {
-      this.modalTreatmentEditOpen = valor;
-    });
-    // close/open medicine modal via shared switch
-    this.medicineSwitch.$modalMedicine.subscribe((valor) => {
-      this.modalMedicineOpen = !!valor;
+    this.modalSS.$modalTreatment.subscribe(v => this.modalTreatmentEditOpen = v);
+    this.medicineSwitch.$modalMedicine.subscribe(v => this.modalMedicineOpen = !!v);
+    const animalId = this.currentAnimal.getAnimalId();
+    this.api.obtenerTratamientosPorAnimal(animalId).subscribe({
+      next: ts => { this.nums = Array.from({ length: ts.length }, (_, i) => i + 1); },
+      error: err => console.error('[AddTreatment] Error al cargar tratamientos:', err)
     });
   }
-  OpenModalTreatmentEdit1() {
-      this.modalTreatmentEditOpen = !this.modalTreatmentEditOpen; 
-    }
-  // Open modal to add
+
   openAddMedicineModal() {
     this.editingIndex = null;
     this.currentInitial = undefined;
     this.modalMedicineOpen = true;
   }
 
-  // Open modal to edit
   openEditMedicineModal(index: number) {
     this.editingIndex = index;
     const group = this.medicines.at(index) as FormGroup;
@@ -71,7 +71,6 @@ export class AddTreatment {
     this.modalMedicineOpen = true;
   }
 
-  // Handle modal save
   onMedicineSaved(payload: { medicamento: string; fecha: string; dosis: string; repeticion: string }) {
     const data = {
       name: payload.medicamento,
@@ -82,12 +81,7 @@ export class AddTreatment {
     if (this.editingIndex !== null) {
       (this.medicines.at(this.editingIndex) as FormGroup).patchValue(data);
     } else {
-      this.medicines.push(this.fb.group({
-        name: [data.name, Validators.required],
-        date: [data.date, Validators.required],
-        dose: [data.dose, Validators.required],
-        repetition: [data.repetition, Validators.required],
-      }));
+      this.medicines.push(this.fb.group(data));
     }
     this.editingIndex = null;
     this.currentInitial = undefined;
@@ -112,15 +106,68 @@ export class AddTreatment {
     this.showDeleteConfirm = false;
   }
 
+  onFileSelected(evt: Event) {
+    const input = evt.target as HTMLInputElement;
+    this.selectedFile = (input.files && input.files[0]) ? input.files[0] : null;
+  }
+
+  private toIso(dateStr: string): string {
+    if (!dateStr) return new Date().toISOString();
+    return dateStr.includes('T') ? dateStr : dateStr + 'T00:00:00Z';
+  }
+
   save() {
     this.submitted = true;
     if (this.form.invalid) { return; }
-    const { name, startDate, prescriptionFile, medicines } = this.form.value;
-    this.store.addTop({ name, startDate, prescriptionFile, medicines });
-    this.router.navigate(['/medicine','tratamiento']);
-  }
-   navigateHome(){
-    this.router.navigateByUrl('/');
+    const { startDate } = this.form.value as { startDate: string };
+    const animalId = this.currentAnimal.getAnimalId();
+    const medsControls = this.medicines.controls.map(fg => fg.value as any);
+    if (medsControls.length === 0) {
+      console.error('[AddTreatment] Debes agregar al menos un medicamento antes de guardar');
+      return;
+    }
+    console.log('[AddTreatment] Creando medicamentos individualmente en /medicamentos con nombres:', medsControls.map(m => m.name));
+    const runSequential = async () => {
+      try {
+        const createdIds: string[] = [];
+        for (const m of medsControls) {
+          const created = await this.api.crearMedicamento({ nombre: m.name } as any).toPromise();
+          const id = (created as any)?.id;
+          console.log('[AddTreatment] Medicamento creado:', created, 'UUID:', id);
+          if (!id) { throw new Error('No se recibió UUID del medicamento'); }
+          createdIds.push(id);
+        }
+        const formReq = {
+          animalId,
+          fechaInicio: this.toIso(startDate),
+          medicamentos: medsControls.map((m, idx) => ({
+            medicamentoId: createdIds[idx],
+            dosis: parseFloat(m.dose) || 0.0,
+            repeticion: parseFloat(m.repetition) || 0.0,
+            fechaConclusion: this.toIso(m.date || startDate),
+          })),
+        };
+        console.log('[AddTreatment] Enviando FormData a /tratamientos JSON:', JSON.stringify(formReq, null, 2), 'Archivo:', this.selectedFile);
+        this.api.crearTratamientoFormData(formReq as any, this.selectedFile || undefined).subscribe({
+          next: (res) => {
+            console.log('[AddTreatment] Tratamiento creado (form-data):', res);
+           
+            this.api.obtenerTratamientosPorAnimal(animalId).subscribe({
+              next: ts => { this.nums = Array.from({ length: ts.length }, (_, i) => i + 1); },
+              error: e => console.error('[AddTreatment] Error refrescando lista tratamientos tras crear:', e)
+            });
+          },
+          error: (err) => {
+            console.error('[AddTreatment] Error al crear tratamiento (form-data):', err, (err as any)?.error);
+            this.store.addTop({ name: 'Tratamiento', startDate, prescriptionFile: undefined, medicines: [] });
+          }
+        });
+      } catch (e) {
+        console.error('[AddTreatment] Error creando medicamentos secuencialmente:', e);
+      }
+    };
+    runSequential();
   }
 
+  navigateHome() { this.router.navigateByUrl('/'); }
 }
