@@ -43,12 +43,18 @@ export class ExpedienteForm implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['initial']) {
       if (this.initial) {
-        
         this.model = { ...this.initial };
+        if (!this.model.fechaIngreso) {
+          this.model.fechaIngreso = this.formatDate(new Date());
+        }
       } else {
-        this.model = {};
+        this.model = { fechaIngreso: this.formatDate(new Date()) };
       }
     }
+  }
+
+  private formatDate(date: Date): string {
+    return date.toISOString().split('T')[0];
   }
 
   private getMissingFieldKeys(): string[] {
