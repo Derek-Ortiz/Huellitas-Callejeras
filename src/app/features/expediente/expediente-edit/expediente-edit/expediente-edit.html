@@ -37,7 +37,7 @@
     <div class="profile-info">
       <h1 class="profile-title">Expediente de paciente</h1>
       <app-status-buttons
-        [estado]="pacienteEstado"
+        [estado]="animalEstado"
         (estadoChange)="onEstadoChange($event)"
         (tratamientos)="onTratamientos()">
       </app-status-buttons>
@@ -49,7 +49,7 @@
     <app-expediente-form
       #expForm
       [disabled]="!isEditing"
-      [initial]="initialPaciente"
+      [initial]="initialAnimal"
       (save)="onSave($event)"
       (cancel)="onFormCancel()">
     </app-expediente-form>

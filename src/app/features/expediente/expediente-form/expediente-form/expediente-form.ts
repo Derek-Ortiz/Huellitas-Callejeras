@@ -1,6 +1,5 @@
-
 import { Component, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Paciente } from '../../interfaces/paciente.interface';
+import { Animal, RescateResponse } from '../../interfaces/paciente.interface';
 
 @Component({
   selector: 'app-expediente-form',
@@ -12,13 +11,14 @@ export class ExpedienteForm implements OnChanges {
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
   @Input() disabled = true; 
-  @Input() initial: Paciente | null = null;
+  @Input() initial: any = null; 
 
   model: any = {};
   missingFields: Set<string> = new Set();
 
   get computedDisabled(): boolean {
     if (this.disabled) return true;
+    
     const required = [
       'nombre',
       'especie',
@@ -26,9 +26,9 @@ export class ExpedienteForm implements OnChanges {
       'edad',
       'sexo',
       'peso',
-      'fechaIngreso',
       'lugar',
       'descripcion'
+     
     ];
 
     for (const key of required) {
@@ -42,7 +42,12 @@ export class ExpedienteForm implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['initial']) {
-      this.model = this.initial ? { ...this.initial } : {};
+      if (this.initial) {
+        
+        this.model = { ...this.initial };
+      } else {
+        this.model = {};
+      }
     }
   }
 
@@ -54,9 +59,9 @@ export class ExpedienteForm implements OnChanges {
       'edad',
       'sexo',
       'peso',
-      'fechaIngreso',
       'lugar',
       'descripcion'
+     
     ];
 
     const missing: string[] = [];
@@ -78,6 +83,11 @@ export class ExpedienteForm implements OnChanges {
   }
 
   onFieldChange(key: string, value: any) {
+    if (!this.model) {
+      this.model = {};
+    }
+    this.model[key] = value;
+    
     if (this.missingFields.has(key)) {
       const empty = value === null || value === undefined || (typeof value === 'string' && value.trim() === '');
       if (!empty) {
@@ -87,14 +97,28 @@ export class ExpedienteForm implements OnChanges {
   }
 
   onSubmit() {
-    const missingKeys = this.getMissingFieldKeys();
-    if (missingKeys.length > 0) {
-      this.missingFields = new Set(missingKeys);
-      return;
-    }
+  const missingKeys = this.getMissingFieldKeys();
+  if (missingKeys.length > 0) {
+    this.missingFields = new Set(missingKeys);
+    return;
+  }
 
+  
+  if (this.model) {
+    const processedModel = { ...this.model }; 
+   
+    if (processedModel.peso !== undefined && processedModel.peso !== null) {
+      processedModel.peso = Number(processedModel.peso);
+    }
+    if (processedModel.edad !== undefined && processedModel.edad !== null) {
+      processedModel.edad = Number(processedModel.edad);
+    }
+    
+    this.save.emit(processedModel);
+  } else {
     this.save.emit(this.model);
   }
+}
 
   onCancel() {
     this.cancel.emit();
