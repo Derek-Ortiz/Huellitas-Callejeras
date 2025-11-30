@@ -40,20 +40,67 @@ h1 {
 }
 
 .subtitle {
+<<<<<<< HEAD
   color: #7B5A72;
+=======
+  color: #404040;
+>>>>>>> Expediente
   font-size: 18px;
   font-weight: 400;
   margin-top: -15px;
   margin-bottom: 50px;
 }
 
+<<<<<<< HEAD
+=======
+/* Estilos del formulario de sesión */
+.sesion-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.form-group {
+  width: 100%;
+  max-width: 360px;
+  margin-bottom: 26px; /* espacio entre input y botón */
+}
+
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.12);
+  font-size: 15px;
+}
+
+/* Estado inválido del input */
+.input.invalid {
+  border-color: #d93025; /* rojo vivo */
+  box-shadow: 0 0 0 3px rgba(217,48,37,0.08);
+}
+
+.error-text {
+  color: #d93025;
+  font-size: 13px;
+  margin-top: 8px;
+  text-align: left;
+  max-width: 360px;
+}
+
+>>>>>>> Expediente
 .btn {
   background: #6B3A5E;
   color: white;
   border: none;
   padding: 12px 40px;
   font-size: 16px;
+<<<<<<< HEAD
   border-radius: 6px;
+=======
+  border-radius: 28px;
+>>>>>>> Expediente
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
 }
@@ -90,4 +137,11 @@ h1 {
     height: 140px;
     margin-bottom: 30px;
   }
+<<<<<<< HEAD
+=======
+
+  .form-group {
+    margin-bottom: 18px;
+  }
+>>>>>>> Expediente
 }

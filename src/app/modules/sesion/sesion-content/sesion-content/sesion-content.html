@@ -6,5 +6,17 @@
   <h1>Bienvenido</h1>
   <p class="subtitle">Yadira Lizbeth Castro Velasco</p>
 
+<<<<<<< HEAD
   <button class="btn" type="button" routerLink="/expediente/editar">Iniciar</button>
+=======
+  <form (ngSubmit)="login()" class="sesion-form">
+    <div class="form-group">
+      <label for="password">Contraseña</label>
+      <input id="password" name="password" type="password" [(ngModel)]="password" (ngModelChange)="onPasswordChange()" [class.invalid]="invalid" class="input" placeholder="Ingresa tu contraseña" />
+      <div *ngIf="invalid" class="error-text">*contraseña inválida</div>
+    </div>
+
+    <button class="btn" type="submit">Iniciar</button>
+  </form>
+>>>>>>> Expediente
 </div>

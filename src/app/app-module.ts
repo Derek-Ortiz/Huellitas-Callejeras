@@ -34,6 +34,6 @@ import { provideHttpClient } from '@angular/common/http';
     provideZonelessChangeDetection(),
     
   ],
-  bootstrap: [App]
+  bootstrap: [RootComponent]
 })
 export class AppModule { }

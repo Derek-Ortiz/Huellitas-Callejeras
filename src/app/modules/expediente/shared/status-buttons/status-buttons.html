@@ -1,8 +1,8 @@
 <div class="status-row">
 	<button class="status-btn" type="button" (click)="cambiarEstado()" [ngClass]="estados[indiceFromEstado()].clase" aria-pressed="{{estado === 'Adoptado'}}">
-		<img src="/heart.svg" alt="Estado" class="status-icon">
+		<img src="/assets/images/heart.svg" alt="Estado" class="status-icon">
 		<span class="status-text">{{ estados[indiceFromEstado()].texto }}</span>
 	</button>
 
-	<a class="btn-tratamientos" type="button" routerLink="medicine"  (click)="triggerTratamientos()">Tratamientos</a>
+	<button class="btn-tratamientos" type="button" (click)="triggerTratamientos()">Tratamientos</button>
 </div>

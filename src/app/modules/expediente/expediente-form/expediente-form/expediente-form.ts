@@ -1,6 +1,5 @@
-
 import { Component, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Paciente } from '../../interfaces/paciente.interface';
+import { Animal, RescateResponse } from '../../interfaces/paciente.interface';
 
 @Component({
   selector: 'app-expediente-form',
@@ -12,23 +11,116 @@ export class ExpedienteForm implements OnChanges {
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
   @Input() disabled = true; 
-  @Input() initial: Paciente | null = null;
+  @Input() initial: any = null; 
 
   model: any = {};
+  missingFields: Set<string> = new Set();
+
+  get computedDisabled(): boolean {
+    if (this.disabled) return true;
+    
+    const required = [
+      'nombre',
+      'especie',
+      'raza',
+      'edad',
+      'sexo',
+      'peso',
+      'lugar',
+      'descripcion'
+     
+    ];
+
+    for (const key of required) {
+      const val = this.model ? this.model[key] : null;
+      if (val === null || val === undefined) return true;
+      if (typeof val === 'string' && val.trim() === '') return true;
+    }
+
+    return false;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['initial']) {
-      this.model = this.initial ? { ...this.initial } : {};
+      if (this.initial) {
+        
+        this.model = { ...this.initial };
+      } else {
+        this.model = {};
+      }
+    }
+  }
+
+  private getMissingFieldKeys(): string[] {
+    const requiredKeys = [
+      'nombre',
+      'especie',
+      'raza',
+      'edad',
+      'sexo',
+      'peso',
+      'lugar',
+      'descripcion'
+     
+    ];
+
+    const missing: string[] = [];
+    for (const key of requiredKeys) {
+      const val = this.model ? this.model[key] : null;
+      if (val === null || val === undefined) {
+        missing.push(key);
+        continue;
+      }
+      if (typeof val === 'string' && val.trim() === '') {
+        missing.push(key);
+      }
+    }
+    return missing;
+  }
+
+  public hasMissingRequired(): boolean {
+    return this.getMissingFieldKeys().length > 0;
+  }
+
+  onFieldChange(key: string, value: any) {
+    if (!this.model) {
+      this.model = {};
+    }
+    this.model[key] = value;
+    
+    if (this.missingFields.has(key)) {
+      const empty = value === null || value === undefined || (typeof value === 'string' && value.trim() === '');
+      if (!empty) {
+        this.missingFields.delete(key);
+      }
     }
   }
 
   onSubmit() {
-    this.save.emit(this.model);
+  const missingKeys = this.getMissingFieldKeys();
+  if (missingKeys.length > 0) {
+    this.missingFields = new Set(missingKeys);
+    return;
   }
 
-  onCancel() {
   
-    this.model = this.initial ? { ...this.initial } : {};
+  if (this.model) {
+    const processedModel = { ...this.model }; 
+   
+    if (processedModel.peso !== undefined && processedModel.peso !== null) {
+      processedModel.peso = Number(processedModel.peso);
+    }
+    if (processedModel.edad !== undefined && processedModel.edad !== null) {
+      processedModel.edad = Number(processedModel.edad);
+    }
+    
+    this.save.emit(processedModel);
+  } else {
+    this.save.emit(this.model);
+  }
+}
+
+  onCancel() {
     this.cancel.emit();
   }
 }

@@ -249,6 +249,12 @@ select:focus {
   box-shadow: 0 0 6px rgba(180, 100, 161, 0.4);
 }
 
+/* estilo para campos faltantes: contorno rojo visible */
+.invalid-field {
+  border-color: #d9534f !important;
+  box-shadow: 0 0 0 4px rgba(217, 83, 79, 0.12) !important;
+}
+
 
 input:disabled,
 textarea:disabled,
@@ -281,7 +287,7 @@ select:disabled {
   background: #7bb75a;
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 28px;
   padding: 14px 35px;
   font-size: 20px;
   font-weight: 600;
@@ -307,9 +313,9 @@ select:disabled {
 
 .btn-cancel {
   background: #949494;
-  color: white;
+  color: rgb(255, 255, 255);
   border: none;
-  border-radius: 10px;
+  border-radius: 28px;
   padding: 14px 35px;
   font-size: 20px;
   font-weight: 600;
@@ -327,8 +333,8 @@ select:disabled {
 }
 
 .btn-cancel:disabled {
-  background: #bfbfbf;
-  color: #eaeaea;
+  background: #7f7f7f;
+  color: #ffffff;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
