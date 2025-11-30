@@ -1,4 +1,20 @@
 <div class="galeria-container">
+    <div class="mensaje-exito" *ngIf="mostrarMensajeExito">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="10" fill="#4caf50"/>
+      <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>{{ mensajeExito }}</span>
+  </div>
+
+
+  <div class="mensaje-error" *ngIf="errorMessage">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="10" fill="#f44336"/>
+      <path d="M15 9l-6 6M9 9l6 6" stroke="white" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span>{{ errorMessage }}</span>
+  </div>
   <div class="galeria-top-section">
     <div class="galeria-header">
       <button class="btn-volver" (click)="onClickVolver()">
@@ -18,10 +34,9 @@
     </div>
 
     <div class="search-container">
-        <svg class="search-icon" width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M31.7857 29.4643L25.293 22.9687C27.2397 20.4319 28.1486 17.2495 27.8352 14.0672C27.5219 10.8848 26.0098 7.94085 23.6056 5.8324C21.2015 3.72395 18.0854 2.60893 14.8894 2.71353C11.6933 2.81813 8.65678 4.13451 6.39565 6.39565C4.13451 8.65678 2.81813 11.6933 2.71353 14.8894C2.60893 18.0854 3.72395 21.2015 5.8324 23.6056C7.94085 26.0098 10.8848 27.5219 14.0672 27.8352C17.2495 28.1486 20.4319 27.2397 22.9687 25.293L29.467 31.7926C29.6196 31.9452 29.8008 32.0662 30.0002 32.1488C30.1996 32.2314 30.4133 32.2739 30.6291 32.2739C30.8449 32.2739 31.0586 32.2314 31.258 32.1488C31.4574 32.0662 31.6386 31.9452 31.7912 31.7926C31.9438 31.64 32.0649 31.4588 32.1475 31.2594C32.2301 31.06 32.2726 30.8463 32.2726 30.6305C32.2726 30.4146 32.2301 30.2009 32.1475 30.0015C32.0649 29.8021 31.9438 29.621 31.7912 29.4684L31.7857 29.4643ZM6.01562 15.3125C6.01562 13.4737 6.56087 11.6763 7.58243 10.1474C8.60398 8.61857 10.056 7.42696 11.7547 6.7233C13.4535 6.01964 15.3228 5.83554 17.1262 6.19426C18.9296 6.55298 20.5862 7.43842 21.8864 8.73861C23.1866 10.0388 24.072 11.6953 24.4307 13.4988C24.7895 15.3022 24.6053 17.1715 23.9017 18.8703C23.198 20.569 22.0064 22.021 20.4776 23.0426C18.9487 24.0641 17.1512 24.6094 15.3125 24.6094C12.8476 24.6068 10.4844 23.6265 8.74141 21.8836C6.99846 20.1406 6.01815 17.7774 6.01562 15.3125Z" fill="#5C2D5C"/>
-        </svg>
-
+      <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 19L14.65 14.65M17 9C17 13.4183 13.4183 17 9 17C4.58172 17 1 13.4183 1 9C1 4.58172 4.58172 1 9 1C13.4183 1 17 4.58172 17 9Z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
       <input 
         type="text" 
         class="search-input" 
@@ -36,7 +51,8 @@
       <app-tarjeta-expediente 
         *ngFor="let expediente of expedientesFiltrados; trackBy: trackByExpedienteId" 
         [expediente]="expediente"
-        (clickTarjeta)="onClickTarjeta($event)">
+        (clickTarjeta)="onClickTarjeta($event)"
+        (eliminarExpediente)="abrirModalEliminar($event)">
       </app-tarjeta-expediente>
     </div>
 
@@ -56,3 +72,10 @@
     <p>Cargando expedientes...</p>
   </div>
 </div>
+
+<app-modal-confirmacion
+  [mostrar]="mostrarModal"
+  titulo="¿Deseas eliminar este animal?"
+  (confirmar)="confirmarEliminar()"
+  (cancelar)="cerrarModal()">
+</app-modal-confirmacion>

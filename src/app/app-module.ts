@@ -29,6 +29,7 @@ import { provideHttpClient } from '@angular/common/http';
     HttpClientModule
   ],
   providers: [
+    provideHttpClient(withInterceptorsFromDi()),
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     

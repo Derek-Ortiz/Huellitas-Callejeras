@@ -1,11 +1,24 @@
 <div class="tarjeta" (click)="onClickTarjeta()">
   <div class="tarjeta-imagen-wrapper">
-    <img [src]="expediente.imagenUrl" 
+    <img [src]="expediente.urlImagen" 
          [alt]="expediente.nombre" 
          class="tarjeta-imagen">
   </div>
   <div class="tarjeta-info">
-    <h3 class="tarjeta-nombre">{{ expediente.nombre }}</h3>
+    <div class="tarjeta-header">
+      <h3 class="tarjeta-nombre">{{ expediente.nombre }}</h3>
+      <button class="btn-eliminar" (click)="onEliminar($event)" title="Eliminar">
+        <svg width="15" height="20" viewBox="0 0 15 20" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <rect width="14.3113" height="19.575" fill="url(#pattern0_592_203)"/>
+          <defs>
+            <pattern id="pattern0_592_203" patternContentUnits="objectBoundingBox" width="1" height="1">
+              <use xlink:href="#image0_592_203" transform="matrix(0.0111111 0 0 0.00812332 0 0.13445)"/>
+            </pattern>
+            <image id="image0_592_203" width="90" height="90" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAACKklEQVR4nO3cP24TYRCG8Zc/TSh8ATCIPjmBoYASuADhAkBF0hAaJJpQQzCkT2ihMCcwTaAzJzAdNDgKAim4eNBKRhRAyzfveH6SJZefp9hdzWOtVEoppZRSShvARWBj8bnQ+jwpAZeBr/zWfR+0Plc6wHv+dND6XOkAx38Z9HHrc6XDP7Q+VwjdNRR4B/wgru5sB7bX++6pADjCx5HlkwywiZ97igg4AwyBQ/KaAc+AlZaD3mV57LYa8kngO8vjW/eba9BZB72El44XTYa8GPQKsLO4YWT1BXja9GZYSimllPL/Jd13HCoa4AP5TBQN8IZ8RooGeE4+Q0UDPCCfLUUD3CKfdQX9g0s2lxQNcJ58+ooGOAXMyWMOnFZEwEfymCoq4C15jBUV8JI89hUV8Jg8thUVcJc87igq4AZ5XFdUwBp5rCoqoEcePUWWJADMFF2SADBRdEkCwEjRJQkAQ0WXJABsKbokAWBd0XXLcvwNFF2SANBXdAkCwDzswj9ZAJjKhXkAGMuFeQDYlwvzALAtF93SHF+35aJbmuPrmlyYB4BVuTAPAD05MQ0AM7kxDQATuTENACO5MQ0AQ7npluf4uS833fIcPzflxjQADOTGNAD05cYwAMxtFv7mAWAqV2YBYCxXwB4+9uTK7LWZG3IFnAv+pt1fujOelTPgEfE9lLvFGx93iOsJcEJZAFeB18Dn1pMFPgGvgCut51JKKaWUUkoppZQiQz8BGaG2M9Lck+UAAAAASUVORK5CYII="/>
+          </defs>
+        </svg>
+      </button>
+    </div>
     <p class="tarjeta-raza">{{ expediente.raza }}</p>
   </div>
 </div>
