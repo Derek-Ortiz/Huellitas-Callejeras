@@ -3,6 +3,6 @@ export interface CalendarEvent {
   date: string;
   color: string;
   extendedProps: {
-    id: number;
+    id: string;
   };
 }

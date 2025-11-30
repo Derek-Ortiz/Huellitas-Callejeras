@@ -6,30 +6,113 @@
 
     <div class="info-cont">
       <div class="edit">
-      
-      <label for="titulo">Título</label>
-      <input type="text" [(ngModel)]="cita.titulo" placeholder="Título" >
-       <label for="fecha">Fecha y hora</label>
+        <label for="titulo">Título *</label>
+        <input type="text" [(ngModel)]="cita.titulo" placeholder="Título" required>
+        
+        <label for="fecha">Fecha y hora *</label>
         <input
-        type="datetime-local"
-        [(ngModel)]="cita.fecha"
-        id="fecha"
-        name="fecha"
-        placeholder="Selecciona fecha y hora"
+          type="datetime-local"
+          [(ngModel)]="cita.fechaCita"
+          id="fecha"
+          name="fecha"
+          placeholder="Selecciona fecha y hora"
+          required
+           [value]="cita.fechaCita" 
         />
-      <label for="lugar">Lugar</label>
-      <input type="text" [(ngModel)]="cita.lugar" placeholder="Lugar">
-      <label for="motivo">Motivo</label>
-      <input type="text" [(ngModel)]="cita.motivo" placeholder="Motivo">
-        </div>
+        
+        <label for="lugar">Lugar *</label>
+        <input type="text" [(ngModel)]="cita.lugar" placeholder="Lugar" required>
+        
+        <label for="motivo">Motivo *</label>
+        <input type="text" [(ngModel)]="cita.motivo" placeholder="Motivo" required>
+      </div>
     
-    <div class="paciente">
-      <h3>Paciente:</h3>
-      <img src="/mdi_dog.png" alt="paciente">
+     <div class="animal">
+        <h3>Animal: *</h3>
+        
+        <div class="busqueda-animal">
+          <div class="input-container">
+            <input
+              type="text"
+              id="buscarAnimal"
+              [(ngModel)]="terminoBusqueda"
+              (input)="filtrarPacientes()"
+              (focus)="mostrarLista = true"
+              (blur)="onClicFuera()"
+              placeholder="Escribe el nombre del animal..."
+              class="input-busqueda"
+              [class.error]="!animalSeleccionado && terminoBusqueda"
+            >
+            
+            <div *ngIf="cargandoPacientes" class="loading">
+              <h3>Cargando animales...</h3>
+              <div class="spinner"></div>
+            </div>
+            
+            <div *ngIf="mostrarLista && animalesFiltrados.length > 0" class="lista-autocomplete">
+              <div 
+                *ngFor="let animal of animalesFiltrados" 
+                class="opcion-animal"
+                (mousedown)="seleccionarAnimal(animal)"
+              >
+                <img 
+                  [src]="animal.urlImage || ''" 
+                  [alt]="animal.nombre" 
+                  class="foto-animal-lista"
+                  (error)="usarImagenPorDefecto($event)"
+                >
+                <div class="info-animal">
+                  <strong>{{ animal.nombre }}</strong>
+                  <span>{{ animal.especie }} - {{ animal.raza }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="mostrarLista && animalesFiltrados.length === 0 && terminoBusqueda && !cargandoPacientes" class="sin-resultados">
+              No se encontraron animales con "{{ terminoBusqueda }}"
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="estaCargandoAnimalInicial()" class="loading">
+          <h3>Cargando animal asociado...</h3>
+          <div class="spinner"></div>
+        </div>
+
+        <div *ngIf="animalSeleccionado && !estaCargandoAnimalInicial()" class="animal-seleccionado">
+          <div class="animal-info-clickeable" (click)="irAExpediente(animalSeleccionado!.id)">
+            <img 
+              [src]="animalSeleccionado.urlImage || ''" 
+              [alt]="animalSeleccionado.nombre" 
+              class="foto-animal-seleccionado"
+              (error)="usarImagenPorDefecto($event)"
+            >
+            <div class="detalles-animal">
+              <h4>{{ animalSeleccionado.nombre }}</h4>
+              <p>{{ animalSeleccionado.especie }} - {{ animalSeleccionado.raza }}</p>
+              <p class="link-expediente">Ver expediente completo</p>
+            </div>
+            <button type="button" class="btn-cambiar" (click)="deseleccionarPaciente($event)">✕</button>
+          </div>
+        </div>
+
+        <div *ngIf="!animalSeleccionado && !terminoBusqueda && !cargandoPacientes && !esEdicion" class="estado-inicial">
+          <img src="mdi_dog.png" alt="animal" class="icono-animal">
+          <p>Busca un animal para asociarlo a la cita</p>
+        </div>
+
+        <div *ngIf="!animalSeleccionado && terminoBusqueda && !cargandoPacientes && !estaCargandoAnimalInicial()" class="mensaje-error">
+          Debes seleccionar un animal de la lista
+        </div>
+      </div>
     </div>
+    
+    <div class="botones">
+      <button (click)="guardar()" [disabled]="!animalSeleccionado" class="btn-guardar">
+        {{ esEdicion ? 'Actualizar' : 'Guardar' }}
+      </button>
+      <button (click)="cancelar()" class="btn-cancelar">Cancelar</button>
+    </div>
+
   </div>
-   <div class="botones">
-      <button (click)="guardar()">{{ esEdicion ? 'Actualizar' : 'Guardar' }}</button>
-      <button (click)="cancelar()">Cancelar</button>
-    </div>
 </div>
