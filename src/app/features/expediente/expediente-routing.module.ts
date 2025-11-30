@@ -4,10 +4,10 @@ import { ExpedienteEdit } from './expediente-edit/expediente-edit/expediente-edi
 import { ExpedientesView } from './expedientes-view/expedientes-view/expedientes-view';
 
 const routes: Routes = [
-
   { path: '', component: ExpedienteEdit },
-  { path: 'editar', component: ExpedienteEdit }
-  ,{ path: 'view', component: ExpedientesView }
+  { path: 'editar', component: ExpedienteEdit },
+  { path: 'editar/:id', component: ExpedienteEdit },
+  { path: 'view', component: ExpedientesView }
 ];
 
 @NgModule({

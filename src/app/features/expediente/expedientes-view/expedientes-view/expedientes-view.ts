@@ -4,6 +4,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { PacienteService } from '../../services/paciente.service';
 import { Paciente } from '../../interfaces/paciente.interface';
 import { Router } from '@angular/router';
+import { ConexionApiAnimales } from '../../services/conexion-api-animales';
 
 @Component({
     selector: 'app-expedientes-view',
@@ -21,7 +22,11 @@ export class ExpedientesView implements OnInit, OnDestroy {
 	showCancelModal = false;
 	cancelMessage = '';
 
-	constructor(private pacienteService: PacienteService, private router: Router) {}
+	constructor(
+		private pacienteService: PacienteService,
+		private router: Router,
+		private animalesApi: ConexionApiAnimales
+	) {}
 
 	ngOnInit(): void {
 		const current = this.pacienteService.getCurrent();
@@ -44,6 +49,16 @@ export class ExpedientesView implements OnInit, OnDestroy {
 
 	onEstadoChange(nuevo: 'No adoptado' | 'Adoptado' | 'En tratamiento') {
 		this.pacienteEstado = nuevo;
+	}
+
+	/** Mapear texto de UI a valor canonico esperado por el backend */
+	private mapEstadoToBackend(estadoUi: string | undefined | null): string {
+		const s = (estadoUi ?? '').toString().toLowerCase();
+		if (s.includes('adopt')) return 'Adoptado';
+		if (s.includes('recuper') || s.includes('recuperación') || s.includes('recuperacion')) return 'En recuperación';
+		// Mapear "En tratamiento" a "En recuperación" por compatibilidad
+		if (s.includes('trat')) return 'En recuperación';
+		return 'No adoptado';
 	}
 
 		onFilesSelected(event: Event) {
@@ -79,11 +94,79 @@ export class ExpedientesView implements OnInit, OnDestroy {
 		}
 
 	onSave(data: any) {
-		const paciente: Paciente = { ...data, estado: this.pacienteEstado } as Paciente;
-		this.pacienteService.save(paciente).subscribe((saved: Paciente) => {
-			this.isEditing = false;
-		}, (err: unknown) => {
-		});
+		try {
+			if (!data) {
+				console.warn('onSave llamado sin data, se usará objeto vacío');
+				data = {};
+			}
+
+			// Construir objeto `animal` con los campos esperados por la API
+			const animal: any = {
+			nombre: data.nombre ?? data.nombrePaciente ?? '',
+				peso: data.peso ?? data.pesoPaciente ?? undefined,
+				raza: data.raza ?? data.razaPaciente ?? undefined,
+				sexo: data.sexo ?? data.sexoPaciente ?? undefined,
+			edad: data.edad ?? data.edadPaciente ?? undefined,
+				especie: data.especie ?? data.especiePaciente ?? 'Perro',
+				estado: this.mapEstadoToBackend(this.pacienteEstado)
+		};
+
+		// Construir objeto `rescate`. Intentamos leer `data.rescate` o campos sueltos.
+		const rescate: any = data.rescate ?? {
+			lugar: data.lugar ?? data.rescateLugar ?? 'Desconocido',
+			descripcion: data.descripcion ?? data.rescateDescripcion ?? ''
+		};
+
+		// Normalizar tipos: convertir `peso` y `edad` a números si vienen como strings
+		try {
+			if (animal.peso !== undefined && animal.peso !== null) {
+				const p = typeof animal.peso === 'string' ? parseFloat(animal.peso) : Number(animal.peso);
+				animal.peso = Number.isFinite(p) ? p : undefined;
+			}
+			if (animal.edad !== undefined && animal.edad !== null) {
+				const e = typeof animal.edad === 'string' ? parseInt(animal.edad, 10) : Number(animal.edad);
+				animal.edad = Number.isFinite(e) ? e : undefined;
+			}
+		} catch (e) {
+			// no bloquear por errores de parseo
+		}
+
+		// Si falta rescatistaId, intentar obtenerlo del token JWT o localStorage
+		if (!animal.rescatistaId) {
+			try {
+				const token = localStorage.getItem('auth_token');
+				if (token && token.split('.').length === 3) {
+					const pl = JSON.parse(atob(token.split('.')[1]));
+					animal.rescatistaId = pl.sub ?? pl.id ?? pl.userId ?? pl.rescatistaId ?? animal.rescatistaId;
+				}
+			} catch (e) {}
+			if (!animal.rescatistaId) {
+				const stored = localStorage.getItem('rescatista_id');
+				if (stored) animal.rescatistaId = stored;
+			}
+		}
+
+		const payload = { animal, rescate };
+
+
+			// Tomar la primera imagen si se seleccionó alguna
+			const file = Array.isArray(this.selectedFiles) && this.selectedFiles.length > 0 ? this.selectedFiles[0] : undefined;
+
+			// Llamada al servicio que envía multipart/form-data (animal, rescate, imagen)
+			this.animalesApi.crearConRescateFormData(payload, file).subscribe(
+				(res) => {
+					// Aquí `res` es la respuesta `data` del backend: manejar según necesidad
+					this.isEditing = false;
+					this.clearImagePreviews();
+					// Opcional: navegar o mostrar mensaje
+				},
+				(err) => {
+					console.error('Error creando animal con rescate:', err);
+				}
+			);
+		} catch (err) {
+			console.error('Exception en onSave:', err, 'data:', data);
+		}
 	}
 
 

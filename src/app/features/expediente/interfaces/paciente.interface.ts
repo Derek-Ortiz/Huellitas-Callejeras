@@ -11,4 +11,6 @@ export interface Paciente {
   lugar: string;
   descripcion: string;
   estado: 'No adoptado' | 'Adoptado' | 'En tratamiento';
+  urlImage?: string;
+  rescatistaId?: string;
 }
