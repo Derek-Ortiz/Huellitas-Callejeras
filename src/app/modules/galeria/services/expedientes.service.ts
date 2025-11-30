@@ -1,60 +1,88 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { Expediente } from '../interfaces/expediente.interface';
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
+import { Expediente, ApiResponse, AnimalRequest } from '../interfaces/expediente.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExpedientesService {
-  
-    private expedientes: Expediente[] = [];
+  private apiUrl = `${environment.apiUrl}/animal`;
 
-    constructor() {
-        this.expedientes = this.generarDatosEjemplo();
-    }
+  constructor(private http: HttpClient) { }
 
-    obtenerExpedientes(): Observable<Expediente[]> {
-        return of(this.expedientes);
-    }
-
-    agregarExpediente(expediente: Expediente): Observable<Expediente> {
-        this.expedientes.push(expediente);
-        return of(expediente);
-    }
-
-    obtenerExpedientePorId(id: number): Observable<Expediente | undefined> {
-        const expediente = this.expedientes.find(e => e.id === id);
-        return of(expediente);
-    }
-
-    actualizarExpediente(id: number, expediente: Expediente): Observable<Expediente> {
-        const index = this.expedientes.findIndex(e => e.id === id);
-        if (index !== -1) {
-        this.expedientes[index] = expediente;
+  // GET /animal - Obtener todos los animales
+  obtenerExpedientes(): Observable<Expediente[]> {
+    return this.http.get<ApiResponse<Expediente[]>>(this.apiUrl).pipe(
+      map(response => {
+        if (response.success && response.data) {
+          return response.data;
         }
-        return of(expediente);
-    }
+        return [];
+      }),
+      catchError(this.handleError)
+    );
+  }
 
-    eliminarExpediente(id: number): Observable<boolean> {
-        const index = this.expedientes.findIndex(e => e.id === id);
-        if (index !== -1) {
-        this.expedientes.splice(index, 1);
-        return of(true);
+  // GET /animal/{id} - Obtener un animal por ID
+  obtenerExpedientePorId(id: string): Observable<Expediente | undefined> {
+    return this.http.get<ApiResponse<Expediente>>(`${this.apiUrl}/${id}`).pipe(
+      map(response => response.success ? response.data : undefined),
+      catchError(this.handleError)
+    );
+  }
+
+  // GET /animal/estado/{estado} - Filtrar por estado
+  obtenerExpedientesPorEstado(estado: string): Observable<Expediente[]> {
+    return this.http.get<ApiResponse<Expediente[]>>(`${this.apiUrl}/estado/${estado}`).pipe(
+      map(response => response.success && response.data ? response.data : []),
+      catchError(this.handleError)
+    );
+  }
+
+  // POST /animal - Crear nuevo animal
+  agregarExpediente(expediente: AnimalRequest): Observable<Expediente> {
+    return this.http.post<ApiResponse<Expediente>>(this.apiUrl, expediente).pipe(
+      map(response => {
+        if (response.success && response.data) {
+          return response.data;
         }
-        return of(false);
-    }
+        throw new Error(response.message);
+      }),
+      catchError(this.handleError)
+    );
+  }
 
-    // Para probar
-    private generarDatosEjemplo(): Expediente[] {
-        return [
-        { id: 1, nombre: 'Max', raza: 'Chihuahua', imagenUrl: 'assets/images/dogs/dog1.jpg' },
-        { id: 2, nombre: 'Luna', raza: 'Chihuahua', imagenUrl: 'assets/images/dogs/dog2.jpg' },
-        { id: 3, nombre: 'Rocky', raza: 'Chihuahua', imagenUrl: 'assets/images/dogs/dog3.jpg' },
-        { id: 4, nombre: 'Bella', raza: 'Chihuahua', imagenUrl: 'assets/images/dogs/dog4.jpg' },
-        { id: 5, nombre: 'Toby', raza: 'Chihuahua', imagenUrl: 'assets/images/dogs/dog5.jpg' },
-        { id: 6, nombre: 'Coco', raza: 'Chihuahua', imagenUrl: 'assets/images/dogs/dog6.jpg' },
-        { id: 7, nombre: 'Simba', raza: 'Chihuahua', imagenUrl: 'assets/images/dogs/dog7.jpg' },
-        { id: 8, nombre: 'Lola', raza: 'Chihuahua', imagenUrl: 'assets/images/dogs/dog8.jpg' }
-        ];
+  // PUT /animal/{id} - Actualizar animal
+  actualizarExpediente(id: string, expediente: AnimalRequest): Observable<boolean> {
+    return this.http.put<ApiResponse<any>>(`${this.apiUrl}/${id}`, expediente).pipe(
+      map(response => response.success),
+      catchError(this.handleError)
+    );
+  }
+
+  // DELETE /animal/{id} - Eliminar animal
+  eliminarExpediente(id: string): Observable<boolean> {
+    return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/${id}`).pipe(
+      map(response => response.success),
+      catchError(this.handleError)
+    );
+  }
+
+  private handleError(error: any): Observable<never> {
+    console.error('Error en ExpedientesService:', error);
+    let errorMessage = 'Ocurrió un error en el servidor';
+    
+    if (error.error?.message) {
+      errorMessage = error.error.message;
+    } else if (error.message) {
+      errorMessage = error.message;
+    } else if (error.status === 0) {
+      errorMessage = 'No se pudo conectar con el servidor. Verifica que el backend esté corriendo.';
     }
+    
+    return throwError(() => new Error(errorMessage));
+  }
 }
