@@ -8,8 +8,8 @@
 <div class="main-Card">
     <div class="treatments-cards">
         <app-back-button (clickBack)="navigateHome()"></app-back-button>
-        @for(num of nums; track num){
-            <app-treatment-chip [label]="'Tratamiento ' + num"></app-treatment-chip>
+        @for(t of tratamientos; track t.id; let i = $index){
+            <app-treatment-chip [label]="'Tratamiento (' + (i + 1) + ')'" (click)="goToTratamiento(t.id)"></app-treatment-chip>
         }
     </div>
 

@@ -9,5 +9,13 @@ export class MedicineModalSwitch {
 
   $modalMedicine = new EventEmitter<any>();
 
+  open(initial: any = null) {
+    this.$modalMedicine.emit(true);
+  }
+
+  close() {
+    this.$modalMedicine.emit(false);
+  }
+
 
 }

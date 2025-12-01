@@ -20,6 +20,7 @@ export interface TratamientoFormRequest {
   fechaInicio: string; 
   medicamentos: Array<{
     medicamentoId: string;
+    nombre: string;
     dosis: number;
     repeticion: number; 
     fechaConclusion: string; 

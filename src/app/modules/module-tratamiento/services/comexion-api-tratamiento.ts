@@ -9,7 +9,7 @@ import { Medicamento } from '../interfaces/medicamentosI';
   providedIn: 'root'
 })
 export class ConexionApiTratamientos {
-  private baseUrl = 'http://127.0.0.1:9090/api';
+  private baseUrl = 'http://localhost:9090/api';
   private tratamientosUrl = `${this.baseUrl}/tratamientos`;
   private medicamentosUrl = `${this.baseUrl}/medicamentos`;
   
@@ -79,6 +79,23 @@ export class ConexionApiTratamientos {
     return this.http.post<ApiResponse<Tratamiento>>(url, form, headers).pipe(
       map(r => r.data),
       catchError(this.handleError('crearTratamientoFormData'))
+    );
+  }
+
+  actualizarTratamientoFormData(id: string, tratamiento: TratamientoFormRequest, archivo?: File): Observable<Tratamiento> {
+    const url = `${this.tratamientosUrl}/${id}`;
+    const form = new FormData();
+    form.append('tratamiento', JSON.stringify(tratamiento));
+    if (archivo) { form.append('archivo', archivo); }
+    console.log('[API] PUT FormData keys /tratamientos/' + id + ':');
+    for (const key of form.keys()) {
+      console.log('  -', key);
+    }
+    const headers = this.headers();
+    (headers.headers as HttpHeaders) = headers.headers.delete('Content-Type');
+    return this.http.put<ApiResponse<Tratamiento>>(url, form, headers).pipe(
+      map(r => r.data),
+      catchError(this.handleError('actualizarTratamientoFormData'))
     );
   }
 

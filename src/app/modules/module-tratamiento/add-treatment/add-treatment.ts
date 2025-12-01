@@ -18,6 +18,7 @@ export class AddTreatment {
   modalMedicineOpen = false;
   showDeleteConfirm = false;
   nums: number[] = [];
+  tratamientos: any[] = [];
   form: FormGroup;
   submitted = false;
   get medicines(): FormArray { return this.form.get('medicines') as FormArray; }
@@ -47,7 +48,10 @@ export class AddTreatment {
     this.medicineSwitch.$modalMedicine.subscribe(v => this.modalMedicineOpen = !!v);
     const animalId = this.currentAnimal.getAnimalId();
     this.api.obtenerTratamientosPorAnimal(animalId).subscribe({
-      next: ts => { this.nums = Array.from({ length: ts.length }, (_, i) => i + 1); },
+      next: ts => {
+        this.tratamientos = ts || [];
+        this.nums = Array.from({ length: this.tratamientos.length }, (_, i) => i + 1);
+      },
       error: err => console.error('[AddTreatment] Error al cargar tratamientos:', err)
     });
   }
@@ -137,18 +141,19 @@ export class AddTreatment {
           if (!id) { throw new Error('No se recibió UUID del medicamento'); }
           createdIds.push(id);
         }
-        const formReq = {
+        const formReqAny: any = {
           animalId,
           fechaInicio: this.toIso(startDate),
           medicamentos: medsControls.map((m, idx) => ({
             medicamentoId: createdIds[idx],
+            nombre: m.name,
             dosis: parseFloat(m.dose) || 0.0,
             repeticion: parseFloat(m.repetition) || 0.0,
             fechaConclusion: this.toIso(m.date || startDate),
           })),
         };
-        console.log('[AddTreatment] Enviando FormData a /tratamientos JSON:', JSON.stringify(formReq, null, 2), 'Archivo:', this.selectedFile);
-        this.api.crearTratamientoFormData(formReq as any, this.selectedFile || undefined).subscribe({
+        console.log('[AddTreatment] Enviando FormData a /tratamientos JSON:', JSON.stringify(formReqAny, null, 2), 'Archivo:', this.selectedFile);
+        this.api.crearTratamientoFormData(formReqAny as any, this.selectedFile || undefined).subscribe({
           next: (res) => {
             console.log('[AddTreatment] Tratamiento creado (form-data):', res);
            
@@ -170,4 +175,9 @@ export class AddTreatment {
   }
 
   navigateHome() { this.router.navigateByUrl('/'); }
+
+  goToTratamiento(tratamientoId: string) {
+    // Navegar al root de medicine con el id seleccionado como query param
+    this.router.navigate(['/medicine'], { queryParams: { tid: tratamientoId } });
+  }
 }

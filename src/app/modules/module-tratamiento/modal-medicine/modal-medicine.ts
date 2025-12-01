@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MedicineModalSwitch } from '../services/medicine-modal';
+import { ConexionApiTratamientos } from '../services/comexion-api-tratamiento';
 
 
 @Component({
@@ -12,10 +13,10 @@ import { MedicineModalSwitch } from '../services/medicine-modal';
 export class ModalMedicine {
   form: FormGroup;
   submitted = false;
-  @Input() initial?: { medicamento?: string; fecha?: string; dosis?: string; repeticion?: string };
+  @Input() initial?: { id?: string; medicamento?: string; fecha?: string; dosis?: string; repeticion?: string };
   @Output() saved = new EventEmitter<{ medicamento: string; fecha: string; dosis: string; repeticion: string }>();
 
-  constructor(private modalSS: MedicineModalSwitch, private fb: FormBuilder ) {
+  constructor(private modalSS: MedicineModalSwitch, private fb: FormBuilder, private api: ConexionApiTratamientos ) {
     this.form = this.fb.group({
       medicamento: ['', Validators.required],
       fecha: ['', Validators.required],
@@ -40,7 +41,15 @@ export class ModalMedicine {
   submit() {
     this.submitted = true;
     if (this.form.invalid) { return; }
-    this.saved.emit(this.form.value);
+    const value = this.form.value as { medicamento: string; fecha: string; dosis: string; repeticion: string };
+    // Si el modal está en modo edición y cambió el nombre, hacer PUT inmediato
+    if (this.initial?.id && (this.initial.medicamento || '') !== value.medicamento) {
+      this.api.actualizarMedicamento(this.initial.id, { nombre: value.medicamento } as any).subscribe({
+        next: () => {},
+        error: (e) => console.error('[ModalMedicine] Error actualizando nombre de medicamento:', e)
+      });
+    }
+    this.saved.emit(value);
     this.modalSS.$modalMedicine.emit(false);
   }
 }
