@@ -10,18 +10,15 @@ import { Expediente, ApiResponse, AnimalRequest } from '../interfaces/expediente
 })
 export class ExpedientesService {
   private apiUrl = `${environment.apiUrl}/animal`;
-  private token = localStorage.getItem('auth_token') || '';
 
   constructor(private http: HttpClient) { }
 
   // GET /animal - Obtener todos los animales
   obtenerExpedientes(): Observable<Expediente[]> {
-    const headers = { Authorization: `Bearer ${this.token}` };
     console.log('🔍 [ExpedientesService] Obteniendo expedientes...');
-    console.log('🔑 Token:', this.token ? 'Presente' : 'Faltante');
     console.log('🌐 URL:', this.apiUrl);
-
-    return this.http.get<ApiResponse<Expediente[]>>(this.apiUrl, { headers }).pipe(
+    // AuthInterceptor añade Authorization
+    return this.http.get<ApiResponse<Expediente[]>>(this.apiUrl).pipe(
       tap(response => {
         console.log('📥 [ExpedientesService] Respuesta completa del backend:', response);
         console.log('✅ Success:', response.success);
@@ -54,12 +51,9 @@ export class ExpedientesService {
 
   // DELETE /animal/{id} - Eliminar animal
   eliminarExpediente(id: string): Observable<boolean> {
-    const headers = { Authorization: `Bearer ${this.token}` };
-    
     console.log('🗑️ [ExpedientesService] Eliminando expediente ID:', id);
     console.log('🌐 URL DELETE:', `${this.apiUrl}/${id}`);
-
-    return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/${id}`, { headers }).pipe(
+    return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/${id}`).pipe(
       tap(response => {
         console.log('📥 [ExpedientesService] Respuesta de eliminación:', response);
       }),
@@ -78,10 +72,8 @@ export class ExpedientesService {
 
   // GET /animal/{id} - Obtener un animal por ID
   obtenerExpedientePorId(id: string): Observable<Expediente | undefined> {
-    const headers = { Authorization: `Bearer ${this.token}` };
     console.log(`🔍 [ExpedientesService] Obteniendo expediente por ID: ${id}`);
-    
-    return this.http.get<ApiResponse<Expediente>>(`${this.apiUrl}/${id}`, { headers }).pipe(
+    return this.http.get<ApiResponse<Expediente>>(`${this.apiUrl}/${id}`).pipe(
       tap(response => {
         console.log('📥 [ExpedientesService] Respuesta por ID:', response);
         if (response.success && response.data) {
@@ -99,8 +91,7 @@ export class ExpedientesService {
 
   // POST /animal - Crear nuevo animal
   agregarExpediente(expediente: AnimalRequest): Observable<Expediente> {
-    const headers = { Authorization: `Bearer ${this.token}` };
-    return this.http.post<ApiResponse<Expediente>>(this.apiUrl, expediente, { headers }).pipe(
+    return this.http.post<ApiResponse<Expediente>>(this.apiUrl, expediente).pipe(
       map(response => {
         if (response.success && response.data) {
           return response.data;
@@ -113,8 +104,7 @@ export class ExpedientesService {
 
   // PUT /animal/{id} - Actualizar animal
   actualizarExpediente(id: string, expediente: AnimalRequest): Observable<boolean> {
-    const headers = { Authorization: `Bearer ${this.token}` };
-    return this.http.put<ApiResponse<any>>(`${this.apiUrl}/${id}`, expediente, { headers }).pipe(
+    return this.http.put<ApiResponse<any>>(`${this.apiUrl}/${id}`, expediente).pipe(
       map(response => response.success),
       catchError(this.handleError)
     );

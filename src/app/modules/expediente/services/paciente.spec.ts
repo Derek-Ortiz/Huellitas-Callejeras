@@ -1,5 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Paciente } from '../interfaces/paciente.interface';
+
+/**
+ * Local Paciente interface to match the shape expected by the mock.
+ * This avoids importing a non-exported symbol from ../interfaces/paciente.interface.
+ */
+interface Paciente {
+  nombre: string;
+  especie: string;
+  raza: string;
+  edad: string;
+  sexo: string;
+  peso: string;
+  fechaIngreso: string;
+  fechaSalida: string;
+  lugar: string;
+  descripcion: string;
+  estado: string;
+}
 
 @Injectable({
   providedIn: 'root'

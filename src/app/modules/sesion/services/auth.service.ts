@@ -52,12 +52,7 @@ login(nombre: string, contrasena: string): Observable<{ id: string, token: strin
 
         // 1. Intentar extraer el token
         const token =
-          res.token ??
-          res.auth_token ??
-          (res.data && (res.data.token ?? res.data.auth_token)) ??
-          res.accessToken ??
-          res.access_token ??
-          null;
+          res.token
         
         console.log('Token extraído:', token);
         

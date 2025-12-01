@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 
 export interface ApiResponse<T = any> {
   success: boolean;
@@ -16,7 +17,7 @@ export interface RescatistaLogin {
 
 @Injectable({ providedIn: 'root' })
 export class ConexionApiLogin {
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl = environment.apiUrl + '/auth';
 
   constructor(private http: HttpClient) {}
 

@@ -3,10 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Animal, ApiResponse, RescateRequest, RescateResponse, AnimalRequest, AnimalRescateRequest} from '../interfaces/paciente.interface';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ConexionApiAnimales {
-	private apiUrl = 'http://localhost:8080/api/animal';
+	private apiUrl = environment.apiUrl + '/animal';
 
 	constructor(private http: HttpClient) {}
 
