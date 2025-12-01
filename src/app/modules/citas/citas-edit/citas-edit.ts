@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CitasService } from '../services/citaService';
+import { ConexionApiCitas } from '../services/conexion-api-citas';
 import { ConexionApiAnimales } from '../services/conexionApiAnimales';
 import { Cita, CitaRequest } from '../interfaces/citaI';
 import { Animal } from '../interfaces/animalI';
@@ -47,6 +48,7 @@ export class CitasEdit implements OnInit, OnDestroy {
   constructor(
     private citasService: CitasService, 
     private animalService: ConexionApiAnimales,
+    private citasApi: ConexionApiCitas,
     private router: Router,
     private route: ActivatedRoute,
     private fechaService: FechaService,
@@ -61,10 +63,24 @@ export class CitasEdit implements OnInit, OnDestroy {
         if (cita) {
           this.cita = { ...cita };
           this.esEdicion = true;
-      
           this.cita.fechaCita = this.fechaService.fechaBDaInputLocal(cita.fechaCita);
-          
           this.cargarTodosLosPacientes(cita.animalId);
+        } else {
+          // Si no está en memoria, obtener del API directamente
+          const sub = this.citasApi.getCitaPorId(id).subscribe({
+            next: (c) => {
+              this.cita = { ...c } as Cita;
+              this.esEdicion = true;
+              this.cita.fechaCita = this.fechaService.fechaBDaInputLocal(this.cita.fechaCita);
+              this.cargarTodosLosPacientes(this.cita.animalId);
+              this.cdr.detectChanges();
+            },
+            error: _e => {
+              // si falla, dejar en modo creación
+              this.esEdicion = false;
+            }
+          });
+          this.subscriptions.push(sub);
         }
       }
     });

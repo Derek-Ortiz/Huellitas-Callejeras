@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { map, Observable, catchError, throwError } from 'rxjs';
 import { Animal } from '../interfaces/animalI';
 import { ApiResponse } from '../interfaces/citaI';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConexionApiAnimales {
-  private apiUrl = 'http://localhost:8080/api/animal';
-  private token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6Imh1ZWxsaXRhcy1jYWxsZWplcmFzLWFwaSIsInJlc2NhdGlzdGFJZCI6ImMxY2I3N2MyLTI0MmUtNDJmNy1iYzUyLTlkZGE5ZGQ5OGY0ZSIsIm5vbWJyZSI6ImFubmUiLCJleHAiOjE3NjY5NjAzMjV9.ydYqQGGYA8DsI29wkTe2mIk0MG8kSLedkzzuWyOqSGc';
+  private apiUrl = `${environment.apiUrl}/animal`;
+    private token = localStorage.getItem('auth_token') || '';
 
   constructor(private http: HttpClient) { }
 

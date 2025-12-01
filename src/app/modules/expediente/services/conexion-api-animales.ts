@@ -118,6 +118,18 @@ export class ConexionApiAnimales {
 		return 'Hembra';
 	}
 
+	/**
+	 * POST crear animal con rescate (FormData)
+	 * Endpoint: http://127.0.0.1:9090/api/animal/crear-con-rescate
+	 *
+	 * Partes del FormData:
+	 *  - "animal": JSON string con los datos del animal
+	 *  - "rescate": JSON string con los datos de rescate
+	 *  - "imagen" (opcional): archivo de imagen seleccionado en el formulario
+	 *
+	 * Nota: si deseas probar sin enviar archivo, puedes comentar el bloque
+	 * fd.append('imagen', file, file.name) más abajo.
+	 */
 	crearConRescateFormData(payload: AnimalRescateRequest, file?: File): Observable<any | null> {
 		const url = `${this.apiUrl}/crear-con-rescate`;
 		const fd = new FormData();
@@ -141,6 +153,8 @@ export class ConexionApiAnimales {
 		fd.append('rescate', rescateJson);
 		
 		if (file) {
+			// Parte de archivo para el endpoint http://127.0.0.1:9090/api/animal/crear-con-rescate
+			// Descomentar/comentar esta línea para habilitar/deshabilitar el envío del archivo.
 			fd.append('imagen', file, file.name);
 		}
 
