@@ -151,23 +151,22 @@ export class ConexionApiAnimales {
 	}
 
 	actualizarConRescateFormData(id: string, payload: AnimalRescateRequest, file?: File): Observable<any | null> {
+		console.log('Actualizando con rescate - ID:', id, 'Payload:', payload, 'Archivo:', file);
 		const url = `${this.apiUrl}/${encodeURIComponent(id)}/actualizar-con-rescate`;
 		const fd = new FormData();
-
-		const sexoNormalizado = this.normalizarSexoPorContenido(payload.animal.sexo);
 		
 		const animalData = {
 			...payload.animal,
 			peso: Number(payload.animal.peso),
 			edad: Number(payload.animal.edad),
-			sexo: sexoNormalizado
+			fechaSalida: payload.animal.fechaSalida ?? 'no ta',
 		};
 
 		const rescateData = {
 			lugar: payload.rescate.lugar,
 			descripcion: payload.rescate.descripcion
 		};
-
+		console.log('Datos normalizados - Animal:', animalData, 'Rescate:', rescateData);
 		fd.append('animal', JSON.stringify(animalData));
 		fd.append('rescate', JSON.stringify(rescateData));
 		

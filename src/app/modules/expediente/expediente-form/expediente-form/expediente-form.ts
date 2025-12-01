@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Animal, RescateResponse } from '../../interfaces/paciente.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-expediente-form',
@@ -16,6 +17,8 @@ export class ExpedienteForm implements OnChanges {
   model: any = {};
   missingFields: Set<string> = new Set();
 
+  constructor(private router: Router) {}
+  
   get computedDisabled(): boolean {
     if (this.disabled) return true;
     
@@ -118,6 +121,10 @@ export class ExpedienteForm implements OnChanges {
   } else {
     this.save.emit(this.model);
   }
+}
+
+onNav() {
+  this.router.navigate(['/galeria']);
 }
 
   onCancel() {

@@ -412,7 +412,7 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
           
           if (this.initialAnimal && this.initialAnimal.id) {
             console.log(' Navegando a edición con nuevo ID:', this.initialAnimal.id);
-            this.router.navigate(['/expediente/edit', this.initialAnimal.id]);
+            this.router.navigate(['/galeria']);
           }
         }, 
         (err) => {

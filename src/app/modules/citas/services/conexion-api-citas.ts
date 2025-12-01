@@ -2,13 +2,14 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, catchError, throwError, tap } from 'rxjs';
 import { ApiResponse, Cita, CitaRequest } from '../interfaces/citaI';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConexionApiCitas {
-  private apiUrl = 'http://localhost:8080/api/citas';
-  private token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6Imh1ZWxsaXRhcy1jYWxsZWplcmFzLWFwaSIsInJlc2NhdGlzdGFJZCI6ImMxY2I3N2MyLTI0MmUtNDJmNy1iYzUyLTlkZGE5ZGQ5OGY0ZSIsIm5vbWJyZSI6ImFubmUiLCJleHAiOjE3NjY5NjAzMjV9.ydYqQGGYA8DsI29wkTe2mIk0MG8kSLedkzzuWyOqSGc';
+  private apiUrl = `${environment.apiUrl}/citas`;
+  private token = localStorage.getItem('auth_token') || '';
 
   constructor(private http: HttpClient) { 
   }
@@ -16,9 +17,6 @@ export class ConexionApiCitas {
   obtenerCitas(): Observable<Cita[]> {
    
     return this.http.get<any>(this.apiUrl,{
-      headers: {
-        'Authorization': `Bearer ${this.token}`
-      }
     }).pipe(
       map(response => {
           return response.data || [];
@@ -30,9 +28,6 @@ export class ConexionApiCitas {
 crearCita(cita: CitaRequest): Observable<any> {
 
   return this.http.post<any>(this.apiUrl, cita, {
-    headers: {
-      'Authorization': `Bearer ${this.token}`
-    }
   }).pipe(
     tap(response => {
       console.log(" Respuesta exitosa de crear cita:", response);
@@ -64,9 +59,6 @@ crearCita(cita: CitaRequest): Observable<any> {
     console.log("Actualizando cita con ID:", id, "Datos:", cita);
     const url = `${this.apiUrl}/${id}`;
     return this.http.put<any>(url, cita, {
-      headers: {
-        'Authorization': `Bearer ${this.token}`
-      }
     }).pipe(
       map(response => {
         if (response.data) {
@@ -84,9 +76,6 @@ crearCita(cita: CitaRequest): Observable<any> {
   eliminarCita(id: string): Observable<void> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.delete<any>(url, {
-      headers: {
-        'Authorization': `Bearer ${this.token}`
-      }
     }).pipe(
       map(response => {
         return;

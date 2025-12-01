@@ -22,10 +22,10 @@ export class ConexionApiLogin {
   constructor(private http: HttpClient) {}
 
   login(payload: RescatistaLogin): Observable<any> {
-    console.log('🔄 Enviando login a:', `${this.apiUrl}/login`, payload);
+    console.log('Enviando login a:', `${this.apiUrl}/login`, payload);
     return this.http.post<ApiResponse<any>>(`${this.apiUrl}/login`, payload).pipe(
       map(res => {
-        console.log('🔐 Login response:', res);
+        console.log('Login response:', res);
         return res.data ?? res;
       }),
       catchError(this.handleError('login'))
@@ -34,7 +34,7 @@ export class ConexionApiLogin {
 
   createRescatista(nombre: string, contrasena: string): Observable<any> {
     const payload = { nombre, contrasena };
-    console.log('🔄 Creando rescatista en:', `${this.apiUrl}/crear-rescatista`, payload);
+    console.log('Creando rescatista en:', `${this.apiUrl}/crear-rescatista`, payload);
     return this.http.post<ApiResponse<any>>(`${this.apiUrl}/crear-rescatista`, payload).pipe(
       map(res => res.data ?? res),
       catchError(this.handleError('createRescatista'))
@@ -43,7 +43,7 @@ export class ConexionApiLogin {
 
   private handleError(operation: string) {
     return (error: HttpErrorResponse) => {
-      console.error(`❌ Error en ${operation}:`, error);
+      console.error(`Error en ${operation}:`, error);
 
       let errorMessage = 'Error desconocido';
       if (error.error instanceof ErrorEvent) {

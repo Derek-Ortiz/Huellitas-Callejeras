@@ -17,7 +17,7 @@ export class ExpedientesService {
   obtenerExpedientes(): Observable<Expediente[]> {
     console.log('🔍 [ExpedientesService] Obteniendo expedientes...');
     console.log('🌐 URL:', this.apiUrl);
-    // AuthInterceptor añade Authorization
+    
     return this.http.get<ApiResponse<Expediente[]>>(this.apiUrl).pipe(
       tap(response => {
         console.log('📥 [ExpedientesService] Respuesta completa del backend:', response);
