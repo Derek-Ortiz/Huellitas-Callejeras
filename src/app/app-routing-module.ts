@@ -26,7 +26,12 @@ const routes: Routes = [
   { 
     path: 'expediente', 
     loadChildren: () => import('./modules/expediente/expediente.module').then(m => m.ExpedienteModule)
-   }
+   },
+   {
+    path: 'medicine',
+    loadChildren: () => import('./modules/module-tratamiento/module-tratamiento-module').then(m => m.ModuleTratamientoModule),
+    title: 'Medicine'
+  },
 
 ];
 

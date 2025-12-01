@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { Component, OnDestroy } from '@angular/core';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { TreatmentModal } from '../services/treatment-modal';
 import { TreatmentStore } from '../services/treatment-store';
 import { ConexionApiTratamientos } from '../services/comexion-api-tratamiento';
 import { ActivatedRoute } from '@angular/router';
-import { CurrentAnimalStub } from '../services/current-animal.stub';
+import { SelectedAnimalStore } from '../../../shared/selected-animal.store';
 import { Router } from '@angular/router';
 import { MedicineModalSwitch } from '../services/medicine-modal';
 
@@ -14,7 +14,7 @@ import { MedicineModalSwitch } from '../services/medicine-modal';
   templateUrl: './tratamiento.html',
   styleUrl: './tratamiento.css',
 })
-export class Tratamiento {
+export class Tratamiento implements OnDestroy {
   modalTreatmentEditOpen = false;
   modalMedicineOpen = false;
   tratamientos: any[] = [];
@@ -31,6 +31,7 @@ export class Tratamiento {
   deletingMedicineIndex: number | null = null;
   editingMedicineIndex: number | null = null;
   currentInitial?: { medicamento?: string; fecha?: string; dosis?: string; repeticion?: string };
+  private routeSub?: Subscription;
 
   constructor(
     private modalSS: TreatmentModal,
@@ -38,19 +39,27 @@ export class Tratamiento {
     private store: TreatmentStore,
     private api: ConexionApiTratamientos,
     private route: ActivatedRoute,
-    private currentAnimal: CurrentAnimalStub,
+    // Removed CurrentAnimalStub usage; rely on route param or SelectedAnimalStore
     private medicineSwitch: MedicineModalSwitch,
   ) { }
 
   ngOnInit() {
-    this.modalSS.$modalTreatment.subscribe(v => this.modalTreatmentEditOpen = v);
+    this.modalSS.$modalTreatment.subscribe((v: boolean) => this.modalTreatmentEditOpen = v);
     this.medicineSwitch.$modalMedicine.subscribe(v => this.modalMedicineOpen = !!v);
-    const tid = this.route.snapshot.queryParamMap.get('tid') || undefined;
-    if (tid) {
-      this.selectedTreatmentId = tid;
-    }
-    let animalId = this.route.snapshot.paramMap.get('animalId') || this.currentAnimal.getAnimalId();
-    this.loadTratamientos(animalId);
+
+    // React to route param/query changes so data loads immediately on enter and on navigation within module
+    this.routeSub = this.route.paramMap.subscribe(pm => {
+      const animalId = pm.get('animalId') || SelectedAnimalStore.get() || '';
+      const tid = this.route.snapshot.queryParamMap.get('tid') || undefined;
+      if (tid) {
+        this.selectedTreatmentId = tid;
+      }
+      this.loadTratamientos(animalId);
+    });
+  }
+
+  ngOnDestroy(): void {
+    try { this.routeSub?.unsubscribe(); } catch { }
   }
 
   private loadTratamientos(animalId: string) {
@@ -67,7 +76,8 @@ export class Tratamiento {
       },
       error: err => {
         console.error('[Tratamiento] Error obteniendo tratamientos, usando fallback local', err);
-        this.tratamientos = this.store.getAll().map(t => ({ id: String(t.id), fechaInicio: t.startDate, receta: null, animalId: this.currentAnimal.getAnimalId(), medicamentos: [] }));
+        const fallbackAnimalId = SelectedAnimalStore.get() || '';
+        this.tratamientos = this.store.getAll().map(t => ({ id: String(t.id), fechaInicio: t.startDate, receta: null, animalId: fallbackAnimalId, medicamentos: [] }));
         if (this.selectedTreatmentId) {
           this.onChipClick(this.selectedTreatmentId);
         } else if (this.tratamientos.length > 0) {
@@ -244,7 +254,7 @@ export class Tratamiento {
         }
         m.isNew = false; // ya persistido
       }
-      const animalId = this.currentAnimal.getAnimalId();
+      const animalId = this.route.snapshot.paramMap.get('animalId') || SelectedAnimalStore.get() || '';
       // Normalizar fecha inicio a formato ISO terminado en Z si no lo está
       const fechaInicioRaw = this.selectedTratamiento.fechaInicio || new Date().toISOString();
       const fechaInicio = fechaInicioRaw.includes('T') ? fechaInicioRaw : (fechaInicioRaw + 'T00:00:00Z');
@@ -285,8 +295,22 @@ export class Tratamiento {
     }
   }
 
-  navigateHome() { this.router.navigateByUrl('/'); }
+  navigateHome() {
+    const animalId = this.route.snapshot.paramMap.get('animalId') || SelectedAnimalStore.get() || '';
+    if (animalId) {
+      this.router.navigate(['/expediente/editar', animalId]);
+    } else {
+      this.router.navigateByUrl('/expediente');
+    }
+  }
   goToAddTreatment() { this.router.navigate(['/medicine', 'tratamiento', 'add-treatment']); }
+  
+  goToAddTreatmentForAnimal() {
+    const animalId = this.route.snapshot.paramMap.get('animalId') || SelectedAnimalStore.get() || '';
+    if (animalId) {
+      this.router.navigate(['/medicine/tratamiento', animalId, 'add-treatment']);
+    }
+  }
 
   
   getSelectedIndex(): number {

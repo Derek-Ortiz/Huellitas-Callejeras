@@ -1,3 +1,4 @@
+import { SelectedAnimalStore } from '../../../../shared/selected-animal.store';
 import { Component, OnInit, ViewChild, OnDestroy, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -23,6 +24,7 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
   imagePreviews: string[] = [];
   showCancelModal = false;
   cancelMessage = '';
+  saving = false; // bloquea navegación hasta respuesta de API
 
   constructor(
     private router: Router,
@@ -199,15 +201,18 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
 
   onTratamientos() {
     console.log(' onTratamientos llamado');
-    if (this.expForm) {
-      if ((this.expForm as any).disabled) {
-        console.log('Formulario deshabilitado, no se puede proceder');
-        return;
-      }
-      console.log('Ejecutando onSubmit del formulario');
-      this.expForm.onSubmit();
-    } else {
-      console.warn('expForm no disponible en onTratamientos');
+    const animalId = this.initialAnimal?.id;
+    if (!animalId) {
+      console.warn('No hay animalId disponible para navegar a tratamientos');
+      return;
+    }
+    // Persist selected animal id for tratamiento module
+    SelectedAnimalStore.set(animalId);
+    try {
+      this.router.navigate(['/medicine/tratamiento', animalId]);
+      console.log('Navegando a /medicine/tratamiento/', animalId);
+    } catch (e) {
+      console.error('Error navegando a tratamientos:', e);
     }
   }
 
@@ -329,6 +334,8 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onSave(data: any) {
+    if (this.saving) { return; }
+    this.saving = true;
     console.log('onSave llamado con datos:', data);
     console.log('Archivos seleccionados:', this.selectedFiles.length);
     
@@ -390,9 +397,11 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
           this.isEditing = false;
           this.clearImagePreviews();
           console.log('🔍 Edición completada - modo edición desactivado');
+          this.saving = false;
         }, 
         (err) => {
           console.error('Error actualizando animal con rescate:', err);
+          this.saving = false;
         }
       );
     } else {
@@ -410,13 +419,18 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
           this.clearImagePreviews();
           console.log(' Creación completada');
           
-          if (this.initialAnimal && this.initialAnimal.id) {
-            console.log(' Navegando a edición con nuevo ID:', this.initialAnimal.id);
+          const createdId = (this.initialAnimal && this.initialAnimal.id) || (res as any)?.id;
+          if (createdId) {
+            console.log(' Registro confirmado. Navegando a galería. ID:', createdId);
             this.router.navigate(['/galeria']);
+          } else {
+            console.warn('No se recibió ID tras crear. No se navega.');
           }
+          this.saving = false;
         }, 
         (err) => {
           console.error(' Error creando animal con rescate:', err);
+          this.saving = false;
         }
       );
     }

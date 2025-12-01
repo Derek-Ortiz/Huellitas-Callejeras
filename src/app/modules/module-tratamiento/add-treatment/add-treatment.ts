@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { TreatmentModal } from '../services/treatment-modal';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { TreatmentStore } from '../services/treatment-store';
 import { ConexionApiTratamientos } from '../services/comexion-api-tratamiento';
-import { CurrentAnimalStub } from '../services/current-animal.stub';
+import { SelectedAnimalStore } from '../../../shared/selected-animal.store';
+import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { MedicineModalSwitch } from '../services/medicine-modal';
 
@@ -13,7 +14,7 @@ import { MedicineModalSwitch } from '../services/medicine-modal';
   templateUrl: './add-treatment.html',
   styleUrl: './add-treatment.css',
 })
-export class AddTreatment {
+export class AddTreatment implements OnDestroy {
   modalTreatmentEditOpen = false;
   modalMedicineOpen = false;
   showDeleteConfirm = false;
@@ -26,6 +27,7 @@ export class AddTreatment {
   currentInitial?: { medicamento?: string; fecha?: string; dosis?: string; repeticion?: string };
   deletingIndex: number | null = null;
   selectedFile: File | null = null;
+  private routeSub?: import('rxjs').Subscription;
 
   constructor(
     private modalSS: TreatmentModal,
@@ -33,7 +35,7 @@ export class AddTreatment {
     private store: TreatmentStore,
     private router: Router,
     private api: ConexionApiTratamientos,
-    private currentAnimal: CurrentAnimalStub,
+    private route: ActivatedRoute,
     private medicineSwitch: MedicineModalSwitch,
   ) {
     this.form = this.fb.group({
@@ -46,14 +48,21 @@ export class AddTreatment {
   ngOnInit() {
     this.modalSS.$modalTreatment.subscribe(v => this.modalTreatmentEditOpen = v);
     this.medicineSwitch.$modalMedicine.subscribe(v => this.modalMedicineOpen = !!v);
-    const animalId = this.currentAnimal.getAnimalId();
-    this.api.obtenerTratamientosPorAnimal(animalId).subscribe({
-      next: ts => {
-        this.tratamientos = ts || [];
-        this.nums = Array.from({ length: this.tratamientos.length }, (_, i) => i + 1);
-      },
-      error: err => console.error('[AddTreatment] Error al cargar tratamientos:', err)
+    // Load immediately and on any route changes
+    this.routeSub = this.route.paramMap.subscribe(pm => {
+      const animalId = pm.get('animalId') || (SelectedAnimalStore.get() || '');
+      this.api.obtenerTratamientosPorAnimal(animalId).subscribe({
+        next: ts => {
+          this.tratamientos = ts || [];
+          this.nums = Array.from({ length: this.tratamientos.length }, (_, i) => i + 1);
+        },
+        error: err => console.error('[AddTreatment] Error al cargar tratamientos:', err)
+      });
     });
+  }
+
+  ngOnDestroy(): void {
+    try { this.routeSub?.unsubscribe(); } catch {}
   }
 
   openAddMedicineModal() {
@@ -124,7 +133,7 @@ export class AddTreatment {
     this.submitted = true;
     if (this.form.invalid) { return; }
     const { startDate } = this.form.value as { startDate: string };
-    const animalId = this.currentAnimal.getAnimalId();
+    const animalId = this.route.snapshot.paramMap.get('animalId') || (SelectedAnimalStore.get() || '');
     const medsControls = this.medicines.controls.map(fg => fg.value as any);
     if (medsControls.length === 0) {
       console.error('[AddTreatment] Debes agregar al menos un medicamento antes de guardar');
@@ -174,10 +183,17 @@ export class AddTreatment {
     runSequential();
   }
 
-  navigateHome() { this.router.navigateByUrl('/'); }
+  navigateHome() {
+    const animalId = this.route.snapshot.paramMap.get('animalId') || (SelectedAnimalStore.get() || '');
+    if (animalId) {
+      this.router.navigate(['/expediente/editar', animalId]);
+    } else {
+      this.router.navigateByUrl('/expediente');
+    }
+  }
 
   goToTratamiento(tratamientoId: string) {
-    // Navegar al root de medicine con el id seleccionado como query param
-    this.router.navigate(['/medicine'], { queryParams: { tid: tratamientoId } });
+    const animalId = this.route.snapshot.paramMap.get('animalId') || (SelectedAnimalStore.get() || '');
+    this.router.navigate(['/medicine/tratamiento', animalId], { queryParams: { tid: tratamientoId } });
   }
 }

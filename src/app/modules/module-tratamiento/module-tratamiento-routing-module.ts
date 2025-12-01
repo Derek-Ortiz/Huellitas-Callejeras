@@ -17,11 +17,11 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'tratamiento',
+    path: 'tratamiento/:animalId',
     component: Tratamiento, 
   },
   {
-    path: 'tratamiento/add-treatment',
+    path: 'tratamiento/:animalId/add-treatment',
     component: AddTreatment  
   }
 ];

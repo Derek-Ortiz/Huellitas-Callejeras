@@ -6,13 +6,13 @@
 }
 
 <div class="main-Card">
-    <div class="treatments-cards">
-                <app-back-button (clickBack)="navigateHome()"></app-back-button>
-                @for(t of tratamientos; track t.id; let i = $index){
-                    <app-treatment-chip [label]="'Tratamiento (' + (i + 1) + ')'" (click)="onChipClick(t.id)" (delete)="onChipDelete(t.id)"></app-treatment-chip>
-                }
-                <div class="add-treatment" (click)="goToAddTreatment()">
-          <a>+</a>
+    <div class="treatments-row">
+        <app-back-button (clickBack)="navigateHome()"></app-back-button>
+        <div class="treatments-cards">
+            @for(t of tratamientos; track t.id; let i = $index){
+                <app-treatment-chip [label]="'Tratamiento (' + (i + 1) + ')'" (click)="onChipClick(t.id)" (delete)="onChipDelete(t.id)"></app-treatment-chip>
+            }
+            <div class="add-treatment" (click)="goToAddTreatmentForAnimal()"><a>+</a></div>
         </div>
     </div>
         <div class="side">

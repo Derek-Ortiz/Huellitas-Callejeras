@@ -4,12 +4,13 @@ import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { ApiResponse, Tratamiento, TratamientoRequest, TratamientoFormRequest } from '../interfaces/tratamientoI';
 import { Medicamento } from '../interfaces/medicamentosI';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConexionApiTratamientos {
-  private baseUrl = 'http://localhost:9090/api';
+  private baseUrl = environment.apiUrl;
   private tratamientosUrl = `${this.baseUrl}/tratamientos`;
   private medicamentosUrl = `${this.baseUrl}/medicamentos`;
   

@@ -6,11 +6,13 @@
 }
 
 <div class="main-Card">
-    <div class="treatments-cards">
+    <div class="treatments-row">
         <app-back-button (clickBack)="navigateHome()"></app-back-button>
-        @for(t of tratamientos; track t.id; let i = $index){
-            <app-treatment-chip [label]="'Tratamiento (' + (i + 1) + ')'" (click)="goToTratamiento(t.id)"></app-treatment-chip>
-        }
+        <div class="treatments-cards">
+            @for(t of tratamientos; track t.id; let i = $index){
+                <app-treatment-chip [label]="'Tratamiento (' + (i + 1) + ')'" (click)="goToTratamiento(t.id)"></app-treatment-chip>
+            }
+        </div>
     </div>
 
     <form [formGroup]="form" (ngSubmit)="save()">
@@ -56,7 +58,7 @@
         </div>
 
         <div class="save-btn">
-            <button class="save" type="submit">
+            <button class="save" type="submit" title="Guardar tratamiento">
                 <img src="/Save.png" alt="guardar">
             </button>
         </div>
