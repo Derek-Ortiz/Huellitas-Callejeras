@@ -1,0 +1,18 @@
+.side{
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    
+}
+.left-side{
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+    /* justify-content: center; */
+}
+.right-side{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+/* Card styles moved to app-medicine-card component */

@@ -1,0 +1,37 @@
+<div class="overlay">
+    <div class="modal">
+        <h1 class="title">Añadir un medicamento</h1>
+
+        <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+            <label class="field">
+                <span>Medicamento</span>
+                 <input type="text" formControlName="medicamento" placeholder="nombre del medicamento"
+                     [ngClass]="{invalid: form.controls['medicamento'].invalid && (submitted || form.controls['medicamento'].touched)}" />
+            </label>
+
+            <label class="field">
+                <span>Fecha de consulta</span>
+                 <input type="date" formControlName="fecha" placeholder="dd-mm-yy"
+                     [ngClass]="{invalid: form.controls['fecha'].invalid && (submitted || form.controls['fecha'].touched)}" />
+            </label>
+
+            <label class="field">
+                <span>Dosis</span>
+                 <input type="text" formControlName="dosis" placeholder="00g"
+                     [ngClass]="{invalid: form.controls['dosis'].invalid && (submitted || form.controls['dosis'].touched)}" />
+            </label>
+
+            <label class="field">
+                <span>Repetición</span>
+                 <input type="text" formControlName="repeticion" placeholder="x hrs"
+                     [ngClass]="{invalid: form.controls['repeticion'].invalid && (submitted || form.controls['repeticion'].touched)}" />
+            </label>
+
+            <div class="actions">
+                <button class="btn confirm" type="submit">Guardar</button>
+            </div>
+        </form>
+
+        <button class="close" (click)="closeModalTreatmentEdit()">X</button>
+    </div>
+</div>

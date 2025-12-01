@@ -1,0 +1,90 @@
+.treatment-title{
+    background-color: #D693BF;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 37px;
+    margin-bottom: 75px;
+    
+    padding: 15px;
+}
+.info-card-treat{
+    background-color: #E9F7E1;
+    margin: 37px;
+
+
+}
+.info-top, .info-buttom{
+    padding: 27px;
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 1.5rem;
+    text-align: center;
+    align-items: center;
+}
+.docs{
+    width: 45px;
+    height: 47px;
+}
+.plus-card{
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.plus-card:hover{
+    cursor: pointer;
+    background: #5B8346;
+    color: #FFFFFF;
+    
+}
+.treatments-cards{
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    padding-top: 8px;
+
+}
+.add-treatment{
+    background: #D693BF;
+    border-radius: 12px;
+    padding: 8px 12px;
+    color: #FFFFFF;
+}
+.add-treatment:hover{
+    background-color: #ce6dac;
+    cursor: pointer;
+    color: #000000;
+}
+
+.save-btn{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center; 
+}
+.save{
+    background: #7BB75A;
+    font-size: 1.5rem;
+    padding: 15px;
+    border-radius: 20px;
+    margin-top: 200px;
+    color: #FFFFFF;
+    border: none;
+    width: 134.3px;
+}
+.save:hover{
+    background-color: #375527;
+    color: #000000;
+    cursor: pointer;
+}
+
+.overlay.loading{ position: fixed; inset:0; background: rgba(0,0,0,0.2); display:flex; align-items:center; justify-content:center; z-index: 1000; }
+.spinner{ width: 48px; height: 48px; border-radius:50%; border: 4px solid #ccc; border-top-color: #7BB75A; animation: spin 0.9s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg);} to { transform: rotate(360deg);} }
+
+/* Two-column layout: left = form, right = medicine cards */
+.side{ display:flex; gap: 32px; align-items: flex-start; justify-content: center; }
+.left-side{ flex: 1; min-width: 520px; }
+.right-side{ flex: 0 0 420px; display:flex; flex-direction: column; }
+.medicine-list-item{ margin: 12px 0; }

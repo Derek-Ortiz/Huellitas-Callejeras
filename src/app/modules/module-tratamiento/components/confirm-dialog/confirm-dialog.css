@@ -1,0 +1,9 @@
+.overlay{ position: fixed; inset:0; background: rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; z-index: 10000; }
+.dialog{ background:#fff; border-radius:8px; padding:20px 24px; box-shadow:0 2px 8px rgba(0,0,0,0.2); min-width: 360px; border:1px solid #999; }
+.message{ text-align:center; margin:0 0 16px 0; font-size:1rem; }
+.actions{ display:flex; justify-content:space-around; }
+.btn{ border:none; border-radius:8px; padding:8px 16px; cursor:pointer; }
+.btn.cancel{ background:#d46a6a; color:#fff; }
+.btn.accept{ background:#7BB75A; color:#fff; }
+.btn.cancel:hover{ background:#b35454; }
+.btn.accept:hover{ background:#5e9a42; }

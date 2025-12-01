@@ -1,0 +1,13 @@
+.chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background: linear-gradient(to right,#D492BD , #E1BAD3);
+  color:#fff;
+  border-radius:12px;
+  padding:8px 12px;
+  cursor:pointer;
+}
+.label{ font-size: 0.95rem; }
+.delete{ width:18px; height:18px; filter:none; }
+.chip:hover{ color:#000; }

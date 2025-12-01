@@ -1,3 +1,121 @@
+## Postman Requests (Animales y Tratamientos)
+
+Usa estas muestras en Postman para probar el backend Ktor.
+
+Base URL: `http://localhost:9090/api`
+
+### Crear Animal
+
+POST `http://localhost:9090/api/animales`
+
+Headers:
+- `Content-Type: application/json`
+- `Authorization: Bearer <TOKEN>` (opcional si tu API lo requiere)
+
+Body (raw JSON):
+```
+{
+	"nombre": "Firulais",
+	"peso": 12.5,
+	"raza": "Mestizo",
+	"sexo": "M",
+	"edad": 24,
+	"especie": "perro",
+	"estado": "rescatado",
+	"fechaSalida": null,
+	"urlImage": "https://example.com/imagen.jpg",
+	"rescatistaId": "0ca33c88-ca4e-4e87-9727-58a24dfe5c38"
+}
+```
+
+Respuesta esperada:
+```
+{
+	"success": true,
+	"message": "Animal creado",
+	"data": {
+		"id": "<uuid>",
+		"nombre": "Firulais",
+		"peso": 12.5,
+		"raza": "Mestizo",
+		"sexo": "M",
+		"edad": 24,
+		"especie": "perro",
+		"estado": "rescatado",
+		"fechaSalida": null,
+		"urlImage": "https://example.com/imagen.jpg",
+		"rescatistaId": "0ca33c88-ca4e-4e87-9727-58a24dfe5c38"
+	}
+}
+```
+
+### Crear Tratamiento
+
+POST `http://localhost:9090/api/tratamientos`
+
+Headers:
+- `Content-Type: application/json`
+- `Authorization: Bearer <TOKEN>` (opcional)
+
+Body (raw JSON):
+```
+{
+	"fechaInicio": "2025-11-29T12:00:00Z",
+	"receta": null,
+	"animalId": "<uuid-del-animal>",
+	"medicamentos": [
+		{
+			"nombre": "Amoxicilina",
+			"descripcion": "Antibiótico",
+			"dosis": "500 mg",
+			"cantidad": 10
+		}
+	]
+}
+```
+
+Respuesta esperada:
+```
+{
+	"success": true,
+	"message": "Tratamiento creado",
+	"data": {
+		"id": "<uuid>",
+		"fechaInicio": "2025-11-29T12:00:00Z",
+		"receta": null,
+		"animalId": "<uuid-del-animal>",
+		"medicamentos": [
+			{
+				"id": "<uuid>",
+				"nombre": "Amoxicilina",
+				"descripcion": "Antibiótico",
+				"dosis": "500 mg",
+				"cantidad": 10
+			}
+		]
+	}
+}
+```
+
+### cURL (alternativa rápida)
+
+```
+curl -X POST http://localhost:9090/api/animales \
+	-H "Content-Type: application/json" \
+	-d '{
+		"nombre":"Firulais","peso":12.5,"raza":"Mestizo","sexo":"M","edad":24,
+		"especie":"perro","estado":"rescatado","fechaSalida":null,
+		"urlImage":"https://example.com/imagen.jpg","rescatistaId":"0ca33c88-ca4e-4e87-9727-58a24dfe5c38"
+	}'
+
+curl -X POST http://localhost:9090/api/tratamientos \
+	-H "Content-Type: application/json" \
+	-d '{
+		"fechaInicio":"2025-11-29T12:00:00Z","receta":null,
+		"animalId":"<uuid-del-animal>",
+		"medicamentos":[{"nombre":"Amoxicilina","descripcion":"Antibiótico","dosis":"500 mg","cantidad":10}]
+	}'
+```
 # HuellitasCallejeras
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.2.

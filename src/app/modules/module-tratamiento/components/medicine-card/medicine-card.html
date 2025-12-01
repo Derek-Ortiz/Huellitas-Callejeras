@@ -1,0 +1,14 @@
+<div class="medicine-card">
+  <div class="card-top">
+    <p class="medicine-name">{{ name }}</p>
+    <p class="medicine-date">{{ completionDate || 'Fecha de Conclusión' }}</p>
+  </div>
+  <div class="card-bottom">
+    <p class="medicine-dose">{{ dose || 'Dosis' }}</p>
+    <p class="medicine-rep">{{ repetition || 'Repetición' }}</p>
+    <app-edit-button (clicked)="edit.emit()"></app-edit-button>
+    <button class="delete-btn" (click)="delete.emit()" aria-label="Eliminar">
+      <img src="/Delete.png" alt="Eliminar" />
+    </button>
+  </div>
+</div>

@@ -1,3 +1,76 @@
+/* Save button for tratamiento update */
+.save-treatment-btn {
+    background: #11a34d;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    transition: background .2s ease;
+    margin-left: 8px;
+    height: 32px;
+}
+.save-treatment-btn img { height: 20px; }
+.save-treatment-btn:hover { background: #0e8e42; }
+.save-treatment-btn:active { background: #0b6c32; }
+
+.save-treatment-btn.floating {
+    margin-left: 0;
+    width: 60px;
+    justify-content: center;
+}
+.floating-save-wrapper {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.file-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.file-row .file-name {
+    font-size: 12px;
+    color: #333;
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 4px;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-row.file-warning {
+    border: 1px solid #d93025;
+    padding: 4px;
+    border-radius: 6px;
+    background: #fff5f5;
+}
+.input-warning {
+    outline: 2px solid #d93025;
+}
+.file-missing-msg {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #d93025;
+    font-weight: 500;
+}
+
+.medicine-list-item.medicine-new {
+    animation: pulseNew 1.2s ease-in-out 2;
+    border: 2px dashed #11a34d;
+    border-radius: 8px;
+}
+@keyframes pulseNew {
+    0% { background-color: #e8fce8; }
+    50% { background-color: #d3f7d3; }
+    100% { background-color: #e8fce8; }
+}
 /* You can add global styles to this file, and also import other style files */
 *{
     margin: 0;

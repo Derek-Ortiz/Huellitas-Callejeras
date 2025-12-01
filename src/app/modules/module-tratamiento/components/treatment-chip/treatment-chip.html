@@ -1,0 +1,4 @@
+<div class="chip" (click)="onClick()">
+  <span class="label">{{ label }}</span>
+  <img class="delete" src="/Delete.png" alt="Eliminar" (click)="$event.stopPropagation(); onDelete()"/>
+</div>
