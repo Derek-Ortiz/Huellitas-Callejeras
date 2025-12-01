@@ -1,10 +1,6 @@
-<<<<<<< HEAD
-import { Component } from '@angular/core';
-=======
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
->>>>>>> Expediente
 
 @Component({
   selector: 'app-sesion-content',
@@ -12,9 +8,6 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './sesion-content.html',
   styleUrls: ['./sesion-content.css']
 })
-<<<<<<< HEAD
-export class SesionContent {}
-=======
 export class SesionContent implements OnInit {
   password = '';
   invalid = false;
@@ -38,8 +31,8 @@ login() {
         console.log('[SesionContent] Resultado del login:', result);
         
         if (result) {
-          console.log('[SesionContent] Navegando a /expediente/editar');
-          this.router.navigate(['/expediente/view']).then(success => {
+          console.log('[SesionContent] Navegando a /galeriar');
+          this.router.navigate(['/galeria']).then(success => {
             console.log('[SesionContent] Navegación exitosa:', success);
           }).catch(error => {
             console.error('[SesionContent] Error en navegación:', error);
@@ -60,4 +53,3 @@ login() {
     if (this.invalid) this.invalid = false;
   }
 }
->>>>>>> Expediente

@@ -7,7 +7,7 @@ export interface Expediente {
   edad: number;
   peso: number;
   estado: string;
-  urlImagen: string;
+  urlImage: string;
   fechaSalida?: string;
   rescatistaId?: string;
 }
@@ -27,6 +27,6 @@ export interface AnimalRequest {
   nombre: string;
   edad: number;
   especie: string;
-  urlImagen: string;
+  urlImage: string;
   rescatistaId?: string;
 }

@@ -79,9 +79,9 @@ cargarPaciente(animalId: string): void {
   });
 }
 
-  irAExpediente(): void {
+  irAExpediente(animalId: string): void {
     if (this.animal) {
-      this.router.navigate(['/expediente', this.animal.id]);
+      this.router.navigate(['/expediente/editar', animalId]);
     }
   }
 

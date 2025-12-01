@@ -40,19 +40,13 @@ h1 {
 }
 
 .subtitle {
-<<<<<<< HEAD
-  color: #7B5A72;
-=======
   color: #404040;
->>>>>>> Expediente
   font-size: 18px;
   font-weight: 400;
   margin-top: -15px;
   margin-bottom: 50px;
 }
 
-<<<<<<< HEAD
-=======
 /* Estilos del formulario de sesión */
 .sesion-form {
   display: flex;
@@ -89,18 +83,13 @@ h1 {
   max-width: 360px;
 }
 
->>>>>>> Expediente
 .btn {
   background: #6B3A5E;
   color: white;
   border: none;
   padding: 12px 40px;
   font-size: 16px;
-<<<<<<< HEAD
-  border-radius: 6px;
-=======
   border-radius: 28px;
->>>>>>> Expediente
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
 }
@@ -137,11 +126,8 @@ h1 {
     height: 140px;
     margin-bottom: 30px;
   }
-<<<<<<< HEAD
-=======
 
   .form-group {
     margin-bottom: 18px;
   }
->>>>>>> Expediente
 }

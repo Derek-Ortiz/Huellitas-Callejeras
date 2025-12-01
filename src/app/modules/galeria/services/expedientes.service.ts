@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { Expediente, ApiResponse, AnimalRequest } from '../interfaces/expediente.interface';
 
@@ -10,17 +10,67 @@ import { Expediente, ApiResponse, AnimalRequest } from '../interfaces/expediente
 })
 export class ExpedientesService {
   private apiUrl = `${environment.apiUrl}/animal`;
+  private token = localStorage.getItem('auth_token') || '';
 
   constructor(private http: HttpClient) { }
 
   // GET /animal - Obtener todos los animales
   obtenerExpedientes(): Observable<Expediente[]> {
-    return this.http.get<ApiResponse<Expediente[]>>(this.apiUrl).pipe(
+    const headers = { Authorization: `Bearer ${this.token}` };
+    console.log('🔍 [ExpedientesService] Obteniendo expedientes...');
+    console.log('🔑 Token:', this.token ? 'Presente' : 'Faltante');
+    console.log('🌐 URL:', this.apiUrl);
+
+    return this.http.get<ApiResponse<Expediente[]>>(this.apiUrl, { headers }).pipe(
+      tap(response => {
+        console.log('📥 [ExpedientesService] Respuesta completa del backend:', response);
+        console.log('✅ Success:', response.success);
+        console.log('📊 Cantidad de expedientes:', response.data?.length || 0);
+        
+        if (response.success && response.data) {
+          response.data.forEach((expediente, index) => {
+            console.log(`🐾 Expediente ${index + 1}:`, {
+              id: expediente.id,
+              nombre: expediente.nombre,
+              raza: expediente.raza,
+              urlImage: expediente.urlImage,
+              tieneImagen: !!expediente.urlImage,
+              tipoImagen: expediente.urlImage ? this.getImageType(expediente.urlImage) : 'Sin imagen'
+            });
+          });
+        }
+      }),
       map(response => {
         if (response.success && response.data) {
+          console.log('🎯 [ExpedientesService] Retornando datos procesados');
           return response.data;
         }
+        console.warn('⚠️ [ExpedientesService] No hay datos o success=false');
         return [];
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  // DELETE /animal/{id} - Eliminar animal
+  eliminarExpediente(id: string): Observable<boolean> {
+    const headers = { Authorization: `Bearer ${this.token}` };
+    
+    console.log('🗑️ [ExpedientesService] Eliminando expediente ID:', id);
+    console.log('🌐 URL DELETE:', `${this.apiUrl}/${id}`);
+
+    return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/${id}`, { headers }).pipe(
+      tap(response => {
+        console.log('📥 [ExpedientesService] Respuesta de eliminación:', response);
+      }),
+      map(response => {
+        if (response.success) {
+          console.log('✅ [ExpedientesService] Expediente eliminado exitosamente');
+          return true;
+        } else {
+          console.warn('⚠️ [ExpedientesService] No se pudo eliminar el expediente:', response.message);
+          return false;
+        }
       }),
       catchError(this.handleError)
     );
@@ -28,23 +78,29 @@ export class ExpedientesService {
 
   // GET /animal/{id} - Obtener un animal por ID
   obtenerExpedientePorId(id: string): Observable<Expediente | undefined> {
-    return this.http.get<ApiResponse<Expediente>>(`${this.apiUrl}/${id}`).pipe(
+    const headers = { Authorization: `Bearer ${this.token}` };
+    console.log(`🔍 [ExpedientesService] Obteniendo expediente por ID: ${id}`);
+    
+    return this.http.get<ApiResponse<Expediente>>(`${this.apiUrl}/${id}`, { headers }).pipe(
+      tap(response => {
+        console.log('📥 [ExpedientesService] Respuesta por ID:', response);
+        if (response.success && response.data) {
+          console.log('🖼️ Imagen del expediente:', {
+            urlImage: response.data.urlImage,
+            tipo: this.getImageType(response.data.urlImage),
+            existe: !!response.data.urlImage
+          });
+        }
+      }),
       map(response => response.success ? response.data : undefined),
-      catchError(this.handleError)
-    );
-  }
-
-  // GET /animal/estado/{estado} - Filtrar por estado
-  obtenerExpedientesPorEstado(estado: string): Observable<Expediente[]> {
-    return this.http.get<ApiResponse<Expediente[]>>(`${this.apiUrl}/estado/${estado}`).pipe(
-      map(response => response.success && response.data ? response.data : []),
       catchError(this.handleError)
     );
   }
 
   // POST /animal - Crear nuevo animal
   agregarExpediente(expediente: AnimalRequest): Observable<Expediente> {
-    return this.http.post<ApiResponse<Expediente>>(this.apiUrl, expediente).pipe(
+    const headers = { Authorization: `Bearer ${this.token}` };
+    return this.http.post<ApiResponse<Expediente>>(this.apiUrl, expediente, { headers }).pipe(
       map(response => {
         if (response.success && response.data) {
           return response.data;
@@ -57,22 +113,29 @@ export class ExpedientesService {
 
   // PUT /animal/{id} - Actualizar animal
   actualizarExpediente(id: string, expediente: AnimalRequest): Observable<boolean> {
-    return this.http.put<ApiResponse<any>>(`${this.apiUrl}/${id}`, expediente).pipe(
+    const headers = { Authorization: `Bearer ${this.token}` };
+    return this.http.put<ApiResponse<any>>(`${this.apiUrl}/${id}`, expediente, { headers }).pipe(
       map(response => response.success),
       catchError(this.handleError)
     );
   }
 
-  // DELETE /animal/{id} - Eliminar animal
-  eliminarExpediente(id: string): Observable<boolean> {
-    return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/${id}`).pipe(
-      map(response => response.success),
-      catchError(this.handleError)
-    );
+  // Método auxiliar para identificar tipo de imagen
+  private getImageType(url: string): string {
+    if (!url) return 'URL vacía';
+    
+    if (url.startsWith('http')) return 'URL absoluta';
+    if (url.startsWith('/')) return 'URL relativa (raíz)';
+    if (url.startsWith('data:')) return 'Base64';
+    if (url.startsWith('assets/')) return 'Assets local';
+    if (url.startsWith('./')) return 'URL relativa';
+    
+    return 'URL desconocida';
   }
 
   private handleError(error: any): Observable<never> {
-    console.error('Error en ExpedientesService:', error);
+    console.error('❌ [ExpedientesService] Error:', error);
+    
     let errorMessage = 'Ocurrió un error en el servidor';
     
     if (error.error?.message) {
@@ -81,8 +144,13 @@ export class ExpedientesService {
       errorMessage = error.message;
     } else if (error.status === 0) {
       errorMessage = 'No se pudo conectar con el servidor. Verifica que el backend esté corriendo.';
+    } else if (error.status === 401) {
+      errorMessage = 'Token de autenticación inválido o expirado';
+    } else if (error.status === 403) {
+      errorMessage = 'No tienes permisos para acceder a este recurso';
     }
     
+    console.error('💥 Mensaje de error final:', errorMessage);
     return throwError(() => new Error(errorMessage));
   }
 }

@@ -173,7 +173,7 @@ export class CitasEdit implements OnInit, OnDestroy {
   }
 
   irAExpediente(animalId: string): void {
-    this.router.navigate(['/expediente', animalId]);
+    this.router.navigate(['/expediente/editar', animalId]);
   }
 
   usarImagenPorDefecto(event: any): void {

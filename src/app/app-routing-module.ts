@@ -16,13 +16,17 @@ const routes: Routes = [
     loadChildren: () => import('./modules/citas/citas-module').then(m => m.CitasModule)
   },
   {
-     path: 'citas',
-    loadChildren: () => import('./modules/citas/citas-module').then(m => m.CitasModule)
-  },
-  {
     path: 'galeria',
     loadChildren: () => import('./modules/galeria/galeria-module').then(m => m.GaleriaModule)
-  }
+  },
+   { 
+    path: 'sesion', 
+    loadChildren: () => import('./modules/sesion/sesion.module').then(m => m.SesionModule) 
+  },
+  { 
+    path: 'expediente', 
+    loadChildren: () => import('./modules/expediente/expediente.module').then(m => m.ExpedienteModule)
+   }
 
 ];
 

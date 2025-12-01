@@ -1,0 +1,59 @@
+.home-icon img, .calender-icon img { 
+    width: 36px; 
+    height:36px; 
+}
+
+.profile-icon img { 
+    width: 48px; 
+    height:48px; 
+    border-radius:50%; 
+}
+
+.header-right { 
+    display:flex; 
+    align-items:center; 
+    gap:20px; 
+    margin-left:auto; 
+}
+
+.header-left {
+    display:flex; 
+    align-items:center; 
+    gap:25px; 
+    flex-direction: row;
+}
+
+.header-title { 
+color: #E1CFD1;
+font-size: 26px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+}
+
+.header { 
+    height: 86px; 
+    display:flex; 
+    align-items:center; 
+    padding-left: 16px;
+     padding-right: 16px; 
+     background: #642C51;
+    }
+
+@media (max-width: 600px) {
+	.home-icon img, .calender-icon img { 
+        width: 28px; 
+        height:28px; 
+    }
+
+	.profile-icon img { 
+        width: 40px; 
+        height:40px; 
+    }
+
+	.header { 
+        height: 48px; 
+        padding-left: 12px; 
+        padding-right: 12px; 
+    }
+}

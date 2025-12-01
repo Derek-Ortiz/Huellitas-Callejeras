@@ -8,10 +8,9 @@ import { CitasEdit } from './modules/citas/citas-edit/citas-edit';
 import { Calendario } from './modules/citas/calendario/calendario';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, withInterceptors } from '@angular/common/http';
-import { provideHttpClient } from '@angular/common/http';
-
-
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -29,11 +28,11 @@ import { provideHttpClient } from '@angular/common/http';
     HttpClientModule
   ],
   providers: [
-    provideHttpClient(withInterceptorsFromDi()),
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     
   ],
-  bootstrap: [RootComponent]
+  bootstrap: [App]
 })
 export class AppModule { }

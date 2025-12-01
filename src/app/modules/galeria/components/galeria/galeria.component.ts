@@ -107,12 +107,12 @@ export class GaleriaComponent implements OnInit, OnDestroy {
 
     onClickAgregar(): void {
         console.log('Agregar expediente');
-        //ruta
+        this.router.navigate(['/expediente/view']);
     }
 
     onClickTarjeta(expediente: Expediente): void {
         console.log('Expediente seleccionado:', expediente);
-        //ruta
+        this.router.navigate(['/expediente/editar/', expediente.id]);
     }
 
     abrirModalEliminar(expediente: Expediente): void {

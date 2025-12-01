@@ -1,10 +1,12 @@
-﻿
+﻿<style>
+
+</style>
+
 <main class="main">
- 
-  <app-navegation></app-navegation>
-  <router-outlet></router-outlet>
+
+  
+ <app-navegation *ngIf="mostrarNavegacion"></app-navegation>
+   <router-outlet></router-outlet>
 
 
 </main>
-
-<router-outlet />

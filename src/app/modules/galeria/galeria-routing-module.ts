@@ -7,6 +7,10 @@ const routes: Routes = [
     path: '',
     component: GaleriaComponent
   },
+  {
+    path: '**',
+    redirectTo: ''
+  }
 ];
 
 @NgModule({

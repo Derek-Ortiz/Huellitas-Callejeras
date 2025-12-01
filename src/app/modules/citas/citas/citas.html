@@ -50,7 +50,7 @@
             <p>Cargando información del animal...</p>
           </div>
 
-          <div *ngIf="animal && !cargandoAnimal" class="tarjeta-paciente">
+          <div *ngIf="animal && !cargandoAnimal" class="tarjeta-paciente" (click)="irAExpediente(animal.id)">
             <div class="paciente-header">
               <img 
                 [src]="animal.urlImage" 
@@ -63,7 +63,7 @@
               <h4>{{ animal.nombre }}</h4>
               <p class="especie-raza">{{ animal.especie }} - {{ animal.raza }}</p>
             </div>
-            <div class="link-expediente" (click)="irAExpediente()">
+            <div class="link-expediente" (click)="irAExpediente(animal.id)">
              
             </div>
           </div>
