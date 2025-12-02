@@ -118,7 +118,7 @@ export class CitasEdit implements OnInit, OnDestroy {
           this.animalSeleccionado = animalIndividual;
           this.terminoBusqueda = animalIndividual.nombre;
           this.cargandoAnimalInicial = false;
-          
+          this.cargandoPacientes = false;
           this.todosLosPacientes.push(animalIndividual);
           this.cdr.detectChanges();
         },

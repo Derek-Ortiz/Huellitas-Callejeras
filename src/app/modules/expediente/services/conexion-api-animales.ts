@@ -150,23 +150,61 @@ export class ConexionApiAnimales {
 		);
 	}
 
+	formatFechaSalida(fecha: string): string {
+		const date = new Date(fecha);
+		  if (isNaN(date.getTime())) {
+        console.error('Formato de fecha no válido:', fecha);
+        return fecha; // O podrías lanzar un error
+    }
+    
+    // Devolver en formato ISO (YYYY-MM-DDTHH:mm:ss.sssZ)
+    return date.toISOString();
+	}
+
 	actualizarConRescateFormData(id: string, payload: AnimalRescateRequest, file?: File): Observable<any | null> {
-		console.log('Actualizando con rescate - ID:', id, 'Payload:', payload, 'Archivo:', file);
+		  console.log('📥 actualizarConRescateFormData - Payload recibido:', payload);
+    console.log('📅 fechaSalida en payload:', payload.animal.fechaSalida);
 		const url = `${this.apiUrl}/${encodeURIComponent(id)}/actualizar-con-rescate`;
 		const fd = new FormData();
-		
+
+		const formatFechaParaBackend = (fecha: string | null | undefined): string | null => {
+        if (fecha === null || fecha === undefined || fecha === '') {
+            console.log('📭 Fecha es null/undefined/vacía');
+            return null;
+        }
+        
+        // Si ya es una fecha ISO válida, dejarla tal cual
+        if (typeof fecha === 'string' && fecha.includes('T') && !isNaN(new Date(fecha).getTime())) {
+            console.log('✅ Fecha ya está en formato ISO:', fecha);
+            return fecha;
+        }
+		  try {
+            const date = new Date(fecha);
+            if (isNaN(date.getTime())) {
+                console.error('❌ Fecha inválida:', fecha);
+                return null;
+            }
+		  } catch (error) {
+            console.error('❌ Error formateando fecha:', error);
+            return null;
+        }
+        
+        return new Date(fecha).toISOString();
+    };
+
 		const animalData = {
 			...payload.animal,
 			peso: Number(payload.animal.peso),
 			edad: Number(payload.animal.edad),
-			fechaSalida: payload.animal.fechaSalida ?? 'no ta',
+			fechaSalida: formatFechaParaBackend(payload.animal.fechaSalida),
 		};
 
 		const rescateData = {
 			lugar: payload.rescate.lugar,
 			descripcion: payload.rescate.descripcion
 		};
-		console.log('Datos normalizados - Animal:', animalData, 'Rescate:', rescateData);
+		console.log('Datos normalizados - Animal:', payload.animal);
+		console.log('animalData:', JSON.stringify(animalData));
 		fd.append('animal', JSON.stringify(animalData));
 		fd.append('rescate', JSON.stringify(rescateData));
 		

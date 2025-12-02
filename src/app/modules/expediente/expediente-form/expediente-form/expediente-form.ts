@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { Animal, RescateResponse } from '../../interfaces/paciente.interface';
 import { Router } from '@angular/router';
 
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './expediente-form.html',
   styleUrls: ['./expediente-form.css']
 })
-export class ExpedienteForm implements OnChanges {
+export class ExpedienteForm implements OnChanges, OnInit {
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
   @Input() disabled = true; 
@@ -53,6 +53,19 @@ export class ExpedienteForm implements OnChanges {
       }
     }
   }
+
+  ngOnInit(): void {
+    this.setFechaActual();
+  }
+
+  private setFechaActual(): void {
+  const fechaActual = new Date();
+  const fechaFormateada = fechaActual.toISOString().split('T')[0];
+  
+  this.model.fechaIngreso = fechaFormateada;
+ 
+}
+  
 
   private getMissingFieldKeys(): string[] {
     const requiredKeys = [

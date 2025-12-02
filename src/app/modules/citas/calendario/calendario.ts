@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CalendarOptions, EventInput, EventApi } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -26,7 +26,8 @@ export class Calendario implements OnInit, OnDestroy {
   constructor(
     private router: Router, 
      public citasService: CitasService,
-      private fechaService: FechaService
+      private fechaService: FechaService,
+      private cdr: ChangeDetectorRef
   ) {
     this.calendarOptions = {
       initialView: 'dayGridMonth',
@@ -106,6 +107,7 @@ export class Calendario implements OnInit, OnDestroy {
     } else {
       this.calendarOptions.events = eventos;
     }
+    this.cdr.detectChanges();
   }
 
   onDatesSet(dateInfo: any): void {

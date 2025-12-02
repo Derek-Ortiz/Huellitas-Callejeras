@@ -336,8 +336,8 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
   onSave(data: any) {
     if (this.saving) { return; }
     this.saving = true;
-    console.log('onSave llamado con datos:', data);
-    console.log('Archivos seleccionados:', this.selectedFiles.length);
+     console.log('Fecha de salida del formulario (raw):', data.fechaSalida);
+    console.log('Tipo de fecha:', typeof data.fechaSalida);
     
     const idExists = this.initialAnimal && this.initialAnimal.id;
     console.log(' Modo:', idExists ? 'EDICIÓN' : 'CREACIÓN');
@@ -345,11 +345,22 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
 
 
       const formatToISO = (dateString: string): string | null => {
-    if (!dateString) return null;
+        console.log('🔄 Formateando fecha:', dateString);
+    if (!dateString || dateString.trim() === '') {
+      return null;
+    }
     try {
-      const date = new Date(dateString);
-      return date.toISOString();
-    } catch {
+       const date = new Date(dateString + 'T00:00:00');
+         if (isNaN(date.getTime())) {
+                console.error('❌ Fecha inválida después de parseo:', dateString);
+                return null;
+            }
+            
+      const isoString = date.toISOString();
+            console.log('✅ Fecha formateada a ISO:', isoString);
+            return isoString;
+    } catch(error) {
+        console.error('❌ Error formateando fecha:', error);
       return null;
     }
   };
@@ -363,7 +374,7 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
       edad: Number(data.edad) || 0,
       sexo: data.sexo ?? 'Macho',
       rescatistaId: data.rescatistaId || this.getRescatistaIdFromStorage(),
-      ...(data.fechaSalida && { fechaSalida: formatToISO(data.fechaSalida) })
+      fechaSalida: formatToISO(data.fechaSalida) || ''
     };
 
     const rescateRequest: RescateRequest = {

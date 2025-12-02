@@ -44,11 +44,6 @@
               [class.error]="!animalSeleccionado && terminoBusqueda"
             >
             
-            <div *ngIf="cargandoPacientes" class="loading">
-              <h3>Cargando animales...</h3>
-              <div class="spinner"></div>
-            </div>
-            
             <div *ngIf="mostrarLista && animalesFiltrados.length > 0" class="lista-autocomplete">
               <div 
                 *ngFor="let animal of animalesFiltrados" 
@@ -96,7 +91,7 @@
           </div>
         </div>
 
-        <div *ngIf="!animalSeleccionado && !terminoBusqueda && !cargandoPacientes && !esEdicion" class="estado-inicial">
+        <div *ngIf="!animalSeleccionado && !terminoBusqueda && !esEdicion" class="estado-inicial">
           <img src="mdi_dog.png" alt="animal" class="icono-animal">
           <p>Busca un animal para asociarlo a la cita</p>
         </div>
