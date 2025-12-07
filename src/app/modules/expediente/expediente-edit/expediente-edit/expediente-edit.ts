@@ -6,6 +6,7 @@ import { ConexionApiAnimales } from '../../services/conexion-api-animales';
 import { Animal, AnimalRequest, RescateRequest, AnimalRescateRequest, RescateResponse } from '../../interfaces/paciente.interface';
 import { ExpedienteForm } from '../../expediente-form/expediente-form/expediente-form';
 import { Router } from '@angular/router';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-expediente-edit',
@@ -108,9 +109,9 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
 
         this.isEditing = false;
 
-        if (animal.urlImage && animal.urlImage.trim() !== '') {
+        if (animal.urlImage.startsWith('/')) {
           console.log('URL de imagen encontrada:', animal.urlImage);
-          this.imagePreviews = [animal.urlImage];
+          animal.urlImage = `${environment.apiUrlImages}${animal.urlImage}`;
         } else {
           console.log('No hay URL de imagen');
         }
@@ -160,7 +161,7 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
       descripcion: rescate?.descripcion || '',
       fechaSalida: animal.fechaSalida ? formatDate(animal.fechaSalida) : '',
       estado: animal.estado,
-      urlImage: animal.urlImage || '',
+      urlImage: animal.urlImage.startsWith('/') ? `${environment.apiUrlImages}${animal.urlImage}` : animal.urlImage || '',
       rescatistaId: animal.rescatistaId || ''
     };
 

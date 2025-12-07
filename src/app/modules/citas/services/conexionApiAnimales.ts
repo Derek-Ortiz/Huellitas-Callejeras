@@ -24,6 +24,13 @@ export class ConexionApiAnimales {
     }).pipe(  
       map(response => {
         console.log("Animales obtenidos:", response.data?.length || 0, "animales");
+        
+        response.data?.forEach(animal => {
+          if (animal.urlImage.startsWith('/')) {
+            animal.urlImage = `${environment.apiUrlImages}${animal.urlImage}`;
+          }
+        });
+
         return response.data || [];
       }),
       catchError(this.handleError('obtenerAnimales'))

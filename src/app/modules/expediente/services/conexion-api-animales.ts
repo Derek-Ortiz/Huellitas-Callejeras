@@ -27,6 +27,10 @@ export class ConexionApiAnimales {
 		return this.http.get<ApiResponse<any>>(url).pipe(
 			map(response => {
 				const data = response.data;
+				if(data.animal.urlImage.startsWith('/')){
+					data.animal.urlImage = `${environment.apiUrlImages}${data.animal.urlImage}`;
+					console.log('URL de imagen completa:', data.animal.urlImage);
+				}
 				if (!data) return null;
 				if (data.animal) {
 					const animal = data.animal as any;
@@ -35,6 +39,7 @@ export class ConexionApiAnimales {
 					return merged;
 				}
 				return data as Animal;
+				
 			}),
 			catchError(this.handleError('getAnimalPorId'))
 		);
@@ -118,18 +123,6 @@ export class ConexionApiAnimales {
 		return 'Hembra';
 	}
 
-	/**
-	 * POST crear animal con rescate (FormData)
-	 * Endpoint: http://127.0.0.1:9090/api/animal/crear-con-rescate
-	 *
-	 * Partes del FormData:
-	 *  - "animal": JSON string con los datos del animal
-	 *  - "rescate": JSON string con los datos de rescate
-	 *  - "imagen" (opcional): archivo de imagen seleccionado en el formulario
-	 *
-	 * Nota: si deseas probar sin enviar archivo, puedes comentar el bloque
-	 * fd.append('imagen', file, file.name) más abajo.
-	 */
 	crearConRescateFormData(payload: AnimalRescateRequest, file?: File): Observable<any | null> {
 		const url = `${this.apiUrl}/crear-con-rescate`;
 		const fd = new FormData();
@@ -153,8 +146,6 @@ export class ConexionApiAnimales {
 		fd.append('rescate', rescateJson);
 		
 		if (file) {
-			// Parte de archivo para el endpoint http://127.0.0.1:9090/api/animal/crear-con-rescate
-			// Descomentar/comentar esta línea para habilitar/deshabilitar el envío del archivo.
 			fd.append('imagen', file, file.name);
 		}
 
@@ -168,38 +159,36 @@ export class ConexionApiAnimales {
 		const date = new Date(fecha);
 		  if (isNaN(date.getTime())) {
         console.error('Formato de fecha no válido:', fecha);
-        return fecha; // O podrías lanzar un error
+        return fecha; 
     }
-    
-    // Devolver en formato ISO (YYYY-MM-DDTHH:mm:ss.sssZ)
+ 
     return date.toISOString();
 	}
 
 	actualizarConRescateFormData(id: string, payload: AnimalRescateRequest, file?: File): Observable<any | null> {
-		  console.log('📥 actualizarConRescateFormData - Payload recibido:', payload);
-    console.log('📅 fechaSalida en payload:', payload.animal.fechaSalida);
+		  console.log('actualizarConRescateFormData - Payload recibido:', payload);
+    console.log('fechaSalida en payload:', payload.animal.fechaSalida);
 		const url = `${this.apiUrl}/${encodeURIComponent(id)}/actualizar-con-rescate`;
 		const fd = new FormData();
 
 		const formatFechaParaBackend = (fecha: string | null | undefined): string | null => {
         if (fecha === null || fecha === undefined || fecha === '') {
-            console.log('📭 Fecha es null/undefined/vacía');
+            console.log('Fecha es null/undefined/vacía');
             return null;
         }
         
-        // Si ya es una fecha ISO válida, dejarla tal cual
         if (typeof fecha === 'string' && fecha.includes('T') && !isNaN(new Date(fecha).getTime())) {
-            console.log('✅ Fecha ya está en formato ISO:', fecha);
+            console.log('Fecha ya está en formato ISO:', fecha);
             return fecha;
         }
 		  try {
             const date = new Date(fecha);
             if (isNaN(date.getTime())) {
-                console.error('❌ Fecha inválida:', fecha);
+                console.error('Fecha inválida:', fecha);
                 return null;
             }
 		  } catch (error) {
-            console.error('❌ Error formateando fecha:', error);
+            console.error('Error formateando fecha:', error);
             return null;
         }
         
