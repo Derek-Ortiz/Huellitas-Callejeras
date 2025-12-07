@@ -25,8 +25,7 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
   imagePreviews: string[] = [];
   showCancelModal = false;
   cancelMessage = '';
-  saving = false; // bloquea navegación hasta respuesta de API
-  // Estado de alerta de registro
+  saving = false; 
   showStatusModal = false;
   statusMessage = '';
   statusIsError = false;
@@ -111,14 +110,19 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
         this.animalEstado = animal.estado;
         console.log('Estado del animal:', this.animalEstado);
 
-        this.isEditing = false;
-
-        if (animal.urlImage.startsWith('/')) {
-          console.log('URL de imagen encontrada:', animal.urlImage);
-          animal.urlImage = `${environment.apiUrlImages}${animal.urlImage}`;
-        } else {
-          console.log('No hay URL de imagen');
+         if (animal.urlImage) {
+        let imageUrl = animal.urlImage;
+        if (imageUrl.startsWith('/')) {
+          imageUrl = `${environment.apiUrlImages}${imageUrl}`;
         }
+        console.log('Cargando imagen en previews:', imageUrl);
+        this.imagePreviews = [imageUrl];
+      } else {
+        console.log('No hay imagen para este animal');
+        this.imagePreviews = ['/assets/images/Agregar.svg'];
+      }
+
+        this.isEditing = false;
 
         setTimeout(() => {
           console.log('Timeout ejecutado - expForm disponible:', !!this.expForm);
@@ -140,7 +144,6 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private mapAnimalToFormData(animal: Animal, rescate?: RescateResponse | null): any {
-    console.log('🔍 mapAnimalToFormData llamado con:', { animal, rescate });
     
     const formatDate = (dateString: string) => {
       if (!dateString) return '';
@@ -201,7 +204,7 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
 
   onEstadoChange(nuevo: 'En adopción' | 'Adoptado' | 'En recuperación') {
     this.animalEstado = nuevo;
-    // Si pasa a Adoptado, colocar la fecha actual en el formulario (YYYY-MM-DD)
+    
     if (nuevo === 'Adoptado' && this.expForm) {
       const hoy = new Date();
       const yyyy = hoy.getFullYear();
@@ -223,7 +226,7 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
       console.warn('No hay animalId disponible para navegar a tratamientos');
       return;
     }
-    // Persist selected animal id for tratamiento module
+    
     SelectedAnimalStore.set(animalId);
     try {
       this.router.navigate(['/medicine/tratamiento', animalId]);
@@ -362,22 +365,22 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
 
 
       const formatToISO = (dateString: string): string | null => {
-        console.log('🔄 Formateando fecha:', dateString);
+        console.log('Formateando fecha:', dateString);
     if (!dateString || dateString.trim() === '') {
       return null;
     }
     try {
        const date = new Date(dateString + 'T00:00:00');
          if (isNaN(date.getTime())) {
-                console.error('❌ Fecha inválida después de parseo:', dateString);
+                console.error('Fecha inválida después de parseo:', dateString);
                 return null;
             }
             
       const isoString = date.toISOString();
-            console.log('✅ Fecha formateada a ISO:', isoString);
+            console.log('Fecha formateada a ISO:', isoString);
             return isoString;
     } catch(error) {
-        console.error('❌ Error formateando fecha:', error);
+        console.error('Error formateando fecha:', error);
       return null;
     }
   };
@@ -415,7 +418,7 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
       
       this.api.actualizarConRescateFormData(idStr, payload, file).subscribe(
         (res) => {
-          // Modal de éxito y redirección
+         
           this.statusIsError = false;
           this.statusMessage = 'Registro exitoso';
           this.showStatusModal = true;
@@ -434,7 +437,6 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
           }, 3000);
         }, 
         (err) => {
-          // Modal de error
           this.statusIsError = true;
           this.statusMessage = 'Error en el registro';
           this.showStatusModal = true;
@@ -445,7 +447,6 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
       console.log('Creando nuevo animal');
       this.api.crearConRescateFormData(payload, file).subscribe(
         (res) => {
-          // Modal de éxito y redirección
           this.statusIsError = false;
           this.statusMessage = 'Registro exitoso';
           this.showStatusModal = true;
@@ -465,12 +466,12 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
               this.router.navigate(['/galeria']);
             }, 3000);
           } else {
-            // Mantener modal de éxito sin redirección automática si no hay ID
+           
           }
           this.saving = false;
         }, 
         (err) => {
-          // Modal de error
+          
           this.statusIsError = true;
           this.statusMessage = 'Error en el registro';
           this.showStatusModal = true;

@@ -13,7 +13,6 @@ export class ExpedientesService {
 
   constructor(private http: HttpClient) { }
 
-  // GET /animal - Obtener todos los animales
   obtenerExpedientes(): Observable<Expediente[]> {
     console.log('[ExpedientesService] Obteniendo expedientes...');
     console.log(' URL:', this.apiUrl);
@@ -54,7 +53,6 @@ export class ExpedientesService {
     );
   }
 
-  // DELETE /animal/{id} - Eliminar animal
   eliminarExpediente(id: string): Observable<boolean> {
     console.log('[ExpedientesService] Eliminando expediente ID:', id);
     console.log('URL DELETE:', `${this.apiUrl}/${id}`);
@@ -75,7 +73,6 @@ export class ExpedientesService {
     );
   }
 
-  // GET /animal/{id} - Obtener un animal por ID
   obtenerExpedientePorId(id: string): Observable<Expediente | undefined> {
     console.log(`[ExpedientesService] Obteniendo expediente por ID: ${id}`);
     return this.http.get<ApiResponse<Expediente>>(`${this.apiUrl}/${id}`).pipe(
@@ -94,7 +91,6 @@ export class ExpedientesService {
     );
   }
 
-  // POST /animal - Crear nuevo animal
   agregarExpediente(expediente: AnimalRequest): Observable<Expediente> {
     return this.http.post<ApiResponse<Expediente>>(this.apiUrl, expediente).pipe(
       map(response => {
@@ -107,7 +103,6 @@ export class ExpedientesService {
     );
   }
 
-  // PUT /animal/{id} - Actualizar animal
   actualizarExpediente(id: string, expediente: AnimalRequest): Observable<boolean> {
     return this.http.put<ApiResponse<any>>(`${this.apiUrl}/${id}`, expediente).pipe(
       map(response => response.success),
@@ -115,7 +110,6 @@ export class ExpedientesService {
     );
   }
 
-  // Método auxiliar para identificar tipo de imagen
   private getImageType(url: string): string {
     if (!url) return 'URL vacía';
     

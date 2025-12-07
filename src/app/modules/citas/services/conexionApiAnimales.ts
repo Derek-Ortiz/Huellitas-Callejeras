@@ -47,6 +47,11 @@ export class ConexionApiAnimales {
       }
     }).pipe(
       map(response => {
+        
+        if (response.data && response.data.urlImage.startsWith('/')) {
+          response.data.urlImage = `${environment.apiUrlImages}${response.data.urlImage}`;
+        }
+
         console.log(" Animal encontrado:", response.data);
         return response.data;
       }),
