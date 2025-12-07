@@ -26,6 +26,10 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
   showCancelModal = false;
   cancelMessage = '';
   saving = false; // bloquea navegación hasta respuesta de API
+  // Estado de alerta de registro
+  showStatusModal = false;
+  statusMessage = '';
+  statusIsError = false;
 
   constructor(
     private router: Router,
@@ -196,8 +200,20 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onEstadoChange(nuevo: 'En adopción' | 'Adoptado' | 'En recuperación') {
-    console.log(' onEstadoChange - Nuevo estado:', nuevo);
     this.animalEstado = nuevo;
+    // Si pasa a Adoptado, colocar la fecha actual en el formulario (YYYY-MM-DD)
+    if (nuevo === 'Adoptado' && this.expForm) {
+      const hoy = new Date();
+      const yyyy = hoy.getFullYear();
+      const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+      const dd = String(hoy.getDate()).padStart(2, '0');
+      const fecha = `${yyyy}-${mm}-${dd}`;
+      try {
+        if (!this.expForm.model) { this.expForm.model = {}; }
+        this.expForm.model.fechaSalida = fecha;
+        this.cdr.detectChanges();
+      } catch (_) {}
+    }
   }
 
   onTratamientos() {
@@ -399,7 +415,10 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
       
       this.api.actualizarConRescateFormData(idStr, payload, file).subscribe(
         (res) => {
-          console.log('Animal actualizado exitosamente:', res);
+          // Modal de éxito y redirección
+          this.statusIsError = false;
+          this.statusMessage = 'Registro exitoso';
+          this.showStatusModal = true;
           if (res && (res as any).animal) {
             this.initialAnimal = (res as any).animal as Animal;
             if (this.initialAnimal.urlImage) {
@@ -408,11 +427,17 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
           }
           this.isEditing = false;
           this.clearImagePreviews();
-          console.log('🔍 Edición completada - modo edición desactivado');
           this.saving = false;
+          setTimeout(() => {
+            this.showStatusModal = false;
+            this.router.navigate(['/galeria']);
+          }, 3000);
         }, 
         (err) => {
-          console.error('Error actualizando animal con rescate:', err);
+          // Modal de error
+          this.statusIsError = true;
+          this.statusMessage = 'Error en el registro';
+          this.showStatusModal = true;
           this.saving = false;
         }
       );
@@ -420,7 +445,10 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
       console.log('Creando nuevo animal');
       this.api.crearConRescateFormData(payload, file).subscribe(
         (res) => {
-          console.log('Animal creado exitosamente:', res);
+          // Modal de éxito y redirección
+          this.statusIsError = false;
+          this.statusMessage = 'Registro exitoso';
+          this.showStatusModal = true;
           if (res && (res as any).animal) {
             this.initialAnimal = (res as any).animal as Animal;
             if (this.initialAnimal.urlImage) {
@@ -429,19 +457,23 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
           }
           this.isEditing = false;
           this.clearImagePreviews();
-          console.log(' Creación completada');
           
           const createdId = (this.initialAnimal && this.initialAnimal.id) || (res as any)?.id;
           if (createdId) {
-            console.log(' Registro confirmado. Navegando a galería. ID:', createdId);
-            this.router.navigate(['/galeria']);
+            setTimeout(() => {
+              this.showStatusModal = false;
+              this.router.navigate(['/galeria']);
+            }, 3000);
           } else {
-            console.warn('No se recibió ID tras crear. No se navega.');
+            // Mantener modal de éxito sin redirección automática si no hay ID
           }
           this.saving = false;
         }, 
         (err) => {
-          console.error(' Error creando animal con rescate:', err);
+          // Modal de error
+          this.statusIsError = true;
+          this.statusMessage = 'Error en el registro';
+          this.showStatusModal = true;
           this.saving = false;
         }
       );
@@ -470,5 +502,5 @@ export class ExpedienteEdit implements OnInit, AfterViewInit, OnDestroy {
     console.log('Rescatista ID de localStorage:', stored);
     
     return stored || 'no-encontrado';
-  }
+  }
 }

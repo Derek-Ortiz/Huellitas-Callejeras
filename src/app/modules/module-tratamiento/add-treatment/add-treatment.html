@@ -22,27 +22,46 @@
                     <h1>Tratamiento</h1>
                 </div>
                 <div class="info-card-treat">
-                    <div class="info-top">
-                        <div class="treatment-request">
-                            <p id="start-date">Fecha de inicio</p>
-                            <input type="date" class="requests" formControlName="startDate" [ngClass]="{invalid: submitted && form.controls['startDate'].invalid}">
+                    <div class="treat-grid">
+                        <div class="grid-item label-col">
+                            <div class="treatment-request">
+                                <p id="start-date">Fecha de inicio</p>
+                                <input type="date" class="requests" formControlName="startDate" [ngClass]="{invalid: submitted && form.controls['startDate'].invalid}">
+                            </div>
                         </div>
-                        <div class="treatment-request">
-                            <svg width="51" height="51" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M25.4623 4.24377V18.036C25.4624 18.8272 25.7571 19.59 26.289 20.1757C26.821 20.7614 27.552 21.128 28.3396 21.2039L28.6451 21.2188H42.4373V42.4376C42.4377 43.5082 42.0333 44.5394 41.3053 45.3245C40.5773 46.1095 39.5795 46.5904 38.5119 46.6707L38.1936 46.6813H12.7311C11.6604 46.6817 10.6292 46.2773 9.84414 45.5493C9.05909 44.8213 8.57821 43.8235 8.49791 42.7558L8.4873 42.4376V8.48753C8.48697 7.41688 8.89132 6.38567 9.61932 5.60061C10.3473 4.81556 11.3451 4.33468 12.4128 4.25438L12.7311 4.24377H25.4623ZM29.7061 4.33502C30.3922 4.48068 31.0316 4.79417 31.567 5.24742L31.828 5.48719L41.1939 14.8532C41.6911 15.3499 42.0571 15.9624 42.2591 16.6355L42.344 16.975H29.7061V4.33502Z" fill="#5B8346"/>
-                            </svg>
-                            <input type="file" class="requests" (change)="onFileSelected($event)">
+
+                        <div class="grid-item icon-col">
+                            <div class="treatment-request">
+                                <div class="file-input-wrapper">
+                                    <div class="file-wrapper" [ngClass]="{'file-warning': fileError}">
+                                        <svg width="35" height="35" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M25.4623 4.24377V18.036C25.4624 18.8272 25.7571 19.59 26.289 20.1757C26.821 20.7614 27.552 21.128 28.3396 21.2039L28.6451 21.2188H42.4373V42.4376C42.4377 43.5082 42.0333 44.5394 41.3053 45.3245C40.5773 46.1095 39.5795 46.5904 38.5119 46.6707L38.1936 46.6813H12.7311C11.6604 46.6817 10.6292 46.2773 9.84414 45.5493C9.05909 44.8213 8.57821 43.8235 8.49791 42.7558L8.4873 42.4376V8.48753C8.48697 7.41688 8.89132 6.38567 9.61932 5.60061C10.3473 4.81556 11.3451 4.33468 12.4128 4.25438L12.7311 4.24377H25.4623ZM29.7061 4.33502C30.3922 4.48068 31.0316 4.79417 31.567 5.24742L31.828 5.48719L41.1939 14.8532C41.6911 15.3499 42.0571 15.9624 42.2591 16.6355L42.344 16.975H29.7061V4.33502Z" fill="#5B8346"/>
+                                        </svg>
+                                        <input type="file" (change)="onFileSelected($event)" class="hidden-file-input">
+                                    </div>
+                                    @if (selectedFile) {
+                                        <span class="file-name">{{ selectedFile.name }}</span>
+                                    }
+                                    @if (fileError) {
+                                        <div class="error-dot" title="Debes seleccionar el archivo nuevamente">!</div>
+                                    }
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="info-buttom">
-                        <p id="medicines">Medicamentos</p>
-                        <div class="plus-card" (click)="openAddMedicineModal()">
-                            <p class="plus">+</p>
+
+                        <div class="grid-item label-col">
+                            <p>Medicamentos</p>
+                        </div>
+
+                        <div class="grid-item icon-col">
+                            <div class="plus-btn" (click)="openAddMedicineModal()">
+                                <p class="plus">+</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Right side: read-only medicine cards, edited via modal -->
+            <!-- Right side: medicine cards -->
             <div class="right-side">
                 @for (medicine of medicines.controls; track $index; let i = $index) {
                     <div class="medicine-list-item">

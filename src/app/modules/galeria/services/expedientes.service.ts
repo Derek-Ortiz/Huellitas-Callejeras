@@ -37,6 +37,7 @@ export class ExpedientesService {
               tieneImagen: !!expediente.urlImage,
               urlCompleta: expediente.urlImage ? (expediente.urlImage.startsWith('/') ? `${environment.apiUrlImages}${expediente.urlImage}` : expediente.urlImage) : 'Sin imagen',
               tipoImagen: expediente.urlImage ? this.getImageType(expediente.urlImage) : 'Sin imagen'
+              
             });
           });
         }

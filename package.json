@@ -38,8 +38,8 @@
   },
   "devDependencies": {
     "@angular/build": "^20.3.9",
-    "@angular/cli": "20.3.3",
-    "@angular/compiler-cli": "20.3.3",
+    "@angular/cli": "^20.3.13",
+    "@angular/compiler-cli": "^20.3.15",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",
@@ -48,7 +48,5 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.8.2"
-    
   }
 }
-

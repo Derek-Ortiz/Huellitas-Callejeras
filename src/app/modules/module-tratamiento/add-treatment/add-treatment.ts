@@ -20,6 +20,7 @@ export class AddTreatment implements OnDestroy {
   modalTreatmentEditOpen = false;
   modalMedicineOpen = false;
   showDeleteConfirm = false;
+  fileError = false;
   nums: number[] = [];
   tratamientos: any[] = [];
   form: FormGroup;
@@ -187,6 +188,7 @@ export class AddTreatment implements OnDestroy {
   onFileSelected(evt: Event) {
     const input = evt.target as HTMLInputElement;
     this.selectedFile = (input.files && input.files[0]) ? input.files[0] : null;
+    this.fileError = !this.selectedFile;
     this.cdr.detectChanges();
   }
 
@@ -302,4 +304,5 @@ export class AddTreatment implements OnDestroy {
     const animalId = this.route.snapshot.paramMap.get('animalId') || (SelectedAnimalStore.get() || '');
     this.router.navigate(['/medicine/tratamiento', animalId], { queryParams: { tid: tratamientoId } });
   }
+  
 }

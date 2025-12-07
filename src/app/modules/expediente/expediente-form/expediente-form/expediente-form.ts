@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './expediente-form.html',
   styleUrls: ['./expediente-form.css']
 })
-export class ExpedienteForm implements OnChanges, OnInit {
+export class ExpedienteForm implements OnChanges , OnInit {
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
   @Input() disabled = true; 
@@ -53,19 +53,6 @@ export class ExpedienteForm implements OnChanges, OnInit {
       }
     }
   }
-
-  ngOnInit(): void {
-    this.setFechaActual();
-  }
-
-  private setFechaActual(): void {
-  const fechaActual = new Date();
-  const fechaFormateada = fechaActual.toISOString().split('T')[0];
-  
-  this.model.fechaIngreso = fechaFormateada;
- 
-}
-  
 
   private getMissingFieldKeys(): string[] {
     const requiredKeys = [
@@ -134,6 +121,17 @@ export class ExpedienteForm implements OnChanges, OnInit {
   } else {
     this.save.emit(this.model);
   }
+}
+ngOnInit(): void {
+    this.setFechaActual();
+  }
+
+  private setFechaActual(): void {
+  const fechaActual = new Date();
+  const fechaFormateada = fechaActual.toISOString().split('T')[0];
+  
+  this.model.fechaIngreso = fechaFormateada;
+ 
 }
 
 onNav() {
