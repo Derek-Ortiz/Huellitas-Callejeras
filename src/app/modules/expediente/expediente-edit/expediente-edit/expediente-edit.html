@@ -58,3 +58,14 @@
 
   <app-modal-desicion *ngIf="showCancelModal" [message]="cancelMessage" (confirmed)="onModalConfirm()" (cancelled)="onModalCancel()"></app-modal-desicion>
 
+  <!-- Modal de estado de registro -->
+  <div *ngIf="showStatusModal" class="status-modal-overlay">
+    <div class="status-modal">
+      <p>{{ statusMessage }}</p>
+      <div class="actions">
+        <button class="btn-cancel" type="button" *ngIf="statusIsError" (click)="showStatusModal=false">Cerrar</button>
+        <button class="btn-agregar" type="button" *ngIf="!statusIsError" disabled>Redirigiendo…</button>
+      </div>
+    </div>
+  </div>
+

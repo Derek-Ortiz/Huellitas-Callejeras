@@ -1,4 +1,5 @@
-.treatment-title{
+/* --- Título del Tratamiento --- */
+.treatment-title {
     background-color: #D693BF;
     color: #FFFFFF;
     display: flex;
@@ -6,41 +7,139 @@
     text-align: center;
     margin: 37px;
     margin-bottom: 75px;
-    justify-content: center;
-    align-items: center;
     padding: 15px;
 }
-.info-card-treat{
+
+/* --- Tarjeta Verde (Contenedor Principal) --- */
+.info-card-treat {
     background-color: #E9F7E1;
     margin: 37px;
-
-
-}
-.info-top, .info-buttom{
-    padding: 27px;
+    padding: 40px 50px; /* Espaciado interno para centrar contenido */
+    max-width: 100%;
+    box-sizing: border-box;
     display: flex;
-    justify-content: space-evenly;
-    font-size: 1.5rem;
-    text-align: center;
+    justify-content: center;
+    align-items: center;
+    min-height: 250px;
+    border-radius: 4px;
+}
+
+/* --- Nuevo Grid Layout para alinear como en Figma --- */
+.treat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Divide en 2 columnas iguales */
+    width: 100%;
+    max-width: 500px; /* Controla que no se estire demasiado */
+    row-gap: 45px;    /* Espacio vertical entre filas */
+    column-gap: 20px; /* Espacio horizontal */
+}
+
+.grid-item {
+    display: flex;
     align-items: center;
 }
-.docs{
-    width: 45px;
-    height: 47px;
-}
-.plus-card{
-    border-radius: 10px;
-    padding: 5px;
+
+/* Estilos para textos (Columna Izquierda) */
+.label-col {
+    justify-content: flex-start;
 }
 
-.plus-card:hover{
-    cursor: pointer;
-    background: #5B8346;
-    color: #FFFFFF;
-    
+.label-col p {
+    margin: 0;
+    font-size: 1.25rem; /* Tamaño ajustado para que no sea gigante */
+    color: #000;
+    font-weight: 400;
 }
-.treatments-row{ display:flex; align-items:center; gap:12px; }
-.treatments-cards{
+
+/* Estilos para iconos (Columna Derecha) */
+.icon-col {
+    justify-content: flex-end; /* Alinea los iconos a la derecha de su columna */
+    padding-right: 25px;       /* Pequeño margen derecho para cuadrar visualmente */
+}
+
+
+/* Contenedor del icono de archivo + input */
+.file-wrapper {
+    position: relative;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    transition: transform 0.2s;
+}
+
+.file-wrapper:hover {
+    transform: scale(1.1);
+}
+
+/* Input invisible que cubre el icono */
+.hidden-file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Estilo para cuando falta el archivo */
+.file-warning svg path {
+    fill: #d32f2f; 
+}
+
+/* Contenedor para el archivo + nombre */
+.file-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Nombre del archivo */
+.file-name {
+    font-size: 0.9rem;
+    color: #000;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Botón de agregar (+) limpio */
+.plus-btn {
+    font-size: 2rem;
+    line-height: 1;
+    color: #000;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s;
+    border-radius: 10px;
+    width: 30px;
+    justify-content: center;
+    display: flex;
+}
+
+.plus-btn:hover {
+    
+    background: #5B8346;
+    transform: scale(1.2);
+}
+
+.error-dot {
+    color: red;
+    font-weight: bold;
+    margin-left: 10px;
+    font-size: 1.5rem;
+}
+
+/* --- Navegación Superior de Tratamientos --- */
+.treatments-row { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    padding-top: 8px; 
+}
+
+.treatments-cards {
     display: inline-flex;
     gap: 12px;
     align-items: center;
@@ -49,29 +148,62 @@
     overflow-y: hidden;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
 }
-.treatments-card, .add-treatment{
+
+.treatments-cards::-webkit-scrollbar { 
+    height: 6px; 
+}
+.treatments-cards::-webkit-scrollbar-thumb { 
+    background: #d0c4cf; 
+    border-radius: 3px; 
+}
+
+.add-treatment {
     background: #D693BF;
-    border-radius: 15px;
-    /* border: 1px solid #000000; */
-    margin: 5px;
-    padding: 10px;
+    border-radius: 12px;
+    padding: 8px 12px;
     color: #FFFFFF;
 }
 
-.treatments-card:hover, .add-treatment:hover{
+.add-treatment:hover {
     background-color: #ce6dac;
     cursor: pointer;
     color: #000000;
 }
 
-.save-btn{
+/* --- Layout Principal (Columnas Izquierda/Derecha) --- */
+.side { 
+    display: flex; 
+    gap: 24px; 
+    align-items: flex-start; 
+    justify-content: center; 
+}
+
+.left-side { 
+    flex: 0 0 50%; 
+    max-width: 50%; 
+}
+
+.right-side { 
+    flex: 0 0 50%; 
+    max-width: 50%; 
+    display: flex; 
+    flex-direction: column; 
+}
+
+.medicine-list-item { 
+    margin: 12px 0; 
+}
+
+/* --- Botón Guardar --- */
+.save-btn {
     display: flex;
     flex-direction: column;
     justify-content: end;
     align-items: center; 
 }
-.save{
+.save {
     background: #7BB75A;
     font-size: 1.5rem;
     padding: 15px;
@@ -80,48 +212,16 @@
     color: #FFFFFF;
     border: none;
     width: 134.3px;
-}
-.save:hover{
-    background-color: #375527;
-    color: #000000;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     cursor: pointer;
-}
-.request{
-    border-radius: 15px;
-    border: solid 2px #000000;
-    background: #D492BD;
-    height: 30px;
-    font-size: 1.5rem;
-    width: 320px;
-}
-.request.invalid{ border-color: #ff4d4d; }
-.request:focus{
-    background: #FFFFFF;
-}
-.requests{
-    border-radius: 15px;
-    border: solid 2px #000000;
-    background: #E9F7E1;
-    height: 30px;
-    font-size: 1.2rem;
-    width: 320px;
-}
-.requests.invalid{ border-color: #ff4d4d; }
-.requests:focus{
-    background: #FFFFFF;
-}
-
-.treatment-request{
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-
-.side{ display:flex; gap:24px; justify-content: center; align-items:flex-start; }
-.left-side{ flex: 0 0 50%; max-width: 50%; }
-.right-side{ flex: 0 0 50%; max-width: 50%; display:flex; flex-direction: column; }
-.medicine-list-item{ margin: 12px 0; }
+.save:hover {
+    background-color: #375527;
+    color: #000000;
+}
 
 /* Optional scrollbar styling */
 .treatments-cards::-webkit-scrollbar{ height: 6px; }

@@ -33,6 +33,7 @@ export class ExpedientesService {
               urlImage: expediente.urlImage,
               tieneImagen: !!expediente.urlImage,
               tipoImagen: expediente.urlImage ? this.getImageType(expediente.urlImage) : 'Sin imagen'
+              
             });
           });
         }
@@ -42,6 +43,7 @@ export class ExpedientesService {
           console.log('🎯 [ExpedientesService] Retornando datos procesados');
           return response.data;
         }
+        
         console.warn('⚠️ [ExpedientesService] No hay datos o success=false');
         return [];
       }),

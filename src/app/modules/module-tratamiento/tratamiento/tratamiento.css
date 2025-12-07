@@ -57,6 +57,7 @@
     padding-right: 25px;       /* Pequeño margen derecho para cuadrar visualmente */
 }
 
+
 /* Contenedor del icono de archivo + input */
 .file-wrapper {
     position: relative;
@@ -94,10 +95,15 @@
     cursor: pointer;
     user-select: none;
     transition: all 0.2s;
+    border-radius: 10px;
+    width: 30px;
+    justify-content: center;
+    display: flex;
 }
 
 .plus-btn:hover {
-    color: #5B8346;
+    
+    background: #5B8346;
     transform: scale(1.2);
 }
 

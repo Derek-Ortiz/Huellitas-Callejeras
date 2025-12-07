@@ -95,7 +95,11 @@
         name="fechaSalida"
         [(ngModel)]="model.fechaSalida"
         [disabled]="disabled"
+        readonly
+        class="readonly-field"
+        title="La fecha de ingreso se genera automáticamente"
       />
+      <small class="field-note">Generada automáticamente cuando el estado es adoptado</small>
     </div>
   </div>
 
